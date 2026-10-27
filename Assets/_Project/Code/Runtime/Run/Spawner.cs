@@ -1,0 +1,110 @@
+using Assets._Project.Code.Runtime.Run;
+using System.Linq;
+using UnityEngine;
+
+public class Spawner : MonoBehaviour
+{
+    [SerializeField] private SpawnStage[] stages;
+    [SerializeField] private Transform player;
+
+    private float timer;
+    private int currentStage;
+    private int currentAlive;
+    private bool spawning = true;
+
+    [SerializeField] private PlayerLight light;
+
+    [Tooltip("Largura da faixa em que o inimigo aparece como silhueta, além do raio da luz.")]
+    [SerializeField, Min(0f)] private float silhouetteBand = 3f;
+
+    [Tooltip("Distância extra para o inimigo nascer completamente invisível.")]
+    [SerializeField, Min(0f)] private float spawnMargin = 1f;
+
+    private void OnEnable()
+    {
+        GameEvents.PlayerDied += OnPlayerDied;
+        GameEvents.MilestoneReached += OnMilestoneReached;
+        GameEvents.BossDefeated += OnBossDefeated;
+    }
+    private void OnDisable()
+    {
+        GameEvents.PlayerDied -= OnPlayerDied;
+        GameEvents.MilestoneReached -= OnMilestoneReached;
+        GameEvents.BossDefeated -= OnBossDefeated;
+    }
+    void Awake()
+    {
+        light = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerLight>();
+    }
+
+    void Update()
+    {
+        currentAlive = GameObject.FindGameObjectsWithTag("Enemy").Count();
+
+        if (!spawning) return;
+        var stage = stages[currentStage];
+
+        if (currentAlive == stage.maxAlive) return;
+
+        timer += Time.deltaTime;
+
+        if (!spawning) return;
+
+        if (timer >= stage.spawnInterval)
+        {
+            GameObject enemy = PickEnemy(stage);
+
+            if (enemy == null) return;
+
+            Vector2 position = GetSpawnPosition();
+
+            Instantiate(enemy, position, Quaternion.identity);
+
+            timer -= stage.spawnInterval;
+            return;
+        }
+
+        return;
+    }
+
+    private void OnPlayerDied() => spawning = false;
+    private void OnMilestoneReached(int milestoneIndex) => spawning = false;
+
+    private void OnBossDefeated(int bossIndex)
+    {
+        currentStage = bossIndex + 1;
+        spawning = currentStage < stages.Length;
+    }
+
+    private GameObject PickEnemy(SpawnStage stage)
+    {
+        float weight = 0f;
+        foreach (var e in stage.enemies) weight += e.weight;
+
+        if (weight <= 0f) return null;
+
+        float roll = Random.Range(0f, weight);
+
+        foreach (var entry in stage.enemies)
+        {
+            roll -= entry.weight;
+            if (roll <= 0f)
+            {
+                return entry.prefab;
+            }
+        }
+
+        return stage.enemies[^1].prefab;
+    }
+
+    private Vector2 GetSpawnPosition()
+    {
+        Vector2 direction = Random.insideUnitCircle.normalized;
+
+        float radius = light.Radius + silhouetteBand + spawnMargin;
+        Vector2 position = (Vector2)player.position + direction * radius;
+
+        return position;
+    }
+
+ }
