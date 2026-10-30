@@ -43,6 +43,18 @@ namespace LastWick.Combat
             }
         }
 
+        // Morte imediata, ignorando a invencibilidade (ex.: a escuridão aos 10:00).
+        public void Kill()
+        {
+            if (IsDead)
+                return;
+
+            Current = 0f;
+            Died?.Invoke();
+            if (destroyOnDeath)
+                Destroy(gameObject);
+        }
+
         public void Heal(float amount)
         {
             if (IsDead || amount <= 0f)

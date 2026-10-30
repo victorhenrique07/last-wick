@@ -1,4 +1,5 @@
 using Assets._Project.Code.Runtime.Run;
+using NUnit.Framework;
 using System.Linq;
 using UnityEngine;
 
@@ -37,7 +38,7 @@ public class Spawner : MonoBehaviour
         light = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerLight>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         currentAlive = GameObject.FindGameObjectsWithTag("Enemy").Count();
 
@@ -68,12 +69,30 @@ public class Spawner : MonoBehaviour
     }
 
     private void OnPlayerDied() => spawning = false;
-    private void OnMilestoneReached(int milestoneIndex) => spawning = false;
+    private void OnMilestoneReached(int milestoneIndex) 
+    {
+        spawning = false;
+
+        OnStageCleared();
+    }
 
     private void OnBossDefeated(int bossIndex)
     {
         currentStage = bossIndex + 1;
         spawning = currentStage < stages.Length;
+    }
+
+    private void OnStageCleared()
+    {
+        var enemiesCount = GameObject.FindGameObjectsWithTag("Enemy");
+
+        if (enemiesCount.Count() > 0)
+        {
+            foreach (GameObject go in enemiesCount) 
+            {
+                Destroy(go);
+            }
+        }
     }
 
     private GameObject PickEnemy(SpawnStage stage)

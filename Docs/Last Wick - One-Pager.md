@@ -36,9 +36,9 @@ O ciclo gira entre a fogueira e a run: o que se coleta na run vira progresso per
 Uma run dura até 10 minutos, e o relógio nunca para, nem durante os bosses. Matar inimigos enche uma barra única com 2 marcos de boss e o boss final no fim. Quem mata rápido termina antes.
 
 1. **Hordas.** Monstros perseguem o jogador o tempo todo. Cada abate soma pontos na barra (cada tipo de inimigo vale um número diferente de pontos), dá XP (nível da run) e pode soltar material.
-2. **Marco de boss.** A barra tem 2 marcos no meio, e cada trecho entre marcos é mais difícil que o anterior (mais tipos de inimigo, inimigos mais fortes e spawn mais rápido). Ao atingir um marco, param de nascer monstros e os que sobraram vêm até o jogador. Esses abates não contam para a barra. O boss só aparece quando a arena estiver limpa.
+2. **Marco de boss.** A barra tem 2 marcos no meio, e cada trecho entre marcos é mais difícil que o anterior (mais tipos de inimigo, inimigos mais fortes e spawn mais rápido). Ao atingir um marco, param de nascer monstros e os que sobraram somem na hora, sem contar para a barra e sem soltar drops. O boss aparece logo em seguida.
 3. **Luta com o boss.** Só o boss fica na arena, e o relógio continua correndo.
-4. **Boss final.** Quando a barra completa, vale a mesma regra dos marcos: param os spawns, a arena precisa ser limpa e só então ele aparece. É o mais forte em vida e dano. Ao matá-lo, a run termina na hora.
+4. **Boss final.** Quando a barra completa, vale a mesma regra dos marcos: param os spawns, os monstros restantes somem e ele aparece em seguida. É o mais forte em vida e dano. Ao matá-lo, a run termina na hora.
 5. **Tela de resultado.** Estatísticas e recompensas da partida.
 
 **Limite de 10:00:** se o boss final não tiver morrido, a escuridão consome o jogador e a run falha (conta como morte). Isso vale também no meio de uma luta com boss.
@@ -248,7 +248,8 @@ Com cerca de 900 abates isso dá uns 180 materiais e 36 curas por run, o equival
 - [x] Luz tirada por dificuldade e óleo por nível de luz (ver Balanceamento inicial).
 - [x] Chance de drop e quanto cada cura recupera (ver Balanceamento inicial).
 - [x] Padre usa só ouro; ouro por boss: 10, 20 e 40.
-- [x] Relógio não congela nos bosses; o boss final também espera a arena limpa.
+- [x] Relógio não congela nos bosses.
+- [x] Ao atingir um marco (inclusive o final), os monstros restantes somem na hora e o boss aparece em seguida, sem esperar o jogador limpar a arena.
 - [x] Ataque manual com mira no mouse, segurando o botão; cartas de ataque extra disparam sozinhas.
 - [x] Esquiva: 2 s de cooldown, 0,5 s de invencibilidade, 2 a 3 unidades.
 - [x] Silhuetas somem de forma linear até 3 unidades além da luz.

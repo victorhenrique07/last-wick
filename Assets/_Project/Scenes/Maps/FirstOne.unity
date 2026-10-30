@@ -456,6 +456,7 @@ GameObject:
   - component: {fileID: 1480376260}
   - component: {fileID: 1480376259}
   - component: {fileID: 1480376261}
+  - component: {fileID: 1480376262}
   m_Layer: 0
   m_Name: Run
   m_TagString: Untagged
@@ -535,6 +536,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RunProgress
   config: {fileID: 11400000, guid: 764ecae89690ddd428ebb9dc83cf4339, type: 2}
+--- !u!114 &1480376262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1480376258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba4f55f055836ef4aae00976251e5cd2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Assets._Project.Code.Runtime.Bosses.BossSpawner
+  bosses:
+  - {fileID: 1365403908581682978, guid: f5b0a77a419cb9329527cea33618547a, type: 3}
+  - {fileID: 1644565418234604630, guid: 724fd4bb63c6402b14304e1f1f3bddb9, type: 3}
+  - {fileID: 1552833843008772601, guid: 6928cfbfa0243e724527ade68916a7c1, type: 3}
+  player: {fileID: 7082864597322322548, guid: 1c97f8c16f7726b44a5d15fc16ed2e39, type: 3}
 --- !u!1001 &1678883237
 PrefabInstance:
   m_ObjectHideFlags: 0
