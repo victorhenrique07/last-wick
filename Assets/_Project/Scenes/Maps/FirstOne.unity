@@ -787,6 +787,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1036723829}
   m_CullTransparentMesh: 1
+--- !u!4 &1392896711 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7082864597322322548, guid: 1c97f8c16f7726b44a5d15fc16ed2e39, type: 3}
+  m_PrefabInstance: {fileID: 1678883237}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1480376258
 GameObject:
   m_ObjectHideFlags: 0
@@ -885,7 +890,7 @@ MonoBehaviour:
     - prefab: {fileID: 6937143748596350105, guid: 3852db297794c5b43a7f3249f1fe0635, type: 3}
       weight: 15
     maxAlive: 250
-  player: {fileID: 7082864597322322548, guid: 1c97f8c16f7726b44a5d15fc16ed2e39, type: 3}
+  player: {fileID: 1392896711}
   light: {fileID: 683694568}
   silhouetteBand: 3
   spawnMargin: 1
