@@ -55,6 +55,16 @@ namespace LastWick.Combat
                 Destroy(gameObject);
         }
 
+        // Muda a vida máxima; o que for ganho entra também na vida atual.
+        public void SetMax(float value)
+        {
+            float gained = value - maxHealth;
+
+            maxHealth = value;
+            Current = Mathf.Min(Current, maxHealth);
+            Heal(gained);
+        }
+
         public void Heal(float amount)
         {
             if (IsDead || amount <= 0f)

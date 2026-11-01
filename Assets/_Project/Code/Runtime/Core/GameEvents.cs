@@ -19,8 +19,12 @@ public static class GameEvents
     // Progressão da run
     public static event Action<int> XpGained;             // XP coletado do chão
     public static event Action<int> LevelUp;              // novo nível da run
+    public static event Action<CardData> CardChosen;     // carta escolhida no level up
 
     public static void RaiseEnemyKilled(int points) => EnemyKilled?.Invoke(points);
+    public static void RaiseXpGained(int enemyExp) => XpGained?.Invoke(enemyExp);
+    public static void RaiseLevelUp(int level) => LevelUp?.Invoke(level);
+    public static void RaiseCardChosen(CardData card) => CardChosen?.Invoke(card);
     public static void RaiseMilestoneReached(int index) => MilestoneReached?.Invoke(index);
     public static void RaiseArenaCleared() => ArenaCleared?.Invoke();
     public static void RaiseBossSpawned(Health boss) => BossSpawned?.Invoke(boss);

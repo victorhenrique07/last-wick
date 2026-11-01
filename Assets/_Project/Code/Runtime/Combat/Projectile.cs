@@ -23,15 +23,16 @@ namespace LastWick.Combat
             hitbox.Hit += OnHit;
         }
 
-        public void Launch(Vector2 direction, Team team, float damage)
+        public void Launch(Vector2 direction, Team team, float damage, float speedMultiplier = 1f,
+            float lifetimeMultiplier = 1f, int bonusPierce = 0)
         {
             hitbox.Team = team;
             hitbox.Damage = damage;
-            hitsLeft = pierce;
+            hitsLeft = pierce + bonusPierce;
 
             transform.right = direction;
-            body.linearVelocity = direction.normalized * speed;
-            Destroy(gameObject, lifetime);
+            body.linearVelocity = direction.normalized * (speed * speedMultiplier);
+            Destroy(gameObject, lifetime * lifetimeMultiplier);
         }
 
         private void OnHit(Hurtbox target)

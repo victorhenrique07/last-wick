@@ -10,6 +10,8 @@ public class RunProgress : MonoBehaviour
     private int nextMilestone;
 
     public int Points => points;
+    public int Kills { get; private set; }
+    public int MilestonesReached => nextMilestone;
     public event Action<int> PointsChanged;   // pontos acumulados, para a barra da HUD
 
     private void OnEnable() => GameEvents.EnemyKilled += AddPoints;
@@ -17,6 +19,7 @@ public class RunProgress : MonoBehaviour
 
     private void AddPoints(int amount)
     {
+        Kills++;
         points += amount;
         PointsChanged?.Invoke(points);
 

@@ -9,9 +9,11 @@ public class Spawner : MonoBehaviour
     [SerializeField] private Transform player;
 
     private float timer;
+    private float stageTime;
     private int currentStage;
     private int currentAlive;
     private bool spawning = true;
+    private bool missingWavesLogged;
 
     [SerializeField] private PlayerLight light;
 
@@ -20,6 +22,9 @@ public class Spawner : MonoBehaviour
 
     [Tooltip("Distância extra para o inimigo nascer completamente invisível.")]
     [SerializeField, Min(0f)] private float spawnMargin = 1f;
+
+    [Tooltip("Intervalo de spawn enquanto os vivos estão abaixo do mínimo da onda.")]
+    [SerializeField, Min(0.02f)] private float fillInterval = 0.1f;
 
     private void OnEnable()
     {
@@ -45,13 +50,27 @@ public class Spawner : MonoBehaviour
         if (!spawning) return;
         var stage = stages[currentStage];
 
-        if (currentAlive == stage.maxAlive) return;
+        if (stage.waves == null || stage.waves.Length == 0)
+        {
+            if (!missingWavesLogged)
+            {
+                Debug.LogError($"O stage {currentStage} não tem ondas.", this);
+                missingWavesLogged = true;
+            }
+
+            return;
+        }
+
+        stageTime += Time.deltaTime;
+
+        if (currentAlive >= stage.maxAlive) return;
+
+        SpawnWave wave = CurrentWave(stage);
+        float interval = currentAlive < wave.minAlive ? fillInterval : wave.spawnInterval;
 
         timer += Time.deltaTime;
 
-        if (!spawning) return;
-
-        if (timer >= stage.spawnInterval)
+        if (timer >= interval)
         {
             GameObject enemy = PickEnemy(stage);
 
@@ -61,7 +80,7 @@ public class Spawner : MonoBehaviour
 
             Instantiate(enemy, position, Quaternion.identity);
 
-            timer -= stage.spawnInterval;
+            timer -= interval;
             return;
         }
 
@@ -80,6 +99,10 @@ public class Spawner : MonoBehaviour
     {
         currentStage = bossIndex + 1;
         spawning = currentStage < stages.Length;
+
+        stageTime = 0f;
+
+        missingWavesLogged = false;
     }
 
     private void OnStageCleared()
@@ -93,6 +116,22 @@ public class Spawner : MonoBehaviour
                 Destroy(go);
             }
         }
+    }
+
+    private SpawnWave CurrentWave(SpawnStage stage)
+    {
+        var elapsed = stageTime;
+
+        foreach (var wave in stage.waves)
+        {
+            if (wave.duration <= 0) continue;
+
+            if (elapsed < wave.duration) return wave;
+
+            elapsed -= wave.duration;
+        }
+
+        return stage.waves[^1];
     }
 
     private GameObject PickEnemy(SpawnStage stage)

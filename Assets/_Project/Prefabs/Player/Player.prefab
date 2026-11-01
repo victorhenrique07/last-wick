@@ -20,6 +20,8 @@ GameObject:
   - component: {fileID: 5593521849092569101}
   - component: {fileID: -6241103188510425188}
   - component: {fileID: 7927431610420402349}
+  - component: {fileID: 2278157844460517163}
+  - component: {fileID: 8534567059567941261}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -163,7 +165,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 701775c507529414c82e3aa2018ed4fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LastWick.Player.PlayerMovement
-  speed: 2
 --- !u!114 &445992010959801345
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,10 +190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 861707f54901b0546b2547859b968155, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LastWick.Player.PlayerDodge
-  distance: 2.5
   dashDuration: 0.2
-  invulnerability: 0.5
-  cooldown: 2
 --- !u!114 &5593521849092569101
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -231,6 +229,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f918ba24d3e82d48939efef0cafce5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets._Project.Code.Runtime.Player.PlayerDeath
+--- !u!114 &2278157844460517163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 802098810910339089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 155f14907dc7f4d45a4cf52fe62b5d34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Assets._Project.Code.Runtime.Cards.CardInventory
+--- !u!114 &8534567059567941261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 802098810910339089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63371697010756246bfcb1bd23e5063a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LastWick.Player.PlayerRunStats
+  baseStats: {fileID: 11400000, guid: ad8db1099bf23b145a18edb7576d3e4d, type: 2}
 --- !u!1 &1562740822506180265
 GameObject:
   m_ObjectHideFlags: 0

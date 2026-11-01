@@ -2,13 +2,12 @@ using UnityEngine;
 
 namespace LastWick.Player
 {
-    [RequireComponent(typeof(Rigidbody2D), typeof(PlayerInput))]
+    [RequireComponent(typeof(Rigidbody2D), typeof(PlayerInput), typeof(PlayerRunStats))]
     public class PlayerMovement : MonoBehaviour
     {
-        [SerializeField, Min(0f)] private float speed = 5f;
-
         private Rigidbody2D body;
         private PlayerInput input;
+        private PlayerRunStats stats;
 
         // A esquiva trava o movimento enquanto controla o corpo.
         public bool Locked { get; set; }
@@ -17,6 +16,7 @@ namespace LastWick.Player
         {
             body = GetComponent<Rigidbody2D>();
             input = GetComponent<PlayerInput>();
+            stats = GetComponent<PlayerRunStats>();
         }
 
         private void FixedUpdate()
@@ -24,7 +24,7 @@ namespace LastWick.Player
             if (Locked)
                 return;
 
-            body.linearVelocity = Vector2.ClampMagnitude(input.Move, 1f) * speed;
+            body.linearVelocity = Vector2.ClampMagnitude(input.Move, 1f) * stats.MoveSpeed;
         }
     }
 }

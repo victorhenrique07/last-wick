@@ -14,7 +14,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 149589051529556338, guid: d5933557bace50d44a8741e30be20b2b, type: 3}
       propertyPath: maxHealth
-      value: 10
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 2025927941508088346, guid: d5933557bace50d44a8741e30be20b2b, type: 3}
       propertyPath: m_Name
@@ -112,7 +112,8 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -4663688989697200819, guid: d5933557bace50d44a8741e30be20b2b, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:

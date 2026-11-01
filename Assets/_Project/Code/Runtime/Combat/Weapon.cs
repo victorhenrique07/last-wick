@@ -16,16 +16,20 @@ namespace LastWick.Combat
 
         private float nextFireTime;
 
-        public bool TryFire(Vector2 direction)
+        public float BaseDamage => damage;
+
+        public bool TryFire(Vector2 direction, float finalDamage, float fireRateMultiplier = 1f,
+            float projectileSpeedMultiplier = 1f, float projectileLifetimeMultiplier = 1f, int bonusPierce = 0)
         {
             if (projectilePrefab == null || direction == Vector2.zero || Time.time < nextFireTime)
                 return false;
 
-            nextFireTime = Time.time + 1f / fireRate;
+            nextFireTime = Time.time + 1f / (fireRate * fireRateMultiplier);
 
             Transform origin = muzzle != null ? muzzle : transform;
             Projectile projectile = Instantiate(projectilePrefab, origin.position, Quaternion.identity);
-            projectile.Launch(direction.normalized, team, damage);
+            projectile.Launch(direction.normalized, team, finalDamage,
+                projectileSpeedMultiplier, projectileLifetimeMultiplier, bonusPierce);
             return true;
         }
     }

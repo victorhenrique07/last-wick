@@ -15,8 +15,8 @@ namespace Assets._Project.Code.Runtime.Run
     [System.Serializable]
     public class SpawnStage
     {
+        [SerializeField] public SpawnWave[] waves; 
         public SpawnEntry[] enemies;
-        public float spawnInterval = 0.5f;
-        public int maxAlive = 50;
+        public int maxAlive = 500;
     }
 }

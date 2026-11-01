@@ -17,5 +17,8 @@ namespace Assets._Project.Code.Runtime.Run
         public float TimeLimit => timeLimit;
         public int[] Milestones => milestones;
         public int FinalMilestone => milestones[^1];
+
+        public int BaseExp = 100;
+        public int ExpGrowth = 200;
     }
 }

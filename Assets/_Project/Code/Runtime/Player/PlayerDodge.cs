@@ -6,21 +6,18 @@ namespace LastWick.Player
 {
     // Esquiva no estilo soulslike: um deslocamento curto com invencibilidade e cooldown.
     [RequireComponent(typeof(Rigidbody2D), typeof(PlayerInput), typeof(PlayerMovement))]
+    [RequireComponent(typeof(PlayerRunStats))]
     public class PlayerDodge : MonoBehaviour
     {
-        [Tooltip("Distância percorrida, em unidades.")]
-        [SerializeField, Min(0f)] private float distance = 2.5f;
         [Tooltip("Quanto tempo o deslocamento leva, em segundos.")]
         [SerializeField, Min(0.01f)] private float dashDuration = 0.2f;
-        [Tooltip("Duração da invencibilidade, contada a partir do início da esquiva.")]
-        [SerializeField, Min(0f)] private float invulnerability = 0.5f;
-        [SerializeField, Min(0f)] private float cooldown = 2f;
 
         private Rigidbody2D body;
         private PlayerInput input;
         private PlayerMovement movement;
         private PlayerAim aim;
         private Health health;
+        private PlayerRunStats stats;
         private float readyTime;
 
         public bool IsDodging { get; private set; }
@@ -33,6 +30,7 @@ namespace LastWick.Player
             movement = GetComponent<PlayerMovement>();
             aim = GetComponent<PlayerAim>();
             health = GetComponent<Health>();
+            stats = GetComponent<PlayerRunStats>();
         }
 
         private void Update()
@@ -57,20 +55,20 @@ namespace LastWick.Player
                 ? input.Move.normalized
                 : aim != null ? aim.Direction : Vector2.right;
 
-            readyTime = Time.time + cooldown;
+            readyTime = Time.time + stats.DodgeCooldown;
             IsDodging = true;
             movement.Locked = true;
             if (health != null)
                 health.IsInvulnerable = true;
 
-            body.linearVelocity = direction * (distance / dashDuration);
+            body.linearVelocity = direction * (stats.DodgeDistance / dashDuration);
             yield return new WaitForSeconds(dashDuration);
 
             body.linearVelocity = Vector2.zero;
             movement.Locked = false;
             IsDodging = false;
 
-            float remaining = invulnerability - dashDuration;
+            float remaining = stats.DodgeInvulnerability - dashDuration;
             if (remaining > 0f)
                 yield return new WaitForSeconds(remaining);
 

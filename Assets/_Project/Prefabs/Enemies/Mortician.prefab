@@ -9,6 +9,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -4663688989697200819, guid: d5933557bace50d44a8741e30be20b2b, type: 3}
+      propertyPath: expOnDeath
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: -4663688989697200819, guid: d5933557bace50d44a8741e30be20b2b, type: 3}
       propertyPath: pointsValue
       value: 25
       objectReference: {fileID: 0}

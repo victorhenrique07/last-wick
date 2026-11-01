@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: RunConfig
   m_EditorClassIdentifier: Assembly-CSharp::Assets._Project.Code.Runtime.Run.RunConfig
   timeLimit: 600
-  milestones: 2c01000084030000c4090000i
+  milestones: b80b00004c1d0000b0360000i
+  BaseExp: 100
+  ExpGrowth: 200

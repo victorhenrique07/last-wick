@@ -248,6 +248,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets._Project.Code.Runtime.Enemies.EnemyDeath
   pointsValue: 10
+  expOnDeath: 10
+  XpOrb: {fileID: 4430591194474767323, guid: b05db6308c1ee364e92a908b72da0d12, type: 3}
 --- !u!1 &3322090926618076361
 GameObject:
   m_ObjectHideFlags: 0

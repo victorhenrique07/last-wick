@@ -46,7 +46,7 @@ Uma run dura até 10 minutos, e o relógio nunca para, nem durante os bosses. Ma
 **Recompensas**
 
 - Monstros comuns: XP, materiais e cura (detalhes em Drops).
-- Bosses: são únicos, com ataques próprios (não são versões ampliadas dos inimigos comuns). Dropam XP, materiais, **ouro** (única fonte de ouro, usado no padre) e uma quantidade garantida de óleo.
+- Bosses: são únicos, com ataques próprios (não são versões ampliadas dos inimigos comuns). Não dão XP. Dropam materiais, **ouro** (única fonte de ouro, usado no padre) e uma quantidade garantida de óleo.
 - Vitória: o jogador fica com 100% do que coletou, mais um bônus sobre tudo (materiais, ouro e óleo) que cresce quanto mais cedo terminar antes dos 10:00.
 - Morte, saída no meio ou escuridão aos 10:00: perde metade de tudo (materiais, ouro e óleo).
 - Completar o mapa desbloqueia o próximo, mais difícil e com novos desafios. Por enquanto, não dá para rejogar mapas anteriores.
@@ -60,7 +60,6 @@ Todo drop cai no chão e é coletado automaticamente ao encostar; os materiais s
 | Monstros comuns | XP | Nível da run (escolha de cartas) |
 | Monstros comuns | Materiais gerais | Ferreiro e mago |
 | Monstros comuns | Cura | Recupera a vida do personagem na hora |
-| Bosses | XP | Nível da run (escolha de cartas) |
 | Bosses | Materiais gerais | Ferreiro e mago |
 | Bosses | Ouro | Padre (única fonte) |
 | Bosses | Óleo garantido | Fogueira (luz) |
@@ -101,7 +100,7 @@ O ataque é 100% manual: o jogador controla movimento, ataque e esquiva, e defin
 
 **Dois níveis diferentes**
 
-- **Nível da run:** sobe com XP dos monstros e dos bosses, dá escolha de cartas e reseta ao fim da run.
+- **Nível da run:** sobe com XP dos monstros, dá escolha de cartas e reseta ao fim da run.
 - **Nível permanente:** comprado no padre só com ouro, um ponto de status por vez.
 
 ## Hub e meta-progressão
