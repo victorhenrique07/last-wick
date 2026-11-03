@@ -277,8 +277,8 @@ T7 → T8 → T9 → T10 → T11
 
 **Done when**:
 
-- [ ] O menu "Last Wick/Apagar save" aparece e apaga o arquivo
-- [ ] Console sem erros de compilação
+- [x] O menu "Last Wick/Apagar save" aparece e apaga o arquivo
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
@@ -365,7 +365,7 @@ The feature's live state, written as it happens - a compaction gives no warning.
 
 **Settled mid-build:** 2026-11-03 - usuário escreveu a T1; a pedido ("adicione os namespaces"), o agente pôs o `ResourceBag` em `Assets._Project.Code.Runtime.Save`. O usuário pediu que o agente fizesse a T2 e a T3 e que "OS IDS DEVEM SER PREENCHIDOS AUTOMATICAMENTE". Por isso a T2 ganhou o `CardIdAssigner` (Editor), que dá a cada carta sem Id, ou com Id repetido, o nome do arquivo em minúsculas com hífen. O agente também pôs `CardData` e `GameEvents` em namespaces, a pedido. Na T5, o usuário achou `Cards.Cards` "ambiguo e feio"; a busca e a validação de IDs passaram para o `CardCollection` (`Find`, `OnValidate`), e o `GameDatabase` expõe `CardCollection` e delega `FindCard`.
 **Dispatched:** none
-**Walked:** none
+**Walked:** 2026-11-03 - teste automático em batch mode (script temporário, apagado depois), com `ResetStatics` por reflexão no lugar de reabrir o jogo: SAVE-10, SAVE-11, SAVE-15, SAVE-17, SAVE-18, SAVE-19 e SAVE-20 passaram, e `TrySpend` recusou sem saldo e gastou com saldo. Os avisos de SAVE-18 e SAVE-19 saíram no log. O save fica em `C:/Users/henri/AppData/LocalLow/DefaultCompany/last-wick/`. Faltam SAVE-01 a SAVE-07 lidos no arquivo depois das compras, SAVE-12 a SAVE-14 (dependem das outras features), SAVE-16 no menu, SAVE-21 e SAVE-22.
 
 ---
 
