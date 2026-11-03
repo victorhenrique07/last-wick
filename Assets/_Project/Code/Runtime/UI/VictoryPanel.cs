@@ -1,8 +1,7 @@
 using Assets._Project.Code.Runtime.Run;
 using LastWick.Player;
-using System.Text;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 namespace Assets._Project.Code.Runtime.UI
 {
@@ -10,9 +9,31 @@ namespace Assets._Project.Code.Runtime.UI
     public class VictoryPanel : MonoBehaviour
     {
         [SerializeField] private GameObject victoryPanel;
-        [SerializeField] private Text summaryText;
-        [SerializeField] private Text statsText;
-        [SerializeField] private Text cardsText;
+        [SerializeField] private string hubSceneName = "Hub";
+
+        [Header("Resumo")]
+        [SerializeField] private StatEntryView runTime;
+        [SerializeField] private StatEntryView remainingTime;
+        [SerializeField] private StatEntryView bossesDefeated;
+        [SerializeField] private StatEntryView kills;
+        [SerializeField] private StatEntryView finalLevel;
+
+        [Header("Status finais")]
+        [SerializeField] private StatEntryView maxHealth;
+        [SerializeField] private StatEntryView moveSpeed;
+        [SerializeField] private StatEntryView lightRadius;
+        [SerializeField] private StatEntryView xpPickupRadius;
+        [SerializeField] private StatEntryView dodgeDistance;
+        [SerializeField] private StatEntryView dodgeCooldown;
+        [SerializeField] private StatEntryView fireRate;
+        [SerializeField] private StatEntryView projectileSpeed;
+        [SerializeField] private StatEntryView projectileRange;
+        [SerializeField] private StatEntryView bonusPierce;
+
+        [Header("Cartas")]
+        [SerializeField] private Transform cardsContainer;
+        [SerializeField] private CardSlotView cardSlotPrefab;
+        [SerializeField] private GameObject noCardsLabel;
 
         void OnEnable() => GameEvents.RunFinished += RaiseVictoryPanel;
         void OnDisable() => GameEvents.RunFinished -= RaiseVictoryPanel;
@@ -21,59 +42,53 @@ namespace Assets._Project.Code.Runtime.UI
         {
             if (result.Reason != RunEndReason.Victory) return;
 
-            summaryText.text = FormatSummary(result);
-            statsText.text = FormatStats(result.Stats);
-            cardsText.text = FormatCards(result);
+            ShowSummary(result);
+            ShowStats(result.Stats);
+            ShowCards(result);
 
             victoryPanel.SetActive(true);
             Time.timeScale = 0f;
         }
 
-        private static string FormatSummary(RunResult result)
+        // Ligado ao botão "Voltar ao acampamento"
+        public void ReturnToHub()
         {
-            var text = new StringBuilder();
-
-            text.AppendLine($"Tempo da run: {FormatTime(result.ElapsedTime)}");
-            text.AppendLine($"Tempo restante: {FormatTime(result.RemainingTime)}");
-            text.AppendLine($"Bosses derrotados: {result.MilestonesReached}");
-            text.AppendLine($"Inimigos mortos: {result.Kills}");
-            text.Append($"Nível final: {result.Level}");
-
-            return text.ToString();
+            Time.timeScale = 1f; // o timeScale é global e continuaria 0 na cena do hub
+            SceneManager.LoadScene(hubSceneName);
         }
 
-        private static string FormatStats(PlayerRunStats stats)
+        private void ShowSummary(RunResult result)
         {
-            var text = new StringBuilder("Status finais\n");
-
-            text.AppendLine($"Vida máxima: {stats.MaxHealth:0.#}");
-            text.AppendLine($"Velocidade: {stats.MoveSpeed:0.#}");
-            text.AppendLine($"Raio da luz: {stats.LightRadius:0.#}");
-            text.AppendLine($"Coleta de XP: {stats.XpPickupRadius:0.#}");
-            text.AppendLine($"Distância da esquiva: {stats.DodgeDistance:0.#}");
-            text.AppendLine($"Recarga da esquiva: {stats.DodgeCooldown:0.##}s");
-            text.AppendLine($"Cadência: x{stats.FireRateMultiplier:0.##}");
-            text.AppendLine($"Velocidade do projétil: x{stats.ProjectileSpeedMultiplier:0.##}");
-            text.AppendLine($"Alcance do projétil: x{stats.ProjectileLifetimeMultiplier:0.##}");
-            text.Append($"Perfuração extra: {stats.BonusPierce}");
-
-            return text.ToString();
+            runTime.SetValue(FormatTime(result.ElapsedTime));
+            remainingTime.SetValue(FormatTime(result.RemainingTime));
+            bossesDefeated.SetValue(result.MilestonesReached.ToString());
+            kills.SetValue(result.Kills.ToString());
+            finalLevel.SetValue(result.Level.ToString());
         }
 
-        private static string FormatCards(RunResult result)
+        private void ShowStats(PlayerRunStats stats)
         {
-            var text = new StringBuilder("Cartas\n");
+            maxHealth.SetValue($"{stats.MaxHealth:0.#}");
+            moveSpeed.SetValue($"{stats.MoveSpeed:0.#}");
+            lightRadius.SetValue($"{stats.LightRadius:0.#}");
+            xpPickupRadius.SetValue($"{stats.XpPickupRadius:0.#}");
+            dodgeDistance.SetValue($"{stats.DodgeDistance:0.#}");
+            dodgeCooldown.SetValue($"{stats.DodgeCooldown:0.##}s");
+            fireRate.SetValue($"x{stats.FireRateMultiplier:0.##}");
+            projectileSpeed.SetValue($"x{stats.ProjectileSpeedMultiplier:0.##}");
+            projectileRange.SetValue($"x{stats.ProjectileLifetimeMultiplier:0.##}");
+            bonusPierce.SetValue(stats.BonusPierce.ToString());
+        }
 
-            if (result.Cards.Count == 0)
-            {
-                text.Append("Nenhuma");
-                return text.ToString();
-            }
+        private void ShowCards(RunResult result)
+        {
+            foreach (Transform child in cardsContainer)
+                Destroy(child.gameObject);
+
+            noCardsLabel.SetActive(result.Cards.Count == 0);
 
             foreach (var (card, count) in result.Cards)
-                text.AppendLine($"{card.Name} x{count}");
-
-            return text.ToString();
+                Instantiate(cardSlotPrefab, cardsContainer).Show(card, count);
         }
 
         private static string FormatTime(float seconds)

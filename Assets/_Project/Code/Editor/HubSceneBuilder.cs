@@ -120,7 +120,8 @@ namespace Assets._Project.Code.Editor
             Debug.Log($"[HubSceneBuilder] Cena salva em {ScenePath}");
         }
 
-        // Usado no modo batch: monta a cena e salva uma imagem da câmera em Temp/hub_preview.png
+        // Usado no modo batch: monta a cena e salva uma imagem da câmera em Logs/hub_preview.png
+        // (Logs/ e não Temp/, porque o Unity apaga a pasta Temp/ ao fechar)
         public static void BuildAndPreview()
         {
             Build();
@@ -131,7 +132,7 @@ namespace Assets._Project.Code.Editor
             RenderTexture.active = rt;
             var tex = new Texture2D(rt.width, rt.height, TextureFormat.RGB24, false);
             tex.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
-            string path = Path.GetFullPath("Temp/hub_preview.png");
+            string path = Path.GetFullPath("Logs/hub_preview.png");
             File.WriteAllBytes(path, tex.EncodeToPNG());
             Debug.Log($"[HubSceneBuilder] Preview salvo em {path}");
             cam.targetTexture = null;

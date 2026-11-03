@@ -5,6 +5,7 @@ public class CardData : ScriptableObject
 {
     public string Name;
     public string Description;
+    public Sprite Icon; // desenho da carta nas telas; sem ícone, a tela usa um padrão
 
     [Header("Sobrevivência")]
     [SerializeField, Range(0f, 1f)] private float maxHealthBonus;
