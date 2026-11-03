@@ -19,8 +19,7 @@ namespace Assets._Project.Code.Editor
             {
                 if (path.EndsWith(".asset") && AssetDatabase.GetMainAssetTypeAtPath(path) == typeof(CardData))
                 {
-                    // Espera o fim da importação para não salvar asset no meio dela
-                    EditorApplication.delayCall += AssignMissing;
+                    AssignMissing();
                     return;
                 }
             }
