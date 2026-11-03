@@ -193,9 +193,9 @@ T7 → T8 → T9 → T10 → T11
 
 **Done when**:
 
-- [ ] `Resources.Load<GameDatabase>("GameDatabase")` acha o asset
-- [ ] Sem avisos de ID no Console
-- [ ] Console sem erros de compilação
+- [x] `Resources.Load<GameDatabase>("GameDatabase")` acha o asset
+- [x] Sem avisos de ID no Console
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
