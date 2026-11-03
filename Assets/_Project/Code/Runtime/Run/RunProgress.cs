@@ -1,6 +1,7 @@
 using System;
 using Assets._Project.Code.Runtime.Run;
 using UnityEngine;
+using Assets._Project.Code.Runtime.Core;
 
 public class RunProgress : MonoBehaviour
 {

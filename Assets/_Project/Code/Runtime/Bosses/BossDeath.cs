@@ -1,5 +1,6 @@
 using LastWick.Combat;
 using UnityEngine;
+using Assets._Project.Code.Runtime.Core;
 
 namespace Assets._Project.Code.Runtime.Bosses
 {

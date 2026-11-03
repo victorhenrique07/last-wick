@@ -6,6 +6,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using Assets._Project.Code.Runtime.Cards;
 
 namespace Assets._Project.Code.Editor
 {

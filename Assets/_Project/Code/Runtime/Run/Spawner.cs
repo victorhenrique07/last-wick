@@ -2,6 +2,7 @@ using Assets._Project.Code.Runtime.Run;
 using NUnit.Framework;
 using System.Linq;
 using UnityEngine;
+using Assets._Project.Code.Runtime.Core;
 
 public class Spawner : MonoBehaviour
 {

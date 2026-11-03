@@ -1,6 +1,7 @@
 using System;
 using Assets._Project.Code.Runtime.Run;
 using UnityEngine;
+using Assets._Project.Code.Runtime.Core;
 
 // Relógio da run. Conta o tempo passado e avisa uma única vez quando o limite do RunConfig acaba.
 public class RunTimer : MonoBehaviour

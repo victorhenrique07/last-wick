@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using Assets._Project.Code.Runtime.Core;
 
 namespace Assets._Project.Code.Runtime.UI
 {

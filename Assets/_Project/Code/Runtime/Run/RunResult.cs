@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using LastWick.Player;
+using Assets._Project.Code.Runtime.Cards;
 
 namespace Assets._Project.Code.Runtime.Run
 {

@@ -3,6 +3,7 @@ using LastWick.Player;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Assets._Project.Code.Runtime.Core;
 
 namespace Assets._Project.Code.Runtime.UI
 {
