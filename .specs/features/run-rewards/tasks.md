@@ -78,8 +78,8 @@ T8 → T9 → T10 → T11 → T12
 
 **Done when**:
 
-- [ ] `GameEvents.RaiseOilCollected` existe
-- [ ] Console sem erros de compilação
+- [x] `GameEvents.RaiseOilCollected` existe
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build

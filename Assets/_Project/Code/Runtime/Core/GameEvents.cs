@@ -24,6 +24,9 @@ namespace Assets._Project.Code.Runtime.Core
         public static event Action<int> LevelUp;              // novo nível da run
         public static event Action<CardData> CardChosen;     // carta escolhida no level up
 
+        // Drop dos itens
+        public static event Action<int> OilCollected;
+
         public static void RaiseEnemyKilled(int points) => EnemyKilled?.Invoke(points);
         public static void RaiseXpGained(int enemyExp) => XpGained?.Invoke(enemyExp);
         public static void RaiseLevelUp(int level) => LevelUp?.Invoke(level);
@@ -35,5 +38,6 @@ namespace Assets._Project.Code.Runtime.Core
         public static void RaiseRunTimeExpired() => RunTimeExpired?.Invoke();
         public static void RaisePlayerDied() => PlayerDied?.Invoke();
         public static void RaiseRunFinished(RunResult result) => RunFinished?.Invoke(result);
+        public static void RaiseOilCollected(int amount) => OilCollected?.Invoke(amount);
     }
 }
