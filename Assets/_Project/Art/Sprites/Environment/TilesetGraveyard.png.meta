@@ -535,28 +535,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Church
-      rect:
-        serializedVersion: 2
-        x: 134
-        y: 146
-        width: 34
-        height: 51
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3c00110001a43fd46b4d9c246c6f83ac
-      internalID: 1020682335
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Cross_A
       rect:
         serializedVersion: 2
@@ -923,7 +901,6 @@ TextureImporter:
       entries: []
     nameFileIdTable:
       Bush: -1385194360
-      Church: 1020682335
       Cross_A: -1022481601
       Cross_B: -465442453
       DeadTree: 1136047384

@@ -11,5 +11,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Project/Scenes/Hub/Hub.unity
     guid: 7cd6c58abf971a349ae117d5d464fcec
+  - enabled: 1
+    path: Assets/_Project/Scenes/Maps/FirstOne.unity
+    guid: 8362738fb2b80164c90e53e8400b28b3
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

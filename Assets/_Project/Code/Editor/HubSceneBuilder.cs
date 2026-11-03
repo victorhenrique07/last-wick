@@ -1,10 +1,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Assets._Project.Code.Runtime.Hub;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEditor.U2D.Sprites;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
@@ -21,6 +24,8 @@ namespace Assets._Project.Code.Editor
         private const string GroundPath = SpritesPath + "/Environment/HubGround.png";
         private const string TilesPath = "Assets/_Project/Art/Tilemaps/Tiles/Hub";
         private const string ScenePath = "Assets/_Project/Scenes/Hub/Hub.unity";
+        private const string OutlineMaterialPath = "Assets/_Project/Art/Materials/HubOutline.mat";
+        private const int NpcSpritePadding = 2; // margem transparente em volta da igreja, bigorna e mesa, para o contorno caber
 
         // Centro da clareira (onde fica a chama) e raios da área iluminada, em unidades
         private static readonly Vector2 Center = new Vector2(0.5f, -1.5f);
@@ -33,7 +38,6 @@ namespace Assets._Project.Code.Editor
             ("Stone_0", 0, 80, 16, 16, true), ("Stone_1", 16, 80, 16, 16, true), ("Stone_2", 32, 80, 16, 16, true),
             ("Stone_3", 0, 96, 16, 16, true), ("Stone_4", 16, 96, 16, 16, true), ("Stone_5", 32, 96, 16, 16, true),
             ("Stone_6", 0, 112, 16, 16, true), ("Stone_7", 16, 112, 16, 16, true), ("Stone_8", 32, 112, 16, 16, true),
-            ("Church", 134, 3, 34, 51, false),
             ("Cross_A", 5, 19, 7, 11, false), ("Grave_A", 17, 19, 16, 12, false),
             ("Grave_B", 35, 19, 11, 11, false), ("Grave_C", 51, 18, 13, 12, false),
             ("Cross_B", 5, 35, 7, 11, false), ("Grave_D", 17, 35, 16, 12, false),
@@ -63,9 +67,11 @@ namespace Assets._Project.Code.Editor
         [MenuItem("Last Wick/Montar cena do Hub")]
         public static void Build()
         {
-            ConfigureSingleSprite(SpritesPath + "/Hub/Anvil.png");
-            ConfigureSingleSprite(SpritesPath + "/Hub/TarotTable.png");
-            ConfigureSingleSprite(SpritesPath + "/Hub/HubFlame.png");
+            ConfigureSingleSprite(SpritesPath + "/Hub/Church.png", NpcSpritePadding);
+            ConfigureSingleSprite(SpritesPath + "/Hub/Anvil.png", NpcSpritePadding);
+            ConfigureSingleSprite(SpritesPath + "/Hub/TarotTable.png", NpcSpritePadding);
+            ConfigureSingleSprite(SpritesPath + "/Hub/HubFlame.png", 0);
+            var outlineMaterial = CreateOutlineMaterial();
             SliceSheet(TilesetPath, TilesetPieces);
             SliceSheet(GroundPath, GroundPieces().ToArray());
 
@@ -83,13 +89,11 @@ namespace Assets._Project.Code.Editor
 
             var world = new GameObject("Mundo").transform;
 
-            // NPCs: cada um tem um collider para receber o clique depois
-            var church = Place("Igreja (Padre)", sprites["Church"], new Vector2(0.5f, 1.4f), world);
-            church.AddComponent<BoxCollider2D>();
-            var anvil = Place("Bigorna (Ferreiro)", LoadSprite("Hub/Anvil.png"), new Vector2(-4.5f, -2f), world);
-            anvil.AddComponent<BoxCollider2D>();
-            var tarot = Place("Mesa de Tarot (Mago)", LoadSprite("Hub/TarotTable.png"), new Vector2(5.5f, -2f), world);
-            tarot.AddComponent<BoxCollider2D>();
+            // NPCs: clicáveis, com contorno quando o mouse passa por cima
+            PlaceInteractable("Igreja (Padre)", "Hub/Church.png", new Vector2(0.5f, 1.4f), world, outlineMaterial);
+            PlaceInteractable("Bigorna (Ferreiro)", "Hub/Anvil.png", new Vector2(-4.5f, -1.6f), world, outlineMaterial);
+            PlaceInteractable("Mesa de Tarot (Mago)", "Hub/TarotTable.png", new Vector2(5.5f, -2f), world, outlineMaterial);
+            CreateEventSystem();
 
             var flame = Place("Fogueira", LoadSprite("Hub/HubFlame.png"), Center + new Vector2(0f, -0.4f), world);
             AddPointLight(flame.transform, new Vector2(0f, 0.4f), new Color(1f, 0.72f, 0.4f), 1.5f, 6.5f);
@@ -254,6 +258,34 @@ namespace Assets._Project.Code.Editor
             return go;
         }
 
+        private static void PlaceInteractable(string name, string spritePath, Vector2 position, Transform parent, Material outlineMaterial)
+        {
+            var go = Place(name, LoadSprite(spritePath), position, parent);
+            go.AddComponent<BoxCollider2D>();
+            var interactable = new SerializedObject(go.AddComponent<HubInteractable>());
+            interactable.FindProperty("outlineMaterial").objectReferenceValue = outlineMaterial;
+            interactable.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        // O clique nos objetos do mundo passa pelo EventSystem, como na UI
+        private static void CreateEventSystem()
+        {
+            var go = new GameObject("EventSystem");
+            go.AddComponent<EventSystem>();
+            go.AddComponent<InputSystemUIInputModule>();
+        }
+
+        private static Material CreateOutlineMaterial()
+        {
+            var material = AssetDatabase.LoadAssetAtPath<Material>(OutlineMaterialPath);
+            if (material != null) return material;
+
+            Directory.CreateDirectory(Path.GetDirectoryName(OutlineMaterialPath));
+            material = new Material(Shader.Find("Last Wick/Sprite Outline"));
+            AssetDatabase.CreateAsset(material, OutlineMaterialPath);
+            return material;
+        }
+
         private static void AddPointLight(Transform parent, Vector2 offset, Color color, float intensity, float radius)
         {
             var go = new GameObject("Luz");
@@ -289,6 +321,7 @@ namespace Assets._Project.Code.Editor
             cam.clearFlags = CameraClearFlags.SolidColor;
             cam.backgroundColor = new Color32(19, 20, 20, 255);
             go.AddComponent<UniversalAdditionalCameraData>();
+            go.AddComponent<Physics2DRaycaster>(); // deixa o EventSystem enxergar os Collider2D do mundo
         }
 
         private static Tilemap CreateTilemap(string name, Transform grid, int sortingOrder)
@@ -330,12 +363,16 @@ namespace Assets._Project.Code.Editor
             return importer;
         }
 
-        private static void ConfigureSingleSprite(string path)
+        // Pivô no pé do desenho, descontando a margem transparente de baixo
+        private static void ConfigureSingleSprite(string path, int padding)
         {
             var importer = ConfigurePixelArt(path, SpriteImportMode.Single);
+            var texture = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
             var settings = new TextureImporterSettings();
             importer.ReadTextureSettings(settings);
-            settings.spriteAlignment = (int)SpriteAlignment.BottomCenter;
+            settings.spriteAlignment = (int)SpriteAlignment.Custom;
+            settings.spritePivot = new Vector2(0.5f, padding / (float)texture.height);
+            settings.spriteMeshType = SpriteMeshType.FullRect; // malha "Tight" cortaria o contorno
             importer.SetTextureSettings(settings);
             importer.SaveAndReimport();
         }
