@@ -131,9 +131,9 @@ T7 → T8 → T9 → T10 → T11
 
 **Done when**:
 
-- [ ] `MinCards` e `MaxCards` são públicos
-- [ ] Nenhum código chama `TryAdd` ou `Remove`
-- [ ] Console sem erros de compilação
+- [x] `MinCards` e `MaxCards` são públicos
+- [x] Nenhum código chama `TryAdd` ou `Remove`
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
