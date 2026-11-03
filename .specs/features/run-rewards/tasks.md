@@ -138,8 +138,8 @@ T8 → T9 → T10 → T11 → T12
 
 **Done when**:
 
-- [ ] `Deliver` em vitória devolve tudo; nos outros motivos, a metade para baixo
-- [ ] Console sem erros de compilação
+- [x] `Deliver` em vitória devolve tudo; nos outros motivos, a metade para baixo
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
@@ -382,7 +382,7 @@ Proof: walk - Morrer no começo da run sem matar nada e ver 0 nas 5 entradas.
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** none
+**Settled mid-build:** T4 - o sorteio de material usa um enum dos materiais em vez de `rng.Next(3)` solto. Usuário: "acho melhor criar um Enum com os tipos de cada material, por que ficaria mais facil de adicionar um material novo no futuro."
 **Dispatched:** none
 **Walked:** none
 
