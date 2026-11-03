@@ -5,6 +5,8 @@ namespace Assets._Project.Code.Runtime.Cards
     [CreateAssetMenu(fileName = "Card", menuName = "Last Wick/Cards Data")]
     public class CardData : ScriptableObject
     {
+        [Tooltip("Chave da carta no save. Preenchido sozinho pelo nome do arquivo; não mude depois que houver saves.")]
+        public string Id;
         public string Name;
         public string Description;
         public Sprite Icon; // desenho da carta nas telas; sem ícone, a tela usa um padrão

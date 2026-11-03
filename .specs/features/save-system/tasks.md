@@ -84,15 +84,15 @@ T7 → T8 → T9 → T10 → T11
 ### T2: Adicionar `Id` ao `CardData` (usuário)
 
 **What**: Criar o campo `public string Id` no topo do `CardData`.
-**Where**: `Assets/_Project/Code/Runtime/Cards/CardData.cs`
+**Where**: `Assets/_Project/Code/Runtime/Cards/CardData.cs` (o preenchimento automático fica em `Assets/_Project/Code/Editor/CardIdAssigner.cs`)
 **Depends on**: T1
 **Reuses**: `CardData` atual
 **Requirement**: SAVE-04, SAVE-05
 
 **Done when**:
 
-- [ ] O Inspector de uma carta mostra `Id`
-- [ ] Console sem erros de compilação
+- [x] O Inspector de uma carta mostra `Id`
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
@@ -363,7 +363,7 @@ Proof: walk - Escrever `EquippedWeapon` `arma-falsa` e jogar uma run: o player a
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** 2026-11-03 - usuário escreveu a T1; a pedido ("adicione os namespaces"), o agente pôs o `ResourceBag` em `Assets._Project.Code.Runtime.Save`. O usuário pediu que o agente fizesse a T2 e a T3 e que "OS IDS DEVEM SER PREENCHIDOS AUTOMATICAMENTE".
+**Settled mid-build:** 2026-11-03 - usuário escreveu a T1; a pedido ("adicione os namespaces"), o agente pôs o `ResourceBag` em `Assets._Project.Code.Runtime.Save`. O usuário pediu que o agente fizesse a T2 e a T3 e que "OS IDS DEVEM SER PREENCHIDOS AUTOMATICAMENTE". Por isso a T2 ganhou o `CardIdAssigner` (Editor), que dá a cada carta sem Id, ou com Id repetido, o nome do arquivo em minúsculas com hífen. O agente também pôs `CardData` e `GameEvents` em namespaces, a pedido.
 **Dispatched:** none
 **Walked:** none
 
