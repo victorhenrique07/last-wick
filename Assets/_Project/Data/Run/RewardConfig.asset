@@ -16,10 +16,7 @@ MonoBehaviour:
   bosses:
   - Gold: 10
     Oil: 30
-    Materials: 10
   - Gold: 20
     Oil: 30
-    Materials: 15
   - Gold: 40
     Oil: 50
-    Materials: 20

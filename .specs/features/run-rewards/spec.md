@@ -8,7 +8,7 @@ Hoje a run termina sem render nada: o `RunResult` já tem campos de ouro, óleo,
 
 ## Goals
 
-- [ ] Cada abate de monstro comum pode render um material, e cada boss rende ouro, óleo e materiais.
+- [ ] Cada abate de monstro comum pode render um material, e cada boss rende ouro e óleo.
 - [ ] Vitória guarda 100% do coletado; morte e escuridão guardam metade.
 - [ ] A tela de resultado mostra o que o jogador leva e, na morte, o que perdeu.
 - [ ] O que o jogador leva entra no save no fim da run.
@@ -22,6 +22,7 @@ Hoje a run termina sem render nada: o `RunResult` já tem campos de ouro, óleo,
 | Bônus por terminar antes dos 10:00 | A fórmula está em aberto no One-Pager ("fica com o Victor"). |
 | Sair no meio da run | Não existe menu de pausa; vira feature junto com ele. |
 | Orbes de óleo no mapa | Fazem parte da feature `fogueira-light`; aqui só somamos o óleo que eles entregam. |
+| Materiais dos bosses | Fora do MVP; talvez materiais próprios de cada boss no futuro. Usuário, na T5: "O boss não vai dropar material. Pelo menos nao por enquanto. Talvez apenas materiais especificos que são só dele, mas não agora no MVP." |
 | Valores finais de chance e quantidade | Provisórios; balanceamento depois do MVP. |
 
 ---
@@ -34,7 +35,7 @@ Hoje a run termina sem render nada: o `RunResult` já tem campos de ouro, óleo,
 | Drop dos monstros comuns | 20% de chance de 1 material por abate, osso, ferro ou cera com a mesma chance | Balanceamento inicial do One-Pager | y |
 | Ouro dos bosses | 10, 20 e 40 | Decidido no One-Pager | y |
 | Óleo dos bosses | 30, 30 e 50 | Balanceamento inicial do One-Pager | y |
-| Materiais dos bosses | Uma quantidade fixa por boss, sorteada material a material; provisório 10, 15 e 20 | O One-Pager diz que bosses dropam materiais, sem quantidade | y |
+| Materiais dos bosses | Os bosses não rendem materiais no MVP | Decidido na T5, substitui os 10, 15 e 20 provisórios. Usuário, na T5: "O boss não vai dropar material. Pelo menos nao por enquanto. Talvez apenas materiais especificos que são só dele, mas não agora no MVP." | y |
 | Arredondamento da perda | Metade arredondada para baixo (7 vira 3) | Regra simples e previsível; nunca dá meio material | y |
 | Onde ficam os números | Num asset de dados editável no Inspector | Balancear sem mudar código | y |
 | Texto da perda na tela | "Metade do que você coletou se perdeu na escuridão." | Tom do jogo; ajustável | y |
@@ -58,11 +59,11 @@ Hoje a run termina sem render nada: o `RunResult` já tem campos de ouro, óleo,
 2. WHEN o sorteio do material de um monstro comum acertar THEN a run SHALL escolher osso, ferro ou cera com a mesma chance. [RWD-02]
 3. WHEN o boss 1, 2 ou final morrer THEN a run SHALL somar 10, 20 ou 40 de ouro, respectivamente. [RWD-03]
 4. WHEN o boss 1, 2 ou final morrer THEN a run SHALL somar 30, 30 ou 50 de óleo, respectivamente. [RWD-04]
-5. WHEN um boss morrer THEN a run SHALL somar a quantidade de materiais desse boss, sorteando cada unidade entre osso, ferro e cera. [RWD-05]
+5. WHEN um boss morrer THEN a run SHALL não somar osso, ferro nem cera. [RWD-05]
 6. WHEN um orbe de óleo for coletado THEN a run SHALL somar o óleo do orbe ao óleo coletado. [RWD-06]
 7. The chance de material, os materiais possíveis e as recompensas de cada boss SHALL ficar num asset de dados editável no Inspector. [RWD-07]
 
-**Independent Test**: Matar 50 monstros e o boss 1 numa run de teste e conferir, no `RunResult`, cerca de 10 materiais dos monstros, 10 de ouro, 30 de óleo e os materiais do boss.
+**Independent Test**: Matar 50 monstros e o boss 1 numa run de teste e conferir, no `RunResult`, cerca de 10 materiais dos monstros, 10 de ouro e 30 de óleo.
 
 ---
 

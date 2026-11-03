@@ -158,8 +158,8 @@ T8 → T9 → T10 → T11 → T12
 
 **Done when**:
 
-- [ ] `Collected` cresce durante a run e não muda depois do fim
-- [ ] Console sem erros de compilação
+- [x] `Collected` cresce durante a run e não muda depois do fim
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
@@ -325,8 +325,8 @@ Proof: walk - Matar cada boss e ver `Gold` subir 10, depois 20, depois 40.
 **C4** - Os bosses 1, 2 e final rendem 30, 30 e 50 de óleo (RWD-04, AC 4)
 Proof: walk - No mesmo teste, `Oil` sobe 30, 30 e 50.
 
-**C5** - Os bosses rendem 10, 15 e 20 materiais sorteados (RWD-05, AC 5)
-Proof: walk - No mesmo teste, a soma de osso, ferro e cera sobe 10, 15 e 20.
+**C5** - Os bosses não rendem materiais (RWD-05, AC 5)
+Proof: walk - No mesmo teste, a soma de osso, ferro e cera não muda quando cada boss morre.
 
 **C6** - O orbe de óleo soma o óleo dele (RWD-06, AC 6)
 Proof: walk - Encostar num orbe e ver `Oil` subir 5.
@@ -382,7 +382,7 @@ Proof: walk - Morrer no começo da run sem matar nada e ver 0 nas 5 entradas.
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** T4 - o sorteio de material usa um enum dos materiais em vez de `rng.Next(3)` solto. Usuário: "acho melhor criar um Enum com os tipos de cada material, por que ficaria mais facil de adicionar um material novo no futuro."
+**Settled mid-build:** T5 - os bosses não rendem materiais no MVP; RWD-05 e C5 mudaram. Usuário, na T5: "O boss não vai dropar material. Pelo menos nao por enquanto. Talvez apenas materiais especificos que são só dele, mas não agora no MVP." | T4 - o sorteio de material usa um enum dos materiais em vez de `rng.Next(3)` solto. Usuário: "acho melhor criar um Enum com os tipos de cada material, por que ficaria mais facil de adicionar um material novo no futuro."
 **Dispatched:** none
 **Walked:** none
 

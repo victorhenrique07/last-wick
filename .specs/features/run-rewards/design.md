@@ -8,7 +8,7 @@
 
 ## Architecture Overview
 
-Um componente novo na cena da run, `RunRewards`, soma o que foi coletado num `ResourceBag`. Ele escuta três eventos: `EnemyKilled` (sorteio de material), `BossDefeated` (ouro, óleo e materiais do boss) e o novo `OilCollected` (orbes da fogueira). Os números vêm do asset `RewardConfig`.
+Um componente novo na cena da run, `RunRewards`, soma o que foi coletado num `ResourceBag`. Ele escuta três eventos: `EnemyKilled` (sorteio de material), `BossDefeated` (ouro e óleo do boss) e o novo `OilCollected` (orbes da fogueira). Os números vêm do asset `RewardConfig`.
 
 O save não muda durante a run (RWD-12). No fim, o `RunFinisher` pede o coletado ao `RunRewards`, calcula o entregue com `RewardRules.Deliver`, soma ao save, grava e só então levanta `RunFinished`. Assim a tela de resultado já recebe as duas quantidades no `RunResult`.
 
@@ -72,7 +72,7 @@ sequenceDiagram
 - **Location**: `Assets/_Project/Code/Runtime/Run/RewardConfig.cs`; asset em `Assets/_Project/Data/Run/RewardConfig.asset`
 - **Interfaces**:
   - `float MaterialChance` (0,2)
-  - `BossReward[] Bosses` - um por boss, na ordem do índice: `Gold`, `Oil`, `Materials`
+  - `BossReward[] Bosses` - um por boss, na ordem do índice: `Gold`, `Oil` (sem materiais no MVP, RWD-05)
 - **Dependencies**: nenhuma.
 - **Reuses**: o formato de `RunConfig`.
 
@@ -92,7 +92,7 @@ sequenceDiagram
 - **Location**: `Assets/_Project/Code/Runtime/Run/RewardRules.cs`
 - **Interfaces**:
   - `static ResourceBag Deliver(ResourceBag collected, RunEndReason reason)` - vitória entrega tudo; qualquer outro motivo entrega `collected.Halved()` (RWD-09, RWD-10, RWD-18)
-  - `static ResourceBag RandomMaterials(int count, System.Random rng)` - cada unidade vira osso, ferro ou cera com a mesma chance (RWD-02, RWD-05)
+  - `static ResourceBag RandomMaterials(int count, System.Random rng)` - cada unidade vira osso, ferro ou cera com a mesma chance (RWD-02)
 - **Dependencies**: `ResourceBag`.
 - **Reuses**: nada.
 
@@ -125,7 +125,6 @@ public struct BossReward
 {
     public int Gold;       // 10, 20, 40
     public int Oil;        // 30, 30, 50
-    public int Materials;  // 10, 15, 20 (provisório)
 }
 
 public class RunResult

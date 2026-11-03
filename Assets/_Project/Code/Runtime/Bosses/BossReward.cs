@@ -9,8 +9,5 @@ namespace Assets._Project.Code.Runtime.Bosses
     {
         public int Gold;
         public int Oil;
-        public int Materials;
-
-
     }
 }
