@@ -235,9 +235,9 @@ T7 → T8 → T9 → T10 → T11
 
 **Done when**:
 
-- [ ] Sem arquivo, `Data` volta o estado inicial
-- [ ] Um arquivo inválido vira `save.corrupt.json` com aviso
-- [ ] Console sem erros de compilação
+- [x] Sem arquivo, `Data` volta o estado inicial
+- [x] Um arquivo inválido vira `save.corrupt.json` com aviso
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build

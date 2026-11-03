@@ -26,9 +26,9 @@ namespace Assets._Project.Code.Runtime.Cards
                 if (card == null) continue;
 
                 if (string.IsNullOrWhiteSpace(card.Id))
-                    Debug.LogWarning($"GameDatabase: a carta {card.name} está sem Id.", this);
+                    Debug.LogWarning($"CardCollection: a carta {card.name} está sem Id.", this);
                 else if (!ids.Add(card.Id))
-                    Debug.LogWarning($"GameDatabase: o Id \"{card.Id}\" se repete em {card.name}.", this);
+                    Debug.LogWarning($"CardCollection: o Id \"{card.Id}\" se repete em {card.name}.", this);
             }
         }
     }
