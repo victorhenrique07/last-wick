@@ -98,8 +98,8 @@ T8 → T9 → T10 → T11 → T12
 
 **Done when**:
 
-- [ ] O Inspector mostra a chance e uma linha por boss
-- [ ] Console sem erros de compilação
+- [x] O Inspector mostra a chance e uma linha por boss
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
