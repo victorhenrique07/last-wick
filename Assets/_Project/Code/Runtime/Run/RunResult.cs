@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using LastWick.Player;
 using Assets._Project.Code.Runtime.Cards;
+using Assets._Project.Code.Runtime.Save;
 
 namespace Assets._Project.Code.Runtime.Run
 {
@@ -26,11 +27,7 @@ namespace Assets._Project.Code.Runtime.Run
         public IReadOnlyDictionary<CardData, int> Cards; // cartas escolhidas e quantidade de cada uma
         public PlayerRunStats Stats;     // status finais do player
 
-        // Recompensas coletadas, antes da regra de perda de 50% em morte, saída ou escuridão
-        public int Gold;
-        public int Oil;
-        public int Bones;                // nomes provisórios dos materiais gerais
-        public int Iron;
-        public int Wax;
+        public ResourceBag Collected;
+        public ResourceBag Delivered;
     }
 }

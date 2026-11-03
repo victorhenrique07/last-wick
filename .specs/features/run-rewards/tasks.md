@@ -178,8 +178,8 @@ T8 → T9 → T10 → T11 → T12
 
 **Done when**:
 
-- [ ] `RunResult` tem `Collected` e `Delivered`
-- [ ] Console sem erros de compilação
+- [x] `RunResult` tem `Collected` e `Delivered`
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
