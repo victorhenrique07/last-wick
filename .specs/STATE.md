@@ -63,3 +63,14 @@
 - **Status**: active
 
 ## Handoff
+
+**Updated**: 2026-11-03
+**Feature**: run-rewards (próxima); save-system com as 11 tasks commitadas
+**Phase/Task**: run-rewards T1 - evento `OilCollected` em `GameEvents.cs` (usuário escreve)
+**Completed**: save-system T1-T11 (último commit `cedfa54`). Teste em batch passou em SAVE-10, 11, 15, 17, 18, 19 e 20. A validação final do save (`check_proofs`, Verifier) fica para depois de run-rewards, hub-flow e blacksmith-weapon, porque SAVE-01 a 07, 12 a 14, 16, 21 e 22 dependem delas.
+**In progress**: nada
+**Next step**: explicar a T1 do run-rewards ao usuário e revisar quando ele salvar
+**Blockers**: nenhum
+**Uncommitted**: nada além das pastas de ferramentas (`.agents/`, `.claude/`, `.cursor/`, `.windsurf/`)
+**Branch**: main, sem push
+**Como trabalhamos**: AD-001 - o usuário escreve o código das tasks marcadas "usuário"; o agente explica, revisa, compila (batch mode com a Unity fechada: `Unity.exe -batchmode -quit -nographics -projectPath ... -logFile Logs/compile_check.log`), marca a task no tasks.md e commita uma por task, em português, no estilo do repo. As tasks marcadas "Claude" o agente faz sozinho.
