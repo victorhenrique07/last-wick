@@ -2,14 +2,22 @@ using Assets._Project.Code.Runtime.Run;
 using LastWick.Player;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Assets._Project.Code.Runtime.UI
 {
-    // Mostra as estatísticas da run quando o player derrota o último boss.
-    public class VictoryPanel : MonoBehaviour
+    // Mostra as estatísticas da run quando ela termina, em vitória ou em morte.
+    // As informações são as mesmas; só o título muda.
+    public class RunResultPanel : MonoBehaviour
     {
-        [SerializeField] private GameObject victoryPanel;
+        [SerializeField] private GameObject panel;
         [SerializeField] private string hubSceneName = "Hub";
+
+        [Header("Título")]
+        [SerializeField] private Text title;
+        [SerializeField] private string victoryTitle = "A CHAMA RESISTE";
+        [SerializeField] private string deathTitle = "A CHAMA SE APAGOU";
+        [SerializeField] private string darknessTitle = "A ESCURIDÃO VENCEU";
 
         [Header("Resumo")]
         [SerializeField] private StatEntryView runTime;
@@ -35,18 +43,24 @@ namespace Assets._Project.Code.Runtime.UI
         [SerializeField] private CardSlotView cardSlotPrefab;
         [SerializeField] private GameObject noCardsLabel;
 
-        void OnEnable() => GameEvents.RunFinished += RaiseVictoryPanel;
-        void OnDisable() => GameEvents.RunFinished -= RaiseVictoryPanel;
+        void OnEnable() => GameEvents.RunFinished += RaiseResultPanel;
+        void OnDisable() => GameEvents.RunFinished -= RaiseResultPanel;
 
-        private void RaiseVictoryPanel(RunResult result)
+        private void RaiseResultPanel(RunResult result)
         {
-            if (result.Reason != RunEndReason.Victory) return;
+            if (result.Reason == RunEndReason.Quit) return;
 
+            title.text = result.Reason switch
+            {
+                RunEndReason.Victory => victoryTitle,
+                RunEndReason.Darkness => darknessTitle,
+                _ => deathTitle,
+            };
             ShowSummary(result);
             ShowStats(result.Stats);
             ShowCards(result);
 
-            victoryPanel.SetActive(true);
+            panel.SetActive(true);
             Time.timeScale = 0f;
         }
 

@@ -9,11 +9,12 @@ using UnityEngine.UI;
 
 namespace Assets._Project.Code.Editor
 {
-    // Monta a tela de vitória dentro do prefab do HUD, seguindo o mockup em Docs/Mockups/TelaVitoria_Meshy.png.
-    // Pode ser rodado de novo: apaga o VictoryPanel antigo do HUD e recria do zero.
-    public static class VictoryScreenBuilder
+    // Monta a tela de resultado (vitória e morte) dentro do prefab do HUD, seguindo o mockup em
+    // Docs/Mockups/TelaVitoria_Meshy.png. Pode ser rodado de novo: apaga a tela antiga do HUD e recria do zero.
+    public static class RunResultScreenBuilder
     {
         private const string HudPath = "Assets/_Project/Prefabs/UI/HUD.prefab";
+        private const string RunScenePath = "Assets/_Project/Scenes/Maps/FirstOne.unity";
         private const string CardSlotPath = "Assets/_Project/Prefabs/UI/Victory/CardSlot.prefab";
         private const string ArtPath = "Assets/_Project/Art/Sprites/UI/Victory";
         private const string FontPath = "Assets/_Project/Art/Fonts/PixelifySans.ttf";
@@ -28,7 +29,7 @@ namespace Assets._Project.Code.Editor
 
         private static Font font;
 
-        [MenuItem("Last Wick/Montar tela de vitória")]
+        [MenuItem("Last Wick/Montar tela de resultado")]
         public static void Build()
         {
             ConfigureArt();
@@ -39,11 +40,17 @@ namespace Assets._Project.Code.Editor
             var hud = PrefabUtility.LoadPrefabContents(HudPath);
             try
             {
-                var old = hud.transform.Find("VictoryPanel");
-                int siblingIndex = old.GetSiblingIndex();
-                Object.DestroyImmediate(old.gameObject);
+                // Tela antiga (nome de antes ou de agora) e o painel de game over, que a tela de resultado substitui
+                int siblingIndex = hud.transform.childCount;
+                foreach (var name in new[] { "VictoryPanel", "RunResultPanel", "GameOverPanel" })
+                {
+                    var old = hud.transform.Find(name);
+                    if (old == null) continue;
+                    siblingIndex = Mathf.Min(siblingIndex, old.GetSiblingIndex());
+                    Object.DestroyImmediate(old.gameObject);
+                }
 
-                var controller = hud.GetComponent<VictoryPanel>();
+                var controller = hud.GetComponent<RunResultPanel>();
                 var screen = BuildScreen(hud.transform, controller, cardSlot);
                 screen.transform.SetSiblingIndex(siblingIndex);
                 screen.SetActive(false);
@@ -54,17 +61,33 @@ namespace Assets._Project.Code.Editor
             {
                 PrefabUtility.UnloadPrefabContents(hud);
             }
-            Debug.Log("[VictoryScreenBuilder] Tela de vitória montada no HUD");
+            RemoveOldGameOverPanel();
+            Debug.Log("[RunResultScreenBuilder] Tela de resultado montada no HUD");
         }
 
-        // Usado no modo batch: monta a tela e salva uma imagem dela preenchida com dados de exemplo.
-        // Fica em Logs/ porque o Unity apaga a pasta Temp/ ao fechar.
+        // O componente antigo de game over ficava na cena da run e apontava para o painel que saiu do HUD
+        private static void RemoveOldGameOverPanel()
+        {
+            var scene = EditorSceneManager.OpenScene(RunScenePath, OpenSceneMode.Single);
+            int removed = 0;
+            foreach (var behaviour in Object.FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            {
+                if (behaviour == null || behaviour.GetType().Name != "GameOverPanel") continue;
+                Object.DestroyImmediate(behaviour);
+                removed++;
+            }
+            if (removed > 0) EditorSceneManager.SaveScene(scene);
+        }
+
+        // Usado no modo batch: monta a tela e salva imagens dela preenchida com dados de exemplo.
+        // Ficam em Logs/ porque o Unity apaga a pasta Temp/ ao fechar.
         public static void BuildAndPreview()
         {
             Build();
             try
             {
-                Preview(Path.GetFullPath("Logs/victory_preview.png"));
+                Preview(Path.GetFullPath("Logs/victory_preview.png"), "A CHAMA RESISTE");
+                Preview(Path.GetFullPath("Logs/death_preview.png"), "A CHAMA SE APAGOU");
             }
             catch (System.Exception e)
             {
@@ -72,15 +95,15 @@ namespace Assets._Project.Code.Editor
             }
         }
 
-        private static GameObject BuildScreen(Transform hud, VictoryPanel controller, CardSlotView cardSlotPrefab)
+        private static GameObject BuildScreen(Transform hud, RunResultPanel controller, CardSlotView cardSlotPrefab)
         {
             var fields = new SerializedObject(controller);
 
             // Fundo escurecido por cima do jogo pausado
-            var screen = Node("VictoryPanel", hud);
+            var screen = Node("RunResultPanel", hud);
             Stretch(screen);
             Img(screen, null, Dim);
-            fields.FindProperty("victoryPanel").objectReferenceValue = screen;
+            fields.FindProperty("panel").objectReferenceValue = screen;
 
             var panel = Node("Painel", screen.transform);
             var panelRect = panel.GetComponent<RectTransform>();
@@ -98,6 +121,7 @@ namespace Assets._Project.Code.Editor
 
             var title = Label("Titulo", panel.transform, "A CHAMA RESISTE", 64, Cream, TextAnchor.MiddleCenter);
             Size(title, height: 76);
+            fields.FindProperty("title").objectReferenceValue = title.GetComponent<Text>();
             Ornament(panel.transform, "Arabesco", Art("TitleFlourish"));
 
             // Resumo da run
@@ -302,7 +326,7 @@ namespace Assets._Project.Code.Editor
             }
         }
 
-        private static void Preview(string path)
+        private static void Preview(string path, string title)
         {
             var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             var camera = new GameObject("Camera").AddComponent<Camera>();
@@ -312,13 +336,13 @@ namespace Assets._Project.Code.Editor
 
             var hud = (GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(HudPath), scene);
             foreach (Transform child in hud.transform)
-                child.gameObject.SetActive(child.name == "VictoryPanel");
+                child.gameObject.SetActive(child.name == "RunResultPanel");
             var canvas = hud.GetComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceCamera;
             canvas.worldCamera = camera;
 
             // Algumas cartas de exemplo
-            var grid = hud.transform.Find("VictoryPanel/Painel/Blocos/Cartas/Conteudo");
+            var grid = hud.transform.Find("RunResultPanel/Painel/Blocos/Cartas/Conteudo");
             var slotPrefab = AssetDatabase.LoadAssetAtPath<CardSlotView>(CardSlotPath);
             string[] names = { "Chama Dupla", "Pavio Curto", "Cálice", "Vela Benta", "Sopro Frio", "Cera Quente", "Cinzas" };
             for (int i = 0; i < names.Length; i++)
@@ -327,7 +351,8 @@ namespace Assets._Project.Code.Editor
                 card.Name = names[i];
                 Object.Instantiate(slotPrefab, grid).Show(card, i % 3 + 1);
             }
-            hud.transform.Find("VictoryPanel/Painel/Blocos/Cartas/SemCartas").gameObject.SetActive(false);
+            hud.transform.Find("RunResultPanel/Painel/Blocos/Cartas/SemCartas").gameObject.SetActive(false);
+            hud.transform.Find("RunResultPanel/Painel/Titulo").GetComponent<Text>().text = title;
 
             var target = new RenderTexture(1920, 1080, 24);
             camera.targetTexture = target;
@@ -339,7 +364,7 @@ namespace Assets._Project.Code.Editor
             File.WriteAllBytes(path, image.EncodeToPNG());
             RenderTexture.active = null;
             camera.targetTexture = null;
-            Debug.Log($"[VictoryScreenBuilder] Preview salvo em {path}");
+            Debug.Log($"[RunResultScreenBuilder] Preview salvo em {path}");
         }
 
         private static StatEntryView Entry(GameObject go, GameObject valueText)

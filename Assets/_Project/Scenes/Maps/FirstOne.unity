@@ -452,29 +452,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91886b55e2d160f4da9b85ae3b7860d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets._Project.Code.Runtime.Cards.CardView
---- !u!1 &566958522 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5809591812696098494, guid: 738a82de2b6ff064eb51778c5e2d9494, type: 3}
-  m_PrefabInstance: {fileID: 492962185}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &626242999 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4169287120343888073, guid: 91069a925ce925940a909b5cd7861852, type: 3}
-  m_PrefabInstance: {fileID: 874086438}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &626243002
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 626242999}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9074cb5c098f95e42930d0fd24024e61, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets._Project.Code.Runtime.UI.GameOverPanel
-  gameOverPanel: {fileID: 566958522}
 --- !u!114 &683694564 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6687702396547173487, guid: 1c97f8c16f7726b44a5d15fc16ed2e39, type: 3}
@@ -628,10 +605,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4169287120343888073, guid: 91069a925ce925940a909b5cd7861852, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 626243002}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 91069a925ce925940a909b5cd7861852, type: 3}
 --- !u!1 &929615214
 GameObject:

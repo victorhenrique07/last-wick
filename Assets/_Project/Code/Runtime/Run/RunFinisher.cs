@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace Assets._Project.Code.Runtime.Run
 {
-    // Encerra a run em vitória quando o último boss morre e entrega o resultado para a tela.
+    // Encerra a run quando o último boss morre (vitória) ou quando o player morre,
+    // e entrega o resultado para a tela de resultado.
     public class RunFinisher : MonoBehaviour
     {
         [SerializeField] private RunConfig config;
@@ -23,25 +24,43 @@ namespace Assets._Project.Code.Runtime.Run
             stats = player.GetComponent<PlayerRunStats>();
         }
 
-        private void OnEnable() => GameEvents.BossDefeated += OnBossDefeated;
-        private void OnDisable() => GameEvents.BossDefeated -= OnBossDefeated;
+        private void OnEnable()
+        {
+            GameEvents.BossDefeated += OnBossDefeated;
+            GameEvents.PlayerDied += OnPlayerDied;
+        }
+
+        private void OnDisable()
+        {
+            GameEvents.BossDefeated -= OnBossDefeated;
+            GameEvents.PlayerDied -= OnPlayerDied;
+        }
 
         private void OnBossDefeated(int bossIndex)
         {
             if (bossIndex != config.Milestones.Length - 1) return;
 
-            GameEvents.RaiseRunFinished(new RunResult
-            {
-                Reason = RunEndReason.Victory,
-                ElapsedTime = timer.Elapsed,
-                RemainingTime = timer.Remaining,
-                Points = progress.Points,
-                Kills = progress.Kills,
-                MilestonesReached = progress.MilestonesReached,
-                Level = playerLevel.Level,
-                Cards = inventory.Cards,
-                Stats = stats
-            });
+            GameEvents.RaiseRunFinished(BuildResult(RunEndReason.Victory));
         }
+
+        // A escuridão dos 10:00 também mata o player; o relógio zerado diz qual foi o caso
+        private void OnPlayerDied()
+        {
+            var reason = timer.Remaining <= 0f ? RunEndReason.Darkness : RunEndReason.Death;
+            GameEvents.RaiseRunFinished(BuildResult(reason));
+        }
+
+        private RunResult BuildResult(RunEndReason reason) => new RunResult
+        {
+            Reason = reason,
+            ElapsedTime = timer.Elapsed,
+            RemainingTime = timer.Remaining,
+            Points = progress.Points,
+            Kills = progress.Kills,
+            MilestonesReached = progress.MilestonesReached,
+            Level = playerLevel.Level,
+            Cards = inventory.Cards,
+            Stats = stats
+        };
     }
 }
