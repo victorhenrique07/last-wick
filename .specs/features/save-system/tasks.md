@@ -214,9 +214,9 @@ T7 → T8 → T9 → T10 → T11
 
 **Done when**:
 
-- [ ] `CreateNew` libera e põe no deck as 15 cartas do `Deck.asset`
-- [ ] `Version` começa em 1
-- [ ] Console sem erros de compilação
+- [x] `CreateNew` libera e põe no deck as 15 cartas do `Deck.asset`
+- [x] `Version` começa em 1
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
