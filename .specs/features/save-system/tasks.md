@@ -144,17 +144,17 @@ T7 → T8 → T9 → T10 → T11
 
 ### T5: Criar `GameDatabase` (usuário)
 
-**What**: Criar o ScriptableObject com `Cards`, `StartingDeck`, `FindCard` e o aviso de ID vazio ou repetido no `OnValidate`.
-**Where**: `Assets/_Project/Code/Runtime/Save/GameDatabase.cs`
+**What**: Criar o ScriptableObject com `CardCollection`, `StartingDeck` e `FindCard`, que delega a `CardCollection.Find`; o `CardCollection` ganha `Find` e o aviso de ID vazio ou repetido no `OnValidate`.
+**Where**: `Assets/_Project/Code/Runtime/Save/GameDatabase.cs` (busca e validação em `Assets/_Project/Code/Runtime/Cards/CardCollection.cs`)
 **Depends on**: T4
 **Reuses**: `CardCollection`, `DeckData`
 **Requirement**: SAVE-19
 
 **Done when**:
 
-- [ ] `FindCard` devolve `null` para ID desconhecido
-- [ ] Um ID repetido gera aviso no Console ao editar o asset
-- [ ] Console sem erros de compilação
+- [x] `FindCard` devolve `null` para ID desconhecido
+- [x] Um ID repetido gera aviso no Console ao editar o asset
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
@@ -363,7 +363,7 @@ Proof: walk - Escrever `EquippedWeapon` `arma-falsa` e jogar uma run: o player a
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** 2026-11-03 - usuário escreveu a T1; a pedido ("adicione os namespaces"), o agente pôs o `ResourceBag` em `Assets._Project.Code.Runtime.Save`. O usuário pediu que o agente fizesse a T2 e a T3 e que "OS IDS DEVEM SER PREENCHIDOS AUTOMATICAMENTE". Por isso a T2 ganhou o `CardIdAssigner` (Editor), que dá a cada carta sem Id, ou com Id repetido, o nome do arquivo em minúsculas com hífen. O agente também pôs `CardData` e `GameEvents` em namespaces, a pedido.
+**Settled mid-build:** 2026-11-03 - usuário escreveu a T1; a pedido ("adicione os namespaces"), o agente pôs o `ResourceBag` em `Assets._Project.Code.Runtime.Save`. O usuário pediu que o agente fizesse a T2 e a T3 e que "OS IDS DEVEM SER PREENCHIDOS AUTOMATICAMENTE". Por isso a T2 ganhou o `CardIdAssigner` (Editor), que dá a cada carta sem Id, ou com Id repetido, o nome do arquivo em minúsculas com hífen. O agente também pôs `CardData` e `GameEvents` em namespaces, a pedido. Na T5, o usuário achou `Cards.Cards` "ambiguo e feio"; a busca e a validação de IDs passaram para o `CardCollection` (`Find`, `OnValidate`), e o `GameDatabase` expõe `CardCollection` e delega `FindCard`.
 **Dispatched:** none
 **Walked:** none
 

@@ -74,7 +74,7 @@ flowchart TD
 - **Purpose**: As regras de desbloqueio e de deck, sobre o save.
 - **Location**: `Assets/_Project/Code/Runtime/Cards/CardLibrary.cs`
 - **Interfaces**:
-  - `static IReadOnlyList<CardData> All` - `GameDatabase.Cards.Cards`
+  - `static IReadOnlyList<CardData> All` - `GameDatabase.CardCollection.Cards`
   - `static bool IsUnlocked(CardData c)`
   - `static bool IsInDeck(CardData c)`
   - `static IEnumerable<CardData> Locked()` - em ordem da coleção (TAROT-02, TAROT-21)

@@ -37,7 +37,7 @@ flowchart TD
 
 | Component | Location | How to Use |
 | --------- | -------- | ---------- |
-| `CardCollection` | `Assets/_Project/Code/Runtime/Cards/CardCollection.cs` | Vira a lista oficial de cartas; o `GameDatabase` aponta para ele. Falta criar o asset (`CardCollection.asset`) com as 20 cartas. |
+| `CardCollection` | `Assets/_Project/Code/Runtime/Cards/CardCollection.cs` | Vira a lista oficial de cartas e ganha `Find(id)` e o `OnValidate` de IDs; o `GameDatabase` aponta para ele e delega a busca. Falta criar o asset (`CardCollection.asset`) com as 20 cartas. |
 | `DeckData` (`Deck.asset`) | `Assets/_Project/Code/Runtime/Cards/DeckData.cs` | Passa a ser o deck inicial: as cartas dele são as cartas padrão liberadas e o deck da primeira run. Ganha `MinCards` e `MaxCards` públicos. |
 | `CardData` | `Assets/_Project/Code/Runtime/Cards/CardData.cs` | Ganha o campo `Id` (AD-007). |
 | `JsonUtility` | Unity | Serializa `SaveData`. Não aceita `Dictionary`, por isso os níveis viram listas de pares. |
@@ -105,9 +105,9 @@ flowchart TD
 - **Purpose**: Um ponto só com todos os assets que o save precisa achar por ID.
 - **Location**: `Assets/_Project/Code/Runtime/Save/GameDatabase.cs`; asset em `Assets/_Project/Resources/GameDatabase.asset`
 - **Interfaces**:
-  - campos `Cards` (`CardCollection`), `StartingDeck` (`DeckData`), `Weapons` (`WeaponCatalog`, feature `blacksmith-weapon`), `PriestStats` (`List<PriestStatData>`, feature `priest-stats`), `Light` (`LightConfig`, feature `campfire-light`)
-  - `CardData FindCard(string id)`, `WeaponData FindWeapon(string id)`, `PriestStatData FindPriestStat(string id)` - `null` quando não existe
-  - `OnValidate` avisa no Console sobre ID vazio ou repetido
+  - campos `CardCollection` (`CardCollection`), `StartingDeck` (`DeckData`), `Weapons` (`WeaponCatalog`, feature `blacksmith-weapon`), `PriestStats` (`List<PriestStatData>`, feature `priest-stats`), `Light` (`LightConfig`, feature `campfire-light`)
+  - `CardData FindCard(string id)`, `WeaponData FindWeapon(string id)`, `PriestStatData FindPriestStat(string id)` - `null` quando não existe; cada um delega ao `Find(id)` da sua lista (`CardCollection.Find`, `WeaponCatalog.Find`)
+  - a validação de ID vazio ou repetido fica no `OnValidate` de cada lista, não no `GameDatabase`
 - **Dependencies**: os tipos de dados de cada feature.
 - **Reuses**: `CardCollection`, `DeckData`.
 
