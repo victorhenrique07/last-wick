@@ -12,13 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a59c9498a6da9bd4f9c24b548abf6d27, type: 3}
   m_Name: FarolDosMortos
   m_EditorClassIdentifier: Assembly-CSharp::CardData
-  Name: "Farol dos Mortos"
-  Description: "+10% de raio de luz e +20% de raio de coleta de XP."
+  Id: farol-dos-mortos
+  Name: Farol dos Mortos
+  Description: +10% de raio de luz e +20% de raio de coleta de XP.
+  Icon: {fileID: 0}
   maxHealthBonus: 0
   moveSpeedBonus: 0
   dodgeDistanceBonus: 0
   dodgeInvulnerabilityBonus: 0
   dodgeCooldownReduction: 0
+  baseDamageBonus: 0
   damageBonus: 0
   fireRateBonus: 0
   projectileSpeedBonus: 0

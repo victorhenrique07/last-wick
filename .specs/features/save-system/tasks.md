@@ -111,8 +111,8 @@ T7 → T8 → T9 → T10 → T11
 
 **Done when**:
 
-- [ ] As 20 cartas têm `Id` único e não vazio
-- [ ] Console sem erros de compilação
+- [x] As 20 cartas têm `Id` único e não vazio
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build

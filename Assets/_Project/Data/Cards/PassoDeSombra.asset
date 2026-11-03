@@ -12,13 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a59c9498a6da9bd4f9c24b548abf6d27, type: 3}
   m_Name: PassoDeSombra
   m_EditorClassIdentifier: Assembly-CSharp::CardData
-  Name: "Passo de Sombra"
+  Id: passo-de-sombra
+  Name: Passo de Sombra
   Description: "+15% de dist\xE2ncia e +15% de invencibilidade da esquiva."
+  Icon: {fileID: 0}
   maxHealthBonus: 0
   moveSpeedBonus: 0
   dodgeDistanceBonus: 0.15
   dodgeInvulnerabilityBonus: 0.15
   dodgeCooldownReduction: 0
+  baseDamageBonus: 0
   damageBonus: 0
   fireRateBonus: 0
   projectileSpeedBonus: 0
