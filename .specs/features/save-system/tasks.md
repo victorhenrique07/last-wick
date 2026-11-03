@@ -173,8 +173,8 @@ T7 → T8 → T9 → T10 → T11
 
 **Done when**:
 
-- [ ] O asset lista as 20 cartas
-- [ ] Console sem erros de compilação
+- [x] O asset lista as 20 cartas
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
