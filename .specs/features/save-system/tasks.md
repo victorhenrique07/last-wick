@@ -256,9 +256,9 @@ T7 → T8 → T9 → T10 → T11
 
 **Done when**:
 
-- [ ] `Save()` escreve `save.json.tmp` e depois troca o `save.json`
-- [ ] Erro de disco vira `Debug.LogError` e o jogo segue
-- [ ] Console sem erros de compilação
+- [x] `Save()` escreve `save.json.temp` e depois troca o `save.json`
+- [x] Erro de disco vira `Debug.LogError` e o jogo segue
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
@@ -333,8 +333,8 @@ Proof: walk - Comprar um ponto no padre e ver o arquivo mudar no mesmo instante.
 **C14** - Mudar o deck grava o arquivo (SAVE-14, AC 5)
 Proof: walk - Tirar uma carta do deck e ver a lista `Deck` do arquivo sem ela.
 
-**C15** - A gravação passa por `save.json.tmp` (SAVE-15, AC 6)
-Proof: walk - Com um breakpoint em `Save()`, ver o `.tmp` criado antes da troca; depois da troca, só `save.json` existe.
+**C15** - A gravação passa por `save.json.temp` (SAVE-15, AC 6)
+Proof: walk - Com um breakpoint em `Save()`, ver o `.temp` criado antes da troca; depois da troca, só `save.json` existe.
 
 **C16** - O menu "Last Wick/Apagar save" apaga o arquivo (SAVE-16, AC 1)
 Proof: walk - Usar o menu e ver o `save.json` sumir da pasta.

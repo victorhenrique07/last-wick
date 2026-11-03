@@ -23,10 +23,10 @@ flowchart TD
     F -- não --> G[Renomeia para save.corrupt.json + aviso] --> D
     F -- sim --> H[Sanitize: moedas >= 0, IDs desconhecidos fora, arma inicial se faltar] --> R
 
-    S[SaveSystem.Save] --> T[Escreve save.json.tmp]
+    S[SaveSystem.Save] --> T[Escreve save.json.temp]
     T --> U{Escreveu?}
     U -- não --> V[Erro no Console, segue em memória]
-    U -- sim --> W[Substitui save.json pelo .tmp]
+    U -- sim --> W[Substitui save.json pelo .temp]
 ```
 
 ---

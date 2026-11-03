@@ -33,6 +33,9 @@ namespace Assets._Project.Code.Runtime.Save
         public static string FilePath => Path.Combine(Application.persistentDataPath, "save.json");
         public static string CorruptPath => Path.Combine(Application.persistentDataPath, "save.corrupt.json");
 
+        public static event Action Changed;
+        public static void NotifyChanged() => Changed?.Invoke();
+
         private static SaveData Load()
         {
             if (!File.Exists(FilePath)) 
@@ -85,13 +88,6 @@ namespace Assets._Project.Code.Runtime.Save
             saveData.Deck = saveData.Deck.Where(card => saveData.UnlockedCards.Contains(card)).ToList();
         }
 
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        private static void ResetStatics()
-        {
-            data = null;
-            database = null;
-        }
-
         private static SaveData MoveToCorruptAndStartOver(string reason)
         {
             if (File.Exists(CorruptPath))
@@ -101,6 +97,51 @@ namespace Assets._Project.Code.Runtime.Save
             Debug.LogWarning($"Save data is corrupt: {reason}. The save file has been moved to {CorruptPath}.");
 
             return SaveData.CreateNew(Database);
+        }
+
+        public static void Add(ResourceBag amount)
+        {
+            Data.Resources += amount;
+            NotifyChanged();
+        }
+
+        public static bool TrySpend(ResourceBag cost)
+        {
+            if (!Data.Resources.Covers(cost))
+                return false;
+
+            Data.Resources -= cost;
+            NotifyChanged();
+
+            return true;
+        }
+
+        public static void Save()
+        {
+            string json = JsonUtility.ToJson(Data, true);
+
+            try
+            {
+                var temp = FilePath + ".temp";
+                File.WriteAllText(temp, json);
+
+                if (File.Exists(FilePath))
+                    File.Replace(temp, FilePath, null);
+                else
+                    File.Move(temp, FilePath);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Save: não foi possível gravar ({e.Message})");
+            }
+        }
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void ResetStatics()
+        {
+            data = null;
+            database = null;
+            Changed = null;
         }
     }
 }
