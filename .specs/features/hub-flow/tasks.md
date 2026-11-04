@@ -70,9 +70,9 @@ T2 → T3 → T4 → T5 → T6 → T7
 
 **Done when**:
 
-- [ ] Abrir um painel fecha o anterior
-- [ ] Esc fecha o painel aberto
-- [ ] Console sem erros de compilação
+- [x] Abrir um painel fecha o anterior
+- [x] Esc fecha o painel aberto
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
