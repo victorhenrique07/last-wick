@@ -16,7 +16,7 @@ A base da run sai do `PlayerRunStats` e vai para uma classe pura, `PermanentStat
 - os efeitos de todos os atributos, cada um vezes o nível do seu atributo;
 - a luz da fogueira, que entra depois com a feature `campfire-light` (AD-012).
 
-O resultado é um `StatBlock`. O `PlayerRunStats` aplica as cartas sobre esse bloco (PRST-10, PRST-15), prende a recarga da esquiva em 0,2 s e a defesa no teto (PRST-26, PRST-27), e passa a defesa para o `Health` do player, que reduz o dano recebido (PRST-17). Como a tela de resultado lê o `PlayerRunStats`, os pontos já aparecem nela (PRST-16).
+O resultado é um `StatBlock`. O `PlayerRunStats` aplica as cartas sobre esse bloco (PRST-10, PRST-15), prende a recarga da esquiva em 0,2 s (PRST-26), e passa a defesa para o `Health` do player, que reduz o dano recebido (PRST-17). Como a tela de resultado lê o `PlayerRunStats`, os pontos já aparecem nela (PRST-16).
 
 O custo do próximo ponto depende só do nível do personagem, que é a soma dos níveis salvos (PRST-06, PRST-07). O menu usa o próprio `PermanentStats` para mostrar o valor atual e o valor com o próximo ponto de cada efeito: ele monta o bloco duas vezes, com o nível do atributo e com o nível + 1.
 
@@ -47,7 +47,7 @@ flowchart LR
 
 | Component | Location | How to Use |
 | --------- | -------- | ---------- |
-| `PlayerStats` | `Assets/_Project/Code/Runtime/Player/PlayerStats.cs` | Continua sendo a base; ganha `Defense` (0) e `DefenseCap` (0,6). Nunca é escrito em runtime. |
+| `PlayerStats` | `Assets/_Project/Code/Runtime/Player/PlayerStats.cs` | Continua sendo a base; ganha `Defense` (0). Nunca é escrito em runtime. |
 | `PlayerRunStats.Refresh` | `Assets/_Project/Code/Runtime/Player/PlayerRunStats.cs:51` | Troca `baseStats.X` por `block.X`; a conta das cartas fica igual. |
 | `PlayerRunStats.CalculateDamage` | `Assets/_Project/Code/Runtime/Player/PlayerRunStats.cs:46` | `block.Damage` entra no lugar de `baseStats.Damage`: a Força vale para qualquer arma (PRST-12). |
 | `Health.TakeDamage` | `Assets/_Project/Code/Runtime/Combat/Health.cs:30` | Multiplica o dano por `DamageTakenMultiplier` (1 por padrão; inimigos não mudam). |
@@ -88,7 +88,7 @@ flowchart LR
 
 - **Purpose**: Reduzir o dano recebido pelo player (PRST-17, PRST-18).
 - **Interfaces**:
-  - `PlayerStats.Defense` (0) e `PlayerStats.DefenseCap` (0,6)
+  - `PlayerStats.Defense` (0)
   - `Health.DamageTakenMultiplier { get; set; }` = 1; `TakeDamage` tira `info.Amount × DamageTakenMultiplier`
 - **Dependencies**: nenhuma.
 
@@ -98,7 +98,7 @@ flowchart LR
 - **Location**: `Assets/_Project/Code/Runtime/Player/PermanentStats.cs`
 - **Interfaces**:
   - `struct StatBlock { MaxHealth, MoveSpeed, DodgeDistance, DodgeInvulnerability, DodgeCooldown, Damage, LightRadius, XpPickupRadius, FireRate, Defense }` - `FireRate` é um multiplicador que começa em 1
-  - `static StatBlock Build(PlayerStats baseStats, IEnumerable<AttributeData> attributes, Func<AttributeData, int> levelOf)` - copia o `PlayerStats` e soma `GainPerLevel × nível` de cada efeito no campo do seu `Stat` (PRST-10, PRST-22)
+  - `static StatBlock Build(PlayerStats baseStats, IEnumerable<AttributeData> attributes, Func<AttributeData, int> levelOf)` - copia o `PlayerStats` e soma `GainPerLevel × nível` de cada efeito no campo do seu `Stat` (PRST-10, PRST-22); a defesa é a exceção: multiplica, `Defense = 1 − (1 − Defense) × (1 − GainPerLevel)^nível` (PRST-18, PRST-27)
   - `static StatBlock Build(PlayerStats baseStats, SaveData save, GameDatabase db)` - atalho com os níveis do save, usado pelo `PlayerRunStats`
   - `static float Get(StatBlock block, PlayerStatType stat)` - o valor de um status, usado pelo menu
   - `static int CharacterLevel(SaveData save)` - soma de todos os `PriestLevels`, inclusive de atributos que não existem mais (PRST-06, PRST-28)
@@ -107,7 +107,7 @@ flowchart LR
 
 ### PlayerRunStats (mudança)
 
-- **Interfaces**: no `Awake`, `block = PermanentStats.Build(baseStats, SaveSystem.Data, SaveSystem.Database)` antes do primeiro `Refresh`. O `Refresh` usa `block` no lugar de `baseStats`. `FireRateMultiplier = block.FireRate × cartas`; a velocidade do projétil continua vindo só das cartas. A recarga da esquiva fica em no mínimo 0,2 s depois das cartas (PRST-26). `Defense = Mathf.Min(block.Defense, baseStats.DefenseCap)` (PRST-27), e `health.DamageTakenMultiplier = 1 − Defense`.
+- **Interfaces**: no `Awake`, `block = PermanentStats.Build(baseStats, SaveSystem.Data, SaveSystem.Database)` antes do primeiro `Refresh`. O `Refresh` usa `block` no lugar de `baseStats`. `FireRateMultiplier = block.FireRate × cartas`; a velocidade do projétil continua vindo só das cartas. A recarga da esquiva fica em no mínimo 0,2 s depois das cartas (PRST-26). `Defense = block.Defense`, e `health.DamageTakenMultiplier = 1 − Defense`.
 
 ### GameDatabase (mudança)
 
@@ -145,7 +145,7 @@ flowchart LR
 | Cliques rápidos | Cada clique roda `TryBuy` inteiro na thread principal | Um ponto por clique, ouro nunca negativo. |
 | `AttributeData` com `Id` vazio | Aviso no `GameDatabase.OnValidate`; o menu e a run ignoram o atributo | O atributo não aparece até ter ID. |
 | Nível salvo de um atributo que não existe mais | Fica no save, sem efeito, e conta no nível do personagem | O custo não cai ao remover um atributo. |
-| Defesa acima do teto | `Mathf.Min` com `DefenseCap` | O dano nunca zera. |
+| Muitos pontos de Resistência | A conta multiplicativa nunca chega a 1 | O dano nunca zera, sem teto. |
 
 ---
 
@@ -169,3 +169,4 @@ flowchart LR
 | Valores "atual → próximo" no menu | `PermanentStats.Build` duas vezes, com o nível e com o nível + 1 | O menu mostra exatamente a conta que a run vai usar. |
 | Onde fica o custo | `GameDatabase.PriestBaseCost` e `PriestCostStep` | O custo é do personagem, não de um atributo; balanceável no Inspector. |
 | Defesa no `Health` | `DamageTakenMultiplier` | Um ponto só para reduzir dano; cartas de defesa no futuro usam o mesmo campo. |
+| Defesa multiplicativa | `1 − (1 − ganho)^nível`, sem teto | Como a absorção dos soulslikes: cada ponto rende um pouco menos e o dano nunca zera (escolha do usuário). |

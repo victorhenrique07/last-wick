@@ -68,8 +68,8 @@
 - **Status**: active
 
 ### AD-014
-- **Decision**: O padre sobe atributos no estilo soulslike (Vitalidade, Força, Agilidade, Resistência), e não status soltos. Cada atributo é um asset com uma lista de efeitos (status + ganho por ponto); o custo do próximo ponto depende do nível total do personagem; o ganho é linear no MVP. O jogo ganha a defesa, percentual e com teto, subida pela Resistência.
-- **Reason**: Usuário: "não vai ser assim. Será igual Soulslike." e "está correto." para o rascunho dos atributos; escolheu custo "Pelo nível total", ganho "Linear no MVP" e defesa "Percentual com teto"; pediu um nome amplo para a Resistência receber novos efeitos depois.
+- **Decision**: O padre sobe atributos no estilo soulslike (Vitalidade, Força, Agilidade, Resistência), e não status soltos. Cada atributo é um asset com uma lista de efeitos (status + ganho por ponto); o custo do próximo ponto depende do nível total do personagem; o ganho é linear no MVP. O jogo ganha a defesa, percentual e multiplicativa como a absorção dos soulslikes (1 − 0,98^nível, sem teto), subida pela Resistência.
+- **Reason**: Usuário: "não vai ser assim. Será igual Soulslike." e "está correto." para o rascunho dos atributos; escolheu custo "Pelo nível total", ganho "Linear no MVP" e, depois de comparar com os soulslikes, a defesa "Multiplicando (soulslike)"; pediu um nome amplo para a Resistência receber novos efeitos depois.
 - **Status**: active
 
 ## Handoff

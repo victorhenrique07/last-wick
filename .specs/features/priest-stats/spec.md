@@ -40,12 +40,11 @@ O ouro dos bosses não tem uso, e o player começa toda run com os mesmos status
 | Força | Dano base do personagem, que vale para todas as armas | Usuário: "A força sobe o DANO BASE do PERSONAGEM. Esse dano base vai se refletir em todas as armas." | y |
 | Agilidade | Velocidade de movimento, distância da esquiva, menos recarga da esquiva, cadência de tiro e um pouco de raio de coleta de XP; a velocidade do projétil fica só nas cartas | Usuário: Agilidade absorve a Destreza e "aumenta o raio de coleta de XP, mas bem pouco." Usuário, na T1: "esse campo nao vai existir. Isso será aumentado através das cartas durante a run." | y |
 | Resistência | Defesa | Usuário pediu um nome que abranja vários tipos para receber novos efeitos depois | y |
-| Defesa | Reduz uma porcentagem do dano recebido, com teto | Usuário escolheu "Percentual com teto" | y |
+| Defesa | Reduz uma porcentagem do dano recebido; os pontos se multiplicam como a absorção dos soulslikes: cada ponto tira 2% do dano que sobrou, defesa = 1 - (1 - 0,02)^nível. Rende um pouco menos a cada ponto e nunca chega a 100%, sem teto | Usuário, na T2, depois de comparar com a defesa dos soulslikes: escolheu "Multiplicando (soulslike)". Substitui o "Percentual com teto" | y |
 | Custo | Pelo nível total do personagem: o próximo ponto custa o mesmo em qualquer atributo | Usuário escolheu "Pelo nível total" | y |
 | Fórmula do custo (provisória) | 5 + 5 x nível total, em ouro | Mantém a curva da spec anterior; uma vitória (70 de ouro) compra 4 pontos no começo | y |
 | Ganho por ponto | Linear, sem soft cap | Usuário escolheu "Linear no MVP" | y |
-| Ganhos por ponto (provisórios) | Vitalidade: vida +10. Força: dano base +1. Agilidade: velocidade +0,05, distância da esquiva +0,05, recarga da esquiva -0,04 s, cadência +2%, coleta de XP +0,05. Resistência: defesa +2% | Passos pequenos para muitos níveis; valores ajustados no balanceamento | y |
-| Teto da defesa (provisório) | 60% | Nunca zerar o dano recebido | y |
+| Ganhos por ponto (provisórios) | Vitalidade: vida +10. Força: dano base +1. Agilidade: velocidade +0,05, distância da esquiva +0,05, recarga da esquiva -0,04 s, cadência +2%, coleta de XP +0,05. Resistência: 2% do dano que sobrou por ponto | Passos pequenos para muitos níveis; valores ajustados no balanceamento | y |
 | Pisos | Recarga da esquiva nunca abaixo de 0,2 s | Regra da spec anterior, mantida | y |
 | Onde ficam os números | Um asset por atributo, com uma lista de efeitos (status + ganho por ponto) | Usuário: novos efeitos e atributos "sem mexer no nome dos ups" | y |
 | Ordem de aplicação | O padre soma à base do `PlayerStats`; as cartas se aplicam por cima | AD-012 | y |
@@ -109,10 +108,10 @@ O ouro dos bosses não tem uso, e o player começa toda run com os mesmos status
 **Acceptance Criteria**:
 
 1. WHEN o player receber dano THEN o player SHALL perder o dano vezes (1 - defesa). [PRST-17]
-2. The defesa SHALL começar em 0 e nunca passar do teto definido no `PlayerStats`. [PRST-18]
+2. The defesa SHALL começar em 0 e SHALL combinar os pontos de forma multiplicativa: defesa = 1 - (1 - ganho por ponto) ^ nível. [PRST-18]
 3. The menu do padre SHALL mostrar a defesa como porcentagem. [PRST-19]
 
-**Independent Test**: Com 10 pontos de Resistência (20% de defesa), um golpe de 10 tira 8 de vida.
+**Independent Test**: Com 10 pontos de Resistência (defesa de 18,3%), um golpe de 10 tira 8,17 de vida.
 
 ---
 
@@ -138,7 +137,7 @@ O ouro dos bosses não tem uso, e o player começa toda run com os mesmos status
 - IF o jogador não tiver ouro para o próximo ponto THEN o menu SHALL mostrar o custo em vermelho. [PRST-24]
 - WHEN o jogador clicar várias vezes seguidas em comprar THEN o padre SHALL cobrar e subir um ponto por clique, sem deixar o ouro negativo. [PRST-25]
 - IF a recarga da esquiva com os pontos e as cartas ficar abaixo de 0,2 s THEN o player SHALL usar 0,2 s. [PRST-26]
-- IF a defesa com os pontos passar do teto THEN o player SHALL usar o teto. [PRST-27]
+- WHEN a Resistência tiver muitos pontos THEN a defesa SHALL continuar abaixo de 100%, e cada ponto SHALL render menos que o anterior. [PRST-27]
 - IF o save tiver nível de um atributo que não existe mais THEN o nível SHALL ficar no save sem efeito e SHALL continuar contando no nível do personagem. [PRST-28]
 
 Dimensões implícitas: validação (PRST-23, PRST-26, PRST-27), repetição (PRST-25), dados antigos (PRST-28) e persistência (via `save-system`, SAVE-13) estão cobertas. Concorrência, autenticação, dependências externas e ciclo de vida N/A: compra local, um clique por vez.
@@ -185,7 +184,7 @@ Dimensões implícitas: validação (PRST-23, PRST-26, PRST-27), repetição (PR
 ## Sources
 
 - `Docs/Last Wick - One-Pager.md` - padre sobe o personagem um ponto por vez, só com ouro, sem teto no MVP; referência soulslike; luz sobe à parte, na fogueira; defesa citada entre os status.
-- Conversa de 2026-11-04 com o usuário: modelo soulslike, os quatro atributos, custo pelo nível total, ganho linear, defesa percentual com teto, Agilidade no lugar da Destreza, nome amplo para a Resistência.
+- Conversa de 2026-11-04 com o usuário: modelo soulslike, os quatro atributos, custo pelo nível total, ganho linear, defesa percentual multiplicativa no estilo soulslike, Agilidade no lugar da Destreza, nome amplo para a Resistência.
 - `.specs/STATE.md` - AD-001, AD-007 e AD-012.
 - `Assets/_Project/Code/Runtime/Player/PlayerStats.cs`, `PlayerRunStats.cs` e `Combat/Health.cs` - status base, cartas e dano recebido.
 - `.specs/features/save-system/spec.md` - SAVE-02 e SAVE-13.

@@ -82,7 +82,7 @@ T6 → T7 → T8 → T9 → T10 → T11
 
 ### T2: Defesa no `PlayerStats` e no `Health` (usuário)
 
-**What**: Adicionar `Defense` e `DefenseCap` ao `PlayerStats` e `DamageTakenMultiplier` ao `Health`, usado no `TakeDamage`.
+**What**: Adicionar `Defense` ao `PlayerStats` e `DamageTakenMultiplier` ao `Health`, usado no `TakeDamage`.
 **Where**: `Assets/_Project/Code/Runtime/Player/PlayerStats.cs`, `Assets/_Project/Code/Runtime/Combat/Health.cs`
 **Depends on**: T1
 **Reuses**: `Health.TakeDamage`
@@ -124,7 +124,7 @@ T6 → T7 → T8 → T9 → T10 → T11
 
 ### T4: `PlayerRunStats` usa o `StatBlock` (usuário)
 
-**What**: Trocar `baseStats.X` por `block.X`, multiplicar a cadência pelo bloco, prender a esquiva em 0,2 s e a defesa no teto, e passar a defesa ao `Health`.
+**What**: Trocar `baseStats.X` por `block.X`, multiplicar a cadência pelo bloco, prender a esquiva em 0,2 s e passar a defesa ao `Health`.
 **Where**: `Assets/_Project/Code/Runtime/Player/PlayerRunStats.cs`
 **Depends on**: T3
 **Reuses**: `PermanentStats.Build`
@@ -185,7 +185,7 @@ T6 → T7 → T8 → T9 → T10 → T11
 
 ### T7: Os 4 assets de atributo (Claude)
 
-**What**: Criar Vitalidade, Força, Agilidade e Resistência com os efeitos e ganhos da spec, pôr na lista do `GameDatabase` e ajustar `Defense` 0 e `DefenseCap` 0,6 no `PlayerStats.asset`.
+**What**: Criar Vitalidade, Força, Agilidade e Resistência com os efeitos e ganhos da spec, pôr na lista do `GameDatabase` e ajustar `Defense` 0 no `PlayerStats.asset`.
 **Where**: `Assets/_Project/Data/Priest/`, `Assets/_Project/Resources/GameDatabase.asset`, `Assets/_Project/Data/Progression/PlayerStats.asset`
 **Depends on**: T6
 **Reuses**: valores da spec
@@ -327,7 +327,7 @@ Proof: walk - Com Força 2, ver `CalculateDamage` da arma 2 acima do de antes.
 Proof: walk - Com Agilidade 5, ler velocidade +0,25, esquiva +0,25, recarga −0,2 s, cadência ×1,1 e coleta +0,25; a velocidade do projétil não muda.
 
 **C14** - Resistência sobe a defesa (PRST-14, AC 5)
-Proof: walk - Com Resistência 10, ler defesa 0,2 no `PlayerRunStats`.
+Proof: walk - Com Resistência 10, ler defesa 0,183 (1 − 0,98^10) no `PlayerRunStats`.
 
 **C15** - As cartas se aplicam sobre a base com os pontos (PRST-15, AC 6)
 Proof: walk - Com Vitalidade 3 e uma carta de +10% de vida, ler 143.
@@ -336,10 +336,10 @@ Proof: walk - Com Vitalidade 3 e uma carta de +10% de vida, ler 143.
 Proof: walk - Com Vitalidade 3, terminar a run e ler 130 em "Vida máxima".
 
 **C17** - O dano recebido cai pela defesa (PRST-17, AC 1)
-Proof: walk - Com 20% de defesa, um golpe de 10 tira 8 de vida.
+Proof: walk - Com Resistência 10, um golpe de 10 tira 8,17 de vida.
 
-**C18** - A defesa começa em 0 e não passa do teto (PRST-18, AC 2)
-Proof: walk - Sem Resistência, um golpe de 10 tira 10; o `PlayerStats` tem teto 0,6.
+**C18** - A defesa começa em 0 e combina os pontos multiplicando (PRST-18, AC 2)
+Proof: walk - Sem Resistência, um golpe de 10 tira 10; com Resistência 30, a defesa é 0,455 (1 − 0,98^30), e não 0,6.
 
 **C19** - O menu mostra a defesa em porcentagem (PRST-19, AC 3)
 Proof: walk - Ler "Defesa 0% → 2%" na Resistência.
@@ -365,8 +365,8 @@ Proof: walk - Com 20 de ouro, clicar 5 vezes em Vitalidade: 2 pontos e 5 de ouro
 **C26** - A recarga da esquiva não fica abaixo de 0,2 s (PRST-26, edge case)
 Proof: walk - Com Agilidade 50, ler 0,2 s de recarga.
 
-**C27** - A defesa não passa do teto (PRST-27, edge case)
-Proof: walk - Com Resistência 40 (80%), ler 0,6 de defesa e um golpe de 10 tirando 4.
+**C27** - Com muitos pontos, a defesa fica abaixo de 100% e cada ponto rende menos (PRST-27, edge case)
+Proof: walk - Com Resistência 100, ler defesa 0,867 e um golpe de 10 tirando 1,33; o ganho do ponto 100 é menor que o do ponto 1.
 
 **C28** - Nível de atributo removido fica no save e conta no nível (PRST-28, edge case)
 Proof: walk - Pôr no save um nível 3 de um ID inexistente e ler "Nível 3" e custo 20, sem efeito na run.
@@ -377,7 +377,7 @@ Proof: walk - Pôr no save um nível 3 de um ID inexistente e ler "Nível 3" e c
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** T1 - `PlayerStatType` e `AttributeEffect` ficam em arquivos próprios em `Runtime/Player/`; sem asset de teste no Inspector (usuário: "Já sabemos que vai funcionar."), conferido na T7 | T1 - a velocidade do projétil sai do padre e fica só nas cartas; PRST-13, o enum e a C13 mudaram. Usuário, na T1: "esse campo nao vai existir. Isso será aumentado através das cartas durante a run."
+**Settled mid-build:** T2 - a defesa multiplica (1 − 0,98^nível), sem teto; PRST-18, PRST-27, C14, C17, C18, C27 e o `DefenseCap` mudaram. Usuário, na T2, depois de comparar com a defesa dos soulslikes: escolheu "Multiplicando (soulslike)". | T1 - `PlayerStatType` e `AttributeEffect` ficam em arquivos próprios em `Runtime/Player/`; sem asset de teste no Inspector (usuário: "Já sabemos que vai funcionar."), conferido na T7 | T1 - a velocidade do projétil sai do padre e fica só nas cartas; PRST-13, o enum e a C13 mudaram. Usuário, na T1: "esse campo nao vai existir. Isso será aumentado através das cartas durante a run."
 **Dispatched:** none
 **Walked:** none
 
