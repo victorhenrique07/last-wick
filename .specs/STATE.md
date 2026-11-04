@@ -69,13 +69,13 @@
 
 ## Handoff
 
-**Updated**: 2026-11-03
-**Feature**: run-rewards concluída (`validate_verification.py` com 0 erros); menu principal pronto (AD-013, fundo com a ilustração do cemitério)
-**Phase/Task**: próxima feature: hub-flow T1 (`HubPanel`, usuário escreve)
-**Completed**: run-rewards T1-T12, walk da morte e da vitória, Verifier (5 findings fechados: boss final na vitória `4f4fce5`, tratamentos de erro `4843c6c`, provas do walk `bb7ee0a`), lições L-001 a L-004.
+**Updated**: 2026-11-04
+**Feature**: hub-flow concluída (`validate_verification.py` com 0 erros); run-rewards e menu principal concluídos antes
+**Phase/Task**: próxima feature do roadmap: priest-stats (padre)
+**Completed**: hub-flow T1-T7 (o Claude fez também T1 e T2, a pedido do usuário): HubPanel, ExpeditionPanel, portão `Gate.png`, ResourceCounterView, ResourceBar, `HubCanvasBuilder` e build `MainMenu`, `Hub`, `FirstOne`. Walk de 15 checks (Esc testado pelo usuário), Verifier com 2 findings de cobertura fechados em `cdb37d5`.
 **In progress**: nada
-**Next step**: hub-flow. A T7 dela ("Ordem das cenas no build") precisa manter o `MainMenu` como primeira cena (AD-013). O save-system ainda espera a validação final (check_proofs e Verifier) depois de hub-flow e blacksmith-weapon.
+**Next step**: priest-stats. O save-system ainda espera a validação final (check_proofs e Verifier) depois de blacksmith-weapon.
 **Blockers**: nenhum
 **Uncommitted**: nada (as pastas de ferramentas estão no `.git/info/exclude` local)
-**Branch**: main, sem push
-**Como trabalhamos**: AD-001 - o usuário escreve o código das tasks marcadas "usuário"; o agente explica, revisa, compila, marca a task e commita uma por task, em português, no estilo do repo. Com a Unity aberta, o agente confere e monta cenas pelo Editor via `unity command` (script eval, console status, editor.playmode); sem foco, o Play Mode só avança com `editor.playmode set_run_in_background --enable true` (desligar no fim). Com a Unity fechada, compila em batch mode (sem `-nographics` quando precisa renderizar prévias).
+**Branch**: main, sem push desde `27041c2`
+**Como trabalhamos**: AD-001 - o usuário escreve o código das tasks marcadas "usuário", a menos que peça ao Claude ("pode fazer essa spec inteira" na hub-flow); o agente explica, revisa, compila, marca a task e commita uma por task, em português, no estilo do repo. Com a Unity aberta, o agente confere e monta cenas pelo Editor via `unity command` (script eval, console status, editor.playmode); sem foco, o Play Mode só avança com `editor.playmode set_run_in_background --enable true` (desligar no fim), e tecla simulada não chega ao Input System (testes de teclado ficam com o usuário). Walks que gravam no save fazem backup e restauram o `save.json`. Com a Unity fechada, compila em batch mode (sem `-nographics` quando precisa renderizar prévias).

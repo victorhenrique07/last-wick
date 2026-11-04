@@ -8,7 +8,11 @@
 
 Corroborated across multiple features. Safe to apply as guidance.
 
-_none_
+### L-002 - A walk for a rule that lists several cases must exercise every listed case, the last one included, not only the first.
+- signal: `weak_test` · recurrence: 2 feature(s) · scope: `walk` · harmful: 0
+- features: run-rewards, hub-flow
+- evidence: C3, C4 (finding 2) (walk) (+1 more)
+- last seen: 2026-11-04T12:21:06Z
 
 ## Candidates (under observation - do NOT load as guidance yet)
 
@@ -19,12 +23,6 @@ Seen once or not yet corroborated. Tracked, not trusted.
 - features: run-rewards
 - evidence: RunFinisher.cs OnBossDefeated (finding 1) (events)
 - last seen: 2026-11-04T02:55:23Z
-
-### L-002 - A walk for a rule that lists several cases must exercise every listed case, the last one included, not only the first.
-- signal: `weak_test` · recurrence: 1 feature(s) · scope: `walk` · harmful: 0
-- features: run-rewards
-- evidence: C3, C4 (finding 2) (walk)
-- last seen: 2026-11-04T02:55:25Z
 
 ### L-003 - Implement every row of the design's Error Handling Strategy and give each one a check.
 - signal: `ac_gap` · recurrence: 1 feature(s) · scope: `error-handling` · harmful: 0
