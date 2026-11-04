@@ -1,4 +1,4 @@
-# Padre: status permanentes Tasks
+# Padre: atributos permanentes Tasks
 
 ## Execution Protocol (MANDATORY -- do not skip)
 
@@ -11,8 +11,7 @@ Pela AD-001, o usuário escreve o código de gameplay e o Claude monta telas, ar
 ---
 
 **Design**: `.specs/features/priest-stats/design.md`
-**Status**: Approved
-**Approved**: 2026-11-03 - user: "Aprovo todas"
+**Status**: Draft
 **Build**: none - o projeto não tem comando de build; a compilação é conferida no Console do Unity Editor
 
 ---
@@ -42,10 +41,10 @@ Phases are ordered and run sequentially - each phase completes before the next b
 
 ### Phase 1: Regras
 
-Status como dados e a base da run.
+Atributos como dados, a defesa e a base da run.
 
 ```
-T1 → T2 → T3 → T4 → T5
+T1 → T2 → T3 → T4 → T5 → T6
 ```
 
 ### Phase 2: Menu
@@ -53,104 +52,127 @@ T1 → T2 → T3 → T4 → T5
 Assets, arte e o menu do padre.
 
 ```
-T5 → T6 → T7 → T8 → T9 → T10
+T6 → T7 → T8 → T9 → T10 → T11
 ```
 
 ---
 
 ## Task Breakdown
 
-### T1: Criar `PlayerStatType` e `PriestStatData` (usuário)
+### T1: Criar `PlayerStatType` e `AttributeData` (usuário)
 
-**What**: Criar o enum dos status e o asset de status com ID, nome, ícone, ganho e custo.
-**Where**: `Assets/_Project/Code/Runtime/Priest/PriestStatData.cs`
+**What**: Criar o enum dos status, o efeito (status + ganho por ponto) e o asset de atributo com ID, nome, ícone e lista de efeitos.
+**Where**: `Assets/_Project/Code/Runtime/Priest/AttributeData.cs`
 **Depends on**: None
-**Reuses**: formato do `CardData`
-**Requirement**: PRST-06, PRST-11
+**Reuses**: formato de `CardData`
+**Requirement**: PRST-20, PRST-22
 
 **Done when**:
 
-- [ ] `CostAt(level)` devolve 5 + 5 × nível
+- [ ] O Inspector de um `AttributeData` mostra ID, nome, ícone e uma lista de efeitos com status e ganho
 - [ ] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
 
-**Commit**: `feat(priest): adiciona status do padre como dados`
+**Commit**: `feat(priest): adiciona AttributeData`
 
 ---
 
-### T2: Criar `StatBlock` e `PermanentStats` (usuário)
+### T2: Defesa no `PlayerStats` e no `Health` (usuário)
 
-**What**: Montar a base da run a partir do `PlayerStats` e dos níveis do padre, com piso de 0,2 s na esquiva.
-**Where**: `Assets/_Project/Code/Runtime/Player/PermanentStats.cs`
+**What**: Adicionar `Defense` e `DefenseCap` ao `PlayerStats` e `DamageTakenMultiplier` ao `Health`, usado no `TakeDamage`.
+**Where**: `Assets/_Project/Code/Runtime/Player/PlayerStats.cs`, `Assets/_Project/Code/Runtime/Combat/Health.cs`
 **Depends on**: T1
-**Reuses**: `PlayerStats`
-**Requirement**: PRST-08, PRST-16
+**Reuses**: `Health.TakeDamage`
+**Requirement**: PRST-17, PRST-18
 
 **Done when**:
 
-- [ ] 3 níveis de Vida dão 130 de vida base
+- [ ] Com `DamageTakenMultiplier` 0,8, um golpe de 10 tira 8 de vida
+- [ ] Inimigos continuam recebendo o dano cheio
 - [ ] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
 
-**Commit**: `feat(player): monta a base permanente da run`
+**Commit**: `feat(combat): adiciona defesa ao dano recebido`
 
 ---
 
-### T3: `PlayerRunStats` usa o `StatBlock` (usuário)
+### T3: Criar `StatBlock` e `PermanentStats` (usuário)
 
-**What**: Trocar `baseStats.X` por `block.X` no `Refresh` e manter o piso depois das cartas.
-**Where**: `Assets/_Project/Code/Runtime/Player/PlayerRunStats.cs`
+**What**: Montar a base da run a partir do `PlayerStats` e dos efeitos dos atributos, ler um status do bloco e somar o nível do personagem.
+**Where**: `Assets/_Project/Code/Runtime/Player/PermanentStats.cs`
 **Depends on**: T2
-**Reuses**: `Refresh` atual
-**Requirement**: PRST-08, PRST-09, PRST-10
+**Reuses**: `SaveData.GetLevel`
+**Requirement**: PRST-06, PRST-10, PRST-22, PRST-28
 
 **Done when**:
 
-- [ ] Cartas multiplicam o valor que já inclui o padre
+- [ ] Com Vitalidade 3 (+10 por ponto), `Build` dá 130 de vida a partir de 100
+- [ ] `CharacterLevel` soma todos os níveis do save, inclusive de IDs sem atributo
 - [ ] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
 
-**Commit**: `feat(player): aplica o padre antes das cartas`
+**Commit**: `feat(player): monta a base da run com os atributos`
 
 ---
 
-### T4: `GameDatabase` com `PriestStats` (usuário)
+### T4: `PlayerRunStats` usa o `StatBlock` (usuário)
 
-**What**: Adicionar a lista e `FindPriestStat`.
-**Where**: `Assets/_Project/Code/Runtime/Save/GameDatabase.cs`
+**What**: Trocar `baseStats.X` por `block.X`, multiplicar cadência e projétil pelo bloco, prender a esquiva em 0,2 s e a defesa no teto, e passar a defesa ao `Health`.
+**Where**: `Assets/_Project/Code/Runtime/Player/PlayerRunStats.cs`
 **Depends on**: T3
-**Reuses**: `FindCard`
-**Requirement**: PRST-12
+**Reuses**: `PermanentStats.Build`
+**Requirement**: PRST-10 a PRST-17, PRST-26, PRST-27
 
 **Done when**:
 
-- [ ] A lista aparece no Inspector do `GameDatabase`
+- [ ] Sem pontos no padre, os status da run são os mesmos de antes
 - [ ] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
 
-**Commit**: `feat(save): lista os status do padre no GameDatabase`
+**Commit**: `feat(player): aplica os atributos do padre na run`
 
 ---
 
-### T5: Criar `PriestShop` (usuário)
+### T5: `GameDatabase` com os atributos e o custo (usuário)
 
-**What**: Criar `LevelOf`, `NextCost`, `CanBuy` e `TryBuy`.
-**Where**: `Assets/_Project/Code/Runtime/Priest/PriestShop.cs`
+**What**: Adicionar a lista `Attributes`, `FindAttribute`, `PriestBaseCost` e `PriestCostStep`, com aviso para ID vazio.
+**Where**: `Assets/_Project/Code/Runtime/Save/GameDatabase.cs`
 **Depends on**: T4
-**Reuses**: `SaveSystem.TrySpend`
-**Requirement**: PRST-03, PRST-04, PRST-06, PRST-15
+**Reuses**: `FindCard`
+**Requirement**: PRST-07, PRST-21
 
 **Done when**:
 
-- [ ] `TryBuy` sem ouro devolve falso e não muda nada
+- [ ] O Inspector do `GameDatabase` mostra a lista de atributos e os dois números do custo
+- [ ] Console sem erros de compilação
+
+**Tests**: none
+**Gate**: build
+
+**Commit**: `feat(save): lista os atributos do padre no GameDatabase`
+
+---
+
+### T6: Criar `PriestShop` (usuário)
+
+**What**: Criar `LevelOf`, `CharacterLevel`, `NextCost`, `CanBuy` e `TryBuy`.
+**Where**: `Assets/_Project/Code/Runtime/Priest/PriestShop.cs`
+**Depends on**: T5
+**Reuses**: `SaveSystem.TrySpend`, `SaveData.SetLevel`
+**Requirement**: PRST-04, PRST-05, PRST-06, PRST-07, PRST-25
+
+**Done when**:
+
+- [ ] Com 20 de ouro, `TryBuy` em dois atributos deixa 5 de ouro, nível 2 e `NextCost` 15
+- [ ] Sem ouro, `TryBuy` devolve falso e não muda o save
 - [ ] Console sem erros de compilação
 
 **Tests**: none
@@ -160,77 +182,77 @@ T5 → T6 → T7 → T8 → T9 → T10
 
 ---
 
-### T6: Os 5 assets de status (Claude)
+### T7: Os 4 assets de atributo (Claude)
 
-**What**: Criar Vida, Dano, Velocidade, Recarga da esquiva e Coleta de XP com os valores da spec e pôr na lista.
-**Where**: `Assets/_Project/Data/Priest/`
-**Depends on**: T5
-**Reuses**: valores da spec
-**Requirement**: PRST-11
-
-**Done when**:
-
-- [ ] Os 5 assets estão no `GameDatabase`, sem aviso de ID
-- [ ] Console sem erros de compilação
-
-**Tests**: none
-**Gate**: build
-
-**Commit**: `chore(priest): cria os status do padre`
-
----
-
-### T7: Ícones dos 5 status (Claude)
-
-**What**: Desenhar os ícones em pixel art na paleta do jogo.
-**Where**: `Assets/_Project/Art/Sprites/UI/Priest/`
+**What**: Criar Vitalidade, Força, Agilidade e Resistência com os efeitos e ganhos da spec, pôr na lista do `GameDatabase` e ajustar `Defense` 0 e `DefenseCap` 0,6 no `PlayerStats.asset`.
+**Where**: `Assets/_Project/Data/Priest/`, `Assets/_Project/Resources/GameDatabase.asset`, `Assets/_Project/Data/Progression/PlayerStats.asset`
 **Depends on**: T6
-**Reuses**: paleta do tileset
-**Requirement**: PRST-02
+**Reuses**: valores da spec
+**Requirement**: PRST-11 a PRST-14, PRST-18, PRST-20
 
 **Done when**:
 
-- [ ] 5 ícones ligados aos assets
+- [ ] Os 4 assets têm IDs próprios e os efeitos da spec, na ordem do menu
 - [ ] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
 
-**Commit**: `art(priest): adiciona ícones dos status`
+**Commit**: `chore(priest): cria os atributos do padre`
 
 ---
 
-### T8: Criar `PriestStatRowView` (Claude)
+### T8: Ícones dos 4 atributos (Claude)
 
-**What**: Criar a linha com ícone, nome, nível, valores, custo e botão.
-**Where**: `Assets/_Project/Code/Runtime/UI/PriestStatRowView.cs`
+**What**: Desenhar Vitalidade, Força, Agilidade e Resistência em pixel art na paleta da UI.
+**Where**: `Assets/_Project/Art/Sprites/UI/Victory/`
 **Depends on**: T7
-**Reuses**: `StatEntryView`
-**Requirement**: PRST-02, PRST-13, PRST-14
+**Reuses**: estilo dos ícones de status da tela de resultado
+**Requirement**: PRST-03, PRST-20
 
 **Done when**:
 
-- [ ] Custo em vermelho e botão desligado quando `canBuy` é falso
+- [ ] 4 ícones importados como os outros ícones da UI e ligados aos assets
 - [ ] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
 
-**Commit**: `feat(ui): adiciona a linha de status do padre`
+**Commit**: `art(ui): adiciona ícones dos atributos`
 
 ---
 
-### T9: Criar `PriestMenu` (usuário)
+### T9: Criar `AttributeRowView` (Claude)
 
-**What**: Criar uma linha por status, redesenhar no `Changed` e comprar pelo `PriestShop`.
-**Where**: `Assets/_Project/Code/Runtime/Priest/PriestMenu.cs`
+**What**: Criar a linha com ícone, nome, nível, linhas de efeito "atual → próximo" e o botão "Abençoar".
+**Where**: `Assets/_Project/Code/Runtime/UI/AttributeRowView.cs`
 **Depends on**: T8
-**Reuses**: `HubPanel`, `PriestStatRowView`
-**Requirement**: PRST-01, PRST-02, PRST-05, PRST-07, PRST-12
+**Reuses**: `RewardEntryView`, `MenuOption`
+**Requirement**: PRST-03, PRST-08, PRST-23
 
 **Done when**:
 
-- [ ] Comprar atualiza nível, valor e custo da linha
+- [ ] `Show` troca nome, nível, efeitos e liga ou desliga o botão
+- [ ] Console sem erros de compilação
+
+**Tests**: none
+**Gate**: build
+
+**Commit**: `feat(ui): adiciona a linha de atributo`
+
+---
+
+### T10: Criar `PriestMenu` (usuário)
+
+**What**: Mostrar nível e custo, criar uma linha por atributo com os efeitos atual → próximo, redesenhar no `Changed` e comprar pelo `PriestShop`.
+**Where**: `Assets/_Project/Code/Runtime/Priest/PriestMenu.cs`
+**Depends on**: T9
+**Reuses**: `HubPanel`, `PermanentStats`, `PriestShop`
+**Requirement**: PRST-02, PRST-03, PRST-08, PRST-19, PRST-21, PRST-23, PRST-24
+
+**Done when**:
+
+- [ ] Sem ouro, os botões ficam desligados e o custo fica vermelho
 - [ ] Console sem erros de compilação
 
 **Tests**: none
@@ -240,75 +262,113 @@ T5 → T6 → T7 → T8 → T9 → T10
 
 ---
 
-### T10: Painel do padre no builder (Claude)
+### T11: Painel do padre no builder (Claude)
 
-**What**: Montar o painel com fundo e ligar o `onClick` da igreja ao `PriestMenu.Open`.
-**Where**: `Assets/_Project/Code/Editor/HubSceneBuilder.cs`
-**Depends on**: T9
-**Reuses**: painel de expedição
-**Requirement**: PRST-01, PRST-07
+**What**: Montar o painel do padre no Canvas do hub e ligar o `onClick` da igreja ao `PriestMenu.Open`.
+**Where**: `Assets/_Project/Code/Editor/HubCanvasBuilder.cs`, `Assets/_Project/Code/Editor/HubSceneBuilder.cs`
+**Depends on**: T10
+**Reuses**: `HubPanel`, arte gótica
+**Requirement**: PRST-01, PRST-09
 
 **Done when**:
 
-- [ ] Clicar na igreja abre o painel
+- [ ] A prévia em `Logs/` mostra o menu do padre aberto
 - [ ] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
 
-**Commit**: `feat(hub): monta o painel do padre`
+**Commit**: `feat(hub): monta o menu do padre`
 
 ---
 
 ## Checks
 
+Para acelerar os walks, o agente conduz o Play Mode pelo Editor (`unity command`), com backup e restauração do `save.json`; dar ouro é `SaveSystem.Add` em memória.
+
 **C1** - Clicar na igreja abre o menu do padre (PRST-01, AC 1)
 Proof: walk - Clicar na igreja no hub.
 
-**C2** - Cada linha mostra nome, nível, valor atual, próximo valor e custo (PRST-02, AC 2)
-Proof: walk - Abrir o menu e ler "Vida Nv 0 100 → 110 5".
+**C2** - O menu mostra o nível do personagem e o custo do próximo ponto (PRST-02, AC 2)
+Proof: walk - Num save novo, ler "Nível 0" e custo 5.
 
-**C3** - Comprar tira o custo do ouro (PRST-03, AC 3)
-Proof: walk - Com 20 de ouro, comprar Vida e ver 15.
+**C3** - Cada atributo mostra nome, nível e cada efeito com atual → próximo (PRST-03, AC 3)
+Proof: walk - Ler "Vitalidade Nv 0" e "Vida máxima 100 → 110"; ler as 6 linhas da Agilidade.
 
-**C4** - Comprar sobe o nível em 1 no save (PRST-04, AC 4)
-Proof: walk - Ler `PriestLevels` no `save.json` com Vida 1.
+**C4** - Comprar tira o custo do ouro (PRST-04, AC 4)
+Proof: walk - Com 20 de ouro, comprar Vitalidade e ver 15.
 
-**C5** - A linha mostra o novo nível, valor e custo (PRST-05, AC 5)
-Proof: walk - Depois da compra, ler "Nv 1 110 → 120 10".
+**C5** - Comprar sobe o nível do atributo no save (PRST-05, AC 5)
+Proof: walk - Ler `PriestLevels` no `save.json` com o ID da Vitalidade em 1.
 
-**C6** - O custo é 5 + 5 × nível (PRST-06, AC 6)
-Proof: walk - Comprar Vida duas vezes com 20 de ouro: sobra 5 e o próximo custa 15.
+**C6** - O nível do personagem é a soma dos atributos (PRST-06, AC 6)
+Proof: walk - Comprar Vitalidade e Força e ler "Nível 2".
 
-**C7** - "Fechar" e Esc fecham o menu (PRST-07, AC 7)
-Proof: walk - Fechar uma vez por botão e outra por Esc.
+**C7** - O custo é 5 + 5 × nível e igual em qualquer atributo (PRST-07, AC 7)
+Proof: walk - Com 20 de ouro, comprar Vitalidade (5) e Força (10): sobra 5 e o próximo custa 15 em todos.
 
-**C8** - Os pontos somam ao `PlayerStats` na run (PRST-08, AC 1)
-Proof: walk - Com 3 pontos de Vida, a run começa com 130 de vida máxima.
+**C8** - Depois da compra, o menu mostra o novo nível, o novo custo e os novos valores (PRST-08, AC 8)
+Proof: walk - Depois de comprar Vitalidade, ler "Vida máxima 110 → 120" e o custo 10.
 
-**C9** - As cartas multiplicam o valor com o padre (PRST-09, AC 2)
-Proof: walk - Com 3 pontos de Vida, escolher "+20% vida" e ver 156.
+**C9** - "Fechar" e Esc fecham o menu (PRST-09, AC 9)
+Proof: walk - Fechar pelo botão; reabrir e apertar Esc no Game view.
 
-**C10** - A tela de resultado mostra os status com o padre (PRST-10, AC 3)
-Proof: walk - Terminar a run do teste anterior e ver a vida final com os pontos.
+**C10** - A run soma à base o ganho vezes o nível de cada atributo (PRST-10, AC 1)
+Proof: walk - Com pontos em cada atributo, começar uma run e ler os status do `PlayerRunStats`.
 
-**C11** - Cada status é um asset com ID, nome, ícone, ganho e custo (PRST-11, AC 1)
-Proof: walk - Abrir os 5 assets no Inspector.
+**C11** - Vitalidade sobe a vida máxima (PRST-11, AC 2)
+Proof: walk - Com Vitalidade 3, começar a run com 130 de vida máxima.
 
-**C12** - Um asset novo na lista aparece no menu (PRST-12, AC 2)
-Proof: walk - Duplicar o asset de Vida, mudar o ID, pôr na lista e ver 6 linhas.
+**C12** - Força sobe o dano base de qualquer arma (PRST-12, AC 3)
+Proof: walk - Com Força 2, ver `CalculateDamage` da arma 2 acima do de antes.
 
-**C13** - Sem ouro, o botão fica desligado (PRST-13, edge case)
-Proof: walk - Com 0 de ouro, abrir o menu.
+**C13** - Agilidade move os seis status, e a recarga da esquiva cai (PRST-13, AC 4)
+Proof: walk - Com Agilidade 5, ler velocidade +0,25, esquiva +0,25, recarga −0,2 s, cadência ×1,1, projétil ×1,1 e coleta +0,25.
 
-**C14** - Sem ouro, o custo fica vermelho (PRST-14, edge case)
-Proof: walk - No mesmo teste, ver os custos em vermelho.
+**C14** - Resistência sobe a defesa (PRST-14, AC 5)
+Proof: walk - Com Resistência 10, ler defesa 0,2 no `PlayerRunStats`.
 
-**C15** - Cliques rápidos compram um ponto por clique, sem ouro negativo (PRST-15, edge case)
-Proof: walk - Com 15 de ouro, clicar 5 vezes rápido em Vida: compra 2 pontos e sobra 0.
+**C15** - As cartas se aplicam sobre a base com os pontos (PRST-15, AC 6)
+Proof: walk - Com Vitalidade 3 e uma carta de +10% de vida, ler 143.
 
-**C16** - A esquiva nunca fica abaixo de 0,2 s (PRST-16, edge case)
-Proof: walk - Pôr 100 no nível da esquiva no `save.json` e ler 0,2 na tela de resultado.
+**C16** - A tela de resultado mostra os status com os pontos (PRST-16, AC 7)
+Proof: walk - Com Vitalidade 3, terminar a run e ler 130 em "Vida máxima".
+
+**C17** - O dano recebido cai pela defesa (PRST-17, AC 1)
+Proof: walk - Com 20% de defesa, um golpe de 10 tira 8 de vida.
+
+**C18** - A defesa começa em 0 e não passa do teto (PRST-18, AC 2)
+Proof: walk - Sem Resistência, um golpe de 10 tira 10; o `PlayerStats` tem teto 0,6.
+
+**C19** - O menu mostra a defesa em porcentagem (PRST-19, AC 3)
+Proof: walk - Ler "Defesa 0% → 2%" na Resistência.
+
+**C20** - Cada atributo é um asset com ID, nome, ícone e efeitos (PRST-20, AC 1)
+Proof: walk - Abrir os 4 assets no Inspector.
+
+**C21** - Um atributo novo na lista aparece no menu sem código (PRST-21, AC 2)
+Proof: walk - Criar um atributo de teste, pôr na lista e vê-lo no menu; depois removê-lo.
+
+**C22** - Um efeito novo com status existente vale sem código (PRST-22, AC 3)
+Proof: walk - Pôr um efeito de vida na Força de teste e ver a vida subir na run e no menu; depois desfazer.
+
+**C23** - Sem ouro, os botões de compra ficam desligados (PRST-23, edge case)
+Proof: walk - Com 0 de ouro, abrir o menu e ver os 4 botões desligados.
+
+**C24** - Sem ouro, o custo fica vermelho (PRST-24, edge case)
+Proof: walk - No mesmo teste, ler a cor do custo.
+
+**C25** - Cliques rápidos compram um ponto por clique, sem ouro negativo (PRST-25, edge case)
+Proof: walk - Com 20 de ouro, clicar 5 vezes em Vitalidade: 2 pontos e 5 de ouro.
+
+**C26** - A recarga da esquiva não fica abaixo de 0,2 s (PRST-26, edge case)
+Proof: walk - Com Agilidade 50, ler 0,2 s de recarga.
+
+**C27** - A defesa não passa do teto (PRST-27, edge case)
+Proof: walk - Com Resistência 40 (80%), ler 0,6 de defesa e um golpe de 10 tirando 4.
+
+**C28** - Nível de atributo removido fica no save e conta no nível (PRST-28, edge case)
+Proof: walk - Pôr no save um nível 3 de um ID inexistente e ler "Nível 3" e custo 20, sem efeito na run.
 
 ---
 
@@ -327,8 +387,8 @@ The feature's live state, written as it happens - a compaction gives no warning.
 ```
 Phase 1 → Phase 2
 
-Phase 1:  T1 ------→ T2 ------→ T3 ------→ T4 ------→ T5
-Phase 2:  T6 ------→ T7 ------→ T8 ------→ T9 ------→ T10
+Phase 1:  T1 ------→ T2 ------→ T3 ------→ T4 ------→ T5 ------→ T6
+Phase 2:  T7 ------→ T8 ------→ T9 ------→ T10 -----→ T11
 ```
 
-Execution is strictly sequential. A feature tem 10 tasks; no Execute, as fases viram lotes de cerca de 7 tasks.
+Execution is strictly sequential. A feature tem 11 tasks; no Execute, as fases viram lotes de cerca de 7 tasks.

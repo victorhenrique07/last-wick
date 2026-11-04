@@ -67,11 +67,16 @@
 - **Reason**: Usuário: "quero que você monte a cena do menu principal do jogo" e "Não é para criar esse menu principal utilizando as sprites que já existem na unity"; escolheu "Confirmar e apagar", "Aparece desabilitado", "Desabilitado" e "Claude escreve tudo".
 - **Status**: active
 
+### AD-014
+- **Decision**: O padre sobe atributos no estilo soulslike (Vitalidade, Força, Agilidade, Resistência), e não status soltos. Cada atributo é um asset com uma lista de efeitos (status + ganho por ponto); o custo do próximo ponto depende do nível total do personagem; o ganho é linear no MVP. O jogo ganha a defesa, percentual e com teto, subida pela Resistência.
+- **Reason**: Usuário: "não vai ser assim. Será igual Soulslike." e "está correto." para o rascunho dos atributos; escolheu custo "Pelo nível total", ganho "Linear no MVP" e defesa "Percentual com teto"; pediu um nome amplo para a Resistência receber novos efeitos depois.
+- **Status**: active
+
 ## Handoff
 
 **Updated**: 2026-11-04
 **Feature**: hub-flow concluída (`validate_verification.py` com 0 erros); run-rewards e menu principal concluídos antes
-**Phase/Task**: próxima feature do roadmap: priest-stats (padre)
+**Phase/Task**: priest-stats - spec reescrita e aprovada (AD-014); design e tasks em rascunho, esperando aprovação
 **Completed**: hub-flow T1-T7 (o Claude fez também T1 e T2, a pedido do usuário): HubPanel, ExpeditionPanel, portão `Gate.png`, ResourceCounterView, ResourceBar, `HubCanvasBuilder` e build `MainMenu`, `Hub`, `FirstOne`. Walk de 15 checks (Esc testado pelo usuário), Verifier com 2 findings de cobertura fechados em `cdb37d5`.
 **In progress**: nada
 **Next step**: priest-stats. O save-system ainda espera a validação final (check_proofs e Verifier) depois de blacksmith-weapon.
