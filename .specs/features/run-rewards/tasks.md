@@ -299,8 +299,8 @@ T8 → T9 → T10 → T11 → T12
 
 **Done when**:
 
-- [ ] Vitória sem texto de perda; morte com texto
-- [ ] Console sem erros de compilação
+- [x] Vitória sem texto de perda; morte com texto
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build

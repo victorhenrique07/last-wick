@@ -8,7 +8,7 @@ using Assets._Project.Code.Runtime.Core;
 namespace Assets._Project.Code.Runtime.UI
 {
     // Mostra as estatísticas da run quando ela termina, em vitória ou em morte.
-    // As informações são as mesmas; só o título muda.
+    // As informações são as mesmas; mudam o título e, nas recompensas, o coletado e a perda fora da vitória.
     public class RunResultPanel : MonoBehaviour
     {
         [SerializeField] private GameObject panel;
@@ -66,6 +66,7 @@ namespace Assets._Project.Code.Runtime.UI
                 _ => deathTitle,
             };
             ShowSummary(result);
+            ShowRewards(result);
             ShowStats(result.Stats);
             ShowCards(result);
 
@@ -87,6 +88,24 @@ namespace Assets._Project.Code.Runtime.UI
             bossesDefeated.SetValue(result.MilestonesReached.ToString());
             kills.SetValue(result.Kills.ToString());
             finalLevel.SetValue(result.Level.ToString());
+        }
+
+        // Vitória mostra só o que o jogador leva; morte e escuridão mostram também o coletado e a perda
+        private void ShowRewards(RunResult result)
+        {
+            bool lost = result.Reason != RunEndReason.Victory;
+            ShowReward(gold, result.Collected.Gold, result.Delivered.Gold, lost);
+            ShowReward(oil, result.Collected.Oil, result.Delivered.Oil, lost);
+            ShowReward(bones, result.Collected.Bones, result.Delivered.Bones, lost);
+            ShowReward(iron, result.Collected.Iron, result.Delivered.Iron, lost);
+            ShowReward(wax, result.Collected.Wax, result.Delivered.Wax, lost);
+            lossLabel.SetActive(lost);
+        }
+
+        private static void ShowReward(RewardEntryView entry, int collected, int delivered, bool lost)
+        {
+            if (lost) entry.Show(collected, delivered);
+            else entry.Show(delivered);
         }
 
         private void ShowStats(PlayerRunStats stats)
