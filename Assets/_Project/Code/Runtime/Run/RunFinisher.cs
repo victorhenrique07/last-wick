@@ -18,6 +18,7 @@ namespace Assets._Project.Code.Runtime.Run
         [SerializeField] private RunRewards rewards;
 
         private bool finished;
+        private bool victoryPending; // o boss final morreu; a run termina no LateUpdate deste frame
 
         private CardInventory inventory;
         private PlayerRunStats stats;
@@ -46,12 +47,24 @@ namespace Assets._Project.Code.Runtime.Run
         {
             if (bossIndex != config.Milestones.Length - 1) return;
 
+            // Só anota: o RunRewards também ouve o BossDefeated e pode ainda não ter somado o boss final
+            victoryPending = true;
+        }
+
+        // Roda depois de todos os ouvintes do frame, então o Collected já inclui o boss final
+        void LateUpdate()
+        {
+            if (!victoryPending) return;
+
             Finish(RunEndReason.Victory);
         }
 
         // A escuridão dos 10:00 também mata o player; o relógio zerado diz qual foi o caso
         private void OnPlayerDied()
         {
+            // O boss final morreu antes, neste mesmo frame: vale a vitória
+            if (victoryPending) return;
+
             var reason = timer.Remaining <= 0f ? RunEndReason.Darkness : RunEndReason.Death;
 
             Finish(reason);
