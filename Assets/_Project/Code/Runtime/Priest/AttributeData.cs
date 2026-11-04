@@ -12,6 +12,6 @@ namespace Assets._Project.Code.Runtime.Priest
         public Sprite Icon;
         [SerializeField] private List<AttributeEffect> effects;
 
-        public List<AttributeEffect> Effects => effects;
+        public IReadOnlyList<AttributeEffect> Effects => effects;
     }
 }
