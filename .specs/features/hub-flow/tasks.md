@@ -91,8 +91,8 @@ T2 → T3 → T4 → T5 → T6 → T7
 
 **Done when**:
 
-- [ ] Deck fora de 10 a 15 desliga "Partir" e mostra o aviso
-- [ ] Console sem erros de compilação
+- [x] Deck fora de 10 a 15 desliga "Partir" e mostra o aviso
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
