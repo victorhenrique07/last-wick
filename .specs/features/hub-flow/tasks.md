@@ -151,8 +151,8 @@ T2 → T3 → T4 → T5 → T6 → T7
 
 **Done when**:
 
-- [ ] Mudar o save redesenha a barra
-- [ ] Console sem erros de compilação
+- [x] Mudar o save redesenha a barra
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
