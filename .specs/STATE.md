@@ -62,15 +62,20 @@
 - **Reason**: Design do `priest-stats` e do `campfire-light`: uma ordem única de aplicação para todo bônus permanente.
 - **Status**: active
 
+### AD-013
+- **Decision**: O jogo abre num menu principal (cena `MainMenu`, primeira do build) com Novo jogo, Continuar, Opções e Sair. Novo jogo com save existente pede confirmação e então começa um save novo; Continuar fica desabilitado sem save; Opções fica desabilitado até a tela existir. A arte vem das peças originais do Gothic Pixel UI, sem reaproveitar os sprites de `UI/Victory`. Isso substitui o "MVP abre direto no hub" do `hub-flow` e o "sem menu principal" do `save-system`.
+- **Reason**: Usuário: "quero que você monte a cena do menu principal do jogo" e "Não é para criar esse menu principal utilizando as sprites que já existem na unity"; escolheu "Confirmar e apagar", "Aparece desabilitado", "Desabilitado" e "Claude escreve tudo".
+- **Status**: active
+
 ## Handoff
 
 **Updated**: 2026-11-03
-**Feature**: run-rewards (próxima); save-system com as 11 tasks commitadas
-**Phase/Task**: run-rewards T1 - evento `OilCollected` em `GameEvents.cs` (usuário escreve)
-**Completed**: save-system T1-T11 (último commit `cedfa54`). Teste em batch passou em SAVE-10, 11, 15, 17, 18, 19 e 20. A validação final do save (`check_proofs`, Verifier) fica para depois de run-rewards, hub-flow e blacksmith-weapon, porque SAVE-01 a 07, 12 a 14, 16, 21 e 22 dependem delas.
-**In progress**: nada
-**Next step**: explicar a T1 do run-rewards ao usuário e revisar quando ele salvar
+**Feature**: run-rewards pausada em T9 de 12 (último commit `4239381`); o usuário pediu o menu principal antes de seguir
+**Phase/Task**: menu principal (AD-013), feito pelo Claude; depois volta para run-rewards T10 (`RewardEntryView`, Claude)
+**Completed**: run-rewards T1-T9. Bosses sem materiais no MVP (RWD-05 mudou). Ícones dos recursos em `Art/Sprites/UI/Victory/`.
+**In progress**: menu principal - cena, script e arte
+**Next step**: terminar o menu; depois T10, T11 e T12 do run-rewards e o fechamento (walk, check_proofs, Verifier)
 **Blockers**: nenhum
 **Uncommitted**: nada além das pastas de ferramentas (`.agents/`, `.claude/`, `.cursor/`, `.windsurf/`)
 **Branch**: main, sem push
-**Como trabalhamos**: AD-001 - o usuário escreve o código das tasks marcadas "usuário"; o agente explica, revisa, compila (batch mode com a Unity fechada: `Unity.exe -batchmode -quit -nographics -projectPath ... -logFile Logs/compile_check.log`), marca a task no tasks.md e commita uma por task, em português, no estilo do repo. As tasks marcadas "Claude" o agente faz sozinho.
+**Como trabalhamos**: AD-001 - o usuário escreve o código das tasks marcadas "usuário"; o agente explica, revisa, compila, marca a task e commita uma por task, em português, no estilo do repo. Com a Unity aberta, o agente confere e monta cenas pelo Editor via `unity command` (script eval, console status); com ela fechada, compila em batch mode.

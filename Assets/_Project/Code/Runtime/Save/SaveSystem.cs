@@ -33,8 +33,19 @@ namespace Assets._Project.Code.Runtime.Save
         public static string FilePath => Path.Combine(Application.persistentDataPath, "save.json");
         public static string CorruptPath => Path.Combine(Application.persistentDataPath, "save.corrupt.json");
 
+        // O menu principal usa para habilitar o "Continuar"
+        public static bool HasSave => File.Exists(FilePath);
+
         public static event Action Changed;
         public static void NotifyChanged() => Changed?.Invoke();
+
+        // Novo jogo: descarta o progresso atual e grava um save novo no lugar
+        public static void StartNew()
+        {
+            data = SaveData.CreateNew(Database);
+            Save();
+            NotifyChanged();
+        }
 
         private static SaveData Load()
         {
