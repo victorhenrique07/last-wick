@@ -70,12 +70,12 @@
 ## Handoff
 
 **Updated**: 2026-11-03
-**Feature**: run-rewards - as 12 tasks commitadas (última `e8d6f59`); menu principal pronto (`a355182`, AD-013)
-**Phase/Task**: fechamento do run-rewards: walk das 21 checks em Play Mode, `check_proofs.py`, Verifier
-**Completed**: run-rewards T1-T12. Bosses sem materiais no MVP (RWD-05 mudou). Ícones em `Art/Sprites/UI/Victory/`. Menu principal com Novo jogo, Continuar, Opções (desabilitado) e Sair.
+**Feature**: run-rewards concluída (`validate_verification.py` com 0 erros); menu principal pronto (AD-013, fundo com a ilustração do cemitério)
+**Phase/Task**: próxima feature: hub-flow T1 (`HubPanel`, usuário escreve)
+**Completed**: run-rewards T1-T12, walk da morte e da vitória, Verifier (5 findings fechados: boss final na vitória `4f4fce5`, tratamentos de erro `4843c6c`, provas do walk `bb7ee0a`), lições L-001 a L-004.
 **In progress**: nada
-**Next step**: combinar com o usuário como fazer o walk (C11 e C12 leem o `save.json`; fazer backup antes) e fechar a feature
+**Next step**: hub-flow. A T7 dela ("Ordem das cenas no build") precisa manter o `MainMenu` como primeira cena (AD-013). O save-system ainda espera a validação final (check_proofs e Verifier) depois de hub-flow e blacksmith-weapon.
 **Blockers**: nenhum
-**Uncommitted**: nada além das pastas de ferramentas (`.agents/`, `.claude/`, `.cursor/`, `.windsurf/`)
+**Uncommitted**: nada (as pastas de ferramentas estão no `.git/info/exclude` local)
 **Branch**: main, sem push
-**Como trabalhamos**: AD-001 - o usuário escreve o código das tasks marcadas "usuário"; o agente explica, revisa, compila, marca a task e commita uma por task, em português, no estilo do repo. Com a Unity aberta, o agente confere e monta cenas pelo Editor via `unity command` (script eval, console status); com ela fechada, compila em batch mode.
+**Como trabalhamos**: AD-001 - o usuário escreve o código das tasks marcadas "usuário"; o agente explica, revisa, compila, marca a task e commita uma por task, em português, no estilo do repo. Com a Unity aberta, o agente confere e monta cenas pelo Editor via `unity command` (script eval, console status, editor.playmode); sem foco, o Play Mode só avança com `editor.playmode set_run_in_background --enable true` (desligar no fim). Com a Unity fechada, compila em batch mode (sem `-nographics` quando precisa renderizar prévias).
