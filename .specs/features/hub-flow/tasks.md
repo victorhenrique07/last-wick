@@ -183,7 +183,7 @@ T2 → T3 → T4 → T5 → T6 → T7
 
 ### T7: Ordem das cenas no build (Claude)
 
-**What**: Deixar `Hub` e `FirstOne`, nessa ordem, e tirar a `SampleScene`.
+**What**: Deixar `MainMenu`, `Hub` e `FirstOne`, nessa ordem, e tirar a `SampleScene` (AD-013).
 **Where**: `ProjectSettings/EditorBuildSettings.asset`
 **Depends on**: T6
 **Reuses**: lista atual
@@ -191,7 +191,7 @@ T2 → T3 → T4 → T5 → T6 → T7
 
 **Done when**:
 
-- [ ] Build Settings mostra `Hub` no índice 0 e não mostra `SampleScene`
+- [ ] Build Settings mostra `MainMenu`, `Hub` e `FirstOne` nos índices 0, 1 e 2 e não mostra `SampleScene`
 - [ ] Console sem erros de compilação
 
 **Tests**: none
@@ -233,8 +233,8 @@ Proof: walk - Comprar um ponto no padre e ver o ouro cair na hora.
 **C10** - Voltar da run mostra as recompensas somadas (HUB-10, AC 3)
 Proof: walk - Vencer com 70 de ouro e ver a barra subir 70 no hub.
 
-**C11** - O build abre no hub (HUB-11, AC 1)
-Proof: walk - Gerar um build e ver o acampamento como primeira tela.
+**C11** - O build lista `MainMenu`, `Hub` e `FirstOne`, e o menu leva ao hub (HUB-11, AC 1)
+Proof: walk - Abrir Build Settings, ver a ordem, dar Play no `MainMenu` e chegar ao acampamento pelo "Continuar".
 
 **C12** - A `SampleScene` não está no build (HUB-12, AC 2)
 Proof: walk - Abrir Build Settings e não achar a `SampleScene`.
@@ -254,7 +254,7 @@ Proof: walk - Clicar 3 vezes rápido em "Partir" e ver uma única troca de cena,
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** none
+**Settled mid-build:** o Claude faz também T1 e T2, marcadas "usuário" pela AD-001. Usuário: "pode fazer essa spec inteira." | HUB-11 e T7 seguem a AD-013: o build abre no `MainMenu`, depois `Hub` e `FirstOne`
 **Dispatched:** none
 **Walked:** none
 

@@ -16,7 +16,6 @@ O hub existe como cena, mas não fecha o ciclo do jogo: não há como sair dele 
 
 | Feature | Reason |
 | ------- | ------ |
-| Menu principal (novo jogo, continuar, opções) | O MVP abre direto no hub. |
 | Escolha de mapa ou de dificuldade | Só existe um mapa e uma dificuldade no MVP. |
 | Andar pelo hub | O One-Pager mantém o jogador parado ao lado do fogo. |
 | Menus do padre, da fogueira, da mesa de tarot e do ferreiro | Cada um tem a sua feature. |
@@ -32,7 +31,7 @@ O hub existe como cena, mas não fecha o ciclo do jogo: não há como sair dele 
 | Saída para a run | Portão no fim da trilha de baixo, com painel de confirmação | AD-006 | y |
 | Nome do mapa no painel | "Cemitério - Entrada" | O One-Pager sugere que o primeiro mapa é a entrada do cemitério | y |
 | Arte do portão | Montada com peças do tileset do cemitério e do Graveyard Set, na paleta do hub | Mesmo estilo dos outros objetos do hub | y |
-| Primeira cena do build | `Hub`; a `SampleScene` sai do build | O jogo precisa abrir no hub | y |
+| Primeira cena do build | `MainMenu`, depois `Hub` e `FirstOne`; a `SampleScene` sai do build | AD-013 trouxe o menu principal, que leva ao hub; substitui o "abre no hub" | y |
 | Esc fecha o painel | Sim | Atalho comum e sem custo | y |
 | Como provar | Conferência manual em Play Mode | Escolha do usuário na feature anterior | y |
 
@@ -86,10 +85,10 @@ O hub existe como cena, mas não fecha o ciclo do jogo: não há como sair dele 
 
 **Acceptance Criteria**:
 
-1. The build SHALL abrir o jogo na cena `Hub`. [HUB-11]
+1. The build SHALL listar as cenas `MainMenu`, `Hub` e `FirstOne`, nessa ordem, e o "Continuar" e o "Novo jogo" do menu SHALL levar à cena `Hub`. [HUB-11]
 2. The lista de cenas do build SHALL não conter a `SampleScene`. [HUB-12]
 
-**Independent Test**: Gerar um build e ver o acampamento como primeira tela.
+**Independent Test**: Gerar um build, ver o menu principal e chegar ao acampamento pelo "Continuar".
 
 ---
 
