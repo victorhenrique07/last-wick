@@ -1,6 +1,6 @@
 # hub-flow proofs
 
-**HEAD**: aabd3f2
+**HEAD**: cb0bec2
 **Tree**: clean
 **Shell**: C:/Program Files/Git\bin\bash.exe
 **Result**: 15 pass, 0 fail
