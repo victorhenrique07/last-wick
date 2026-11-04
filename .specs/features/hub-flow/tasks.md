@@ -131,8 +131,8 @@ T2 → T3 → T4 → T5 → T6 → T7
 
 **Done when**:
 
-- [ ] `SetValue(int)` muda o número
-- [ ] Console sem erros de compilação
+- [x] `SetValue(int)` muda o número
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
