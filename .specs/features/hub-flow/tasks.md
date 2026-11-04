@@ -171,8 +171,8 @@ T2 → T3 → T4 → T5 → T6 → T7
 
 **Done when**:
 
-- [ ] A prévia `Logs/hub_preview.png` mostra o portão e a barra
-- [ ] Console sem erros de compilação
+- [x] A prévia `Logs/hub_preview.png` mostra o portão e a barra
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
@@ -254,7 +254,7 @@ Proof: walk - Clicar 3 vezes rápido em "Partir" e ver uma única troca de cena,
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** o Claude faz também T1 e T2, marcadas "usuário" pela AD-001. Usuário: "pode fazer essa spec inteira." | HUB-11 e T7 seguem a AD-013: o build abre no `MainMenu`, depois `Hub` e `FirstOne`
+**Settled mid-build:** T6 - o Canvas do hub (barra de recursos e painel de expedição) fica num arquivo próprio, `Editor/HubCanvasBuilder.cs`, chamado pelo `HubSceneBuilder`; o portão tem 31 px de altura para caber entre o círculo de pedra e a borda de baixo da câmera; decisão do agente | o Claude faz também T1 e T2, marcadas "usuário" pela AD-001. Usuário: "pode fazer essa spec inteira." | HUB-11 e T7 seguem a AD-013: o build abre no `MainMenu`, depois `Hub` e `FirstOne`
 **Dispatched:** none
 **Walked:** none
 

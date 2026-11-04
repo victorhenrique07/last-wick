@@ -1,11 +1,14 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using Assets._Project.Code.Runtime.Hub;
 using UnityEditor;
+using UnityEditor.Events;
 using UnityEditor.SceneManagement;
 using UnityEditor.U2D.Sprites;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.Rendering.Universal;
@@ -31,6 +34,9 @@ namespace Assets._Project.Code.Editor
         private static readonly Vector2 Center = new Vector2(0.5f, -1.5f);
         private const float ClearingRadiusX = 7f;
         private const float ClearingRadiusY = 4.2f;
+
+        // Base do portão, no fim da trilha de baixo, entre o círculo de pedra e a borda de baixo da câmera
+        private static readonly Vector2 GatePosition = new Vector2(0.5f, -5.2f);
 
         // Recortes do tileset (x, y a partir do canto superior esquerdo, em pixels)
         private static readonly (string name, int x, int y, int w, int h, bool tile)[] TilesetPieces =
@@ -71,6 +77,7 @@ namespace Assets._Project.Code.Editor
             ConfigureSingleSprite(SpritesPath + "/Hub/Anvil.png", NpcSpritePadding);
             ConfigureSingleSprite(SpritesPath + "/Hub/TarotTable.png", NpcSpritePadding);
             ConfigureSingleSprite(SpritesPath + "/Hub/HubFlame.png", 0);
+            ConfigureSingleSprite(SpritesPath + "/Hub/Gate.png", NpcSpritePadding);
             var outlineMaterial = CreateOutlineMaterial();
             SliceSheet(TilesetPath, TilesetPieces);
             SliceSheet(GroundPath, GroundPieces().ToArray());
@@ -93,6 +100,13 @@ namespace Assets._Project.Code.Editor
             PlaceInteractable("Igreja (Padre)", "Hub/Church.png", new Vector2(0.5f, 1.4f), world, outlineMaterial);
             PlaceInteractable("Bigorna (Ferreiro)", "Hub/Anvil.png", new Vector2(-4.5f, -1.6f), world, outlineMaterial);
             PlaceInteractable("Mesa de Tarot (Mago)", "Hub/TarotTable.png", new Vector2(5.5f, -2f), world, outlineMaterial);
+
+            // Portão no fim da trilha de baixo: a saída para a run (HUB-01), com o painel de expedição no Canvas
+            var gate = PlaceInteractable("Portao (Expedicao)", "Hub/Gate.png", GatePosition, world, outlineMaterial);
+            var expedition = HubCanvasBuilder.Build();
+            var onClick = (UnityEvent)typeof(HubInteractable).GetField("onClick", BindingFlags.NonPublic | BindingFlags.Instance)
+                .GetValue(gate.GetComponent<HubInteractable>());
+            UnityEventTools.AddPersistentListener(onClick, new UnityAction(expedition.Open));
             CreateEventSystem();
 
             var flame = Place("Fogueira", LoadSprite("Hub/HubFlame.png"), Center + new Vector2(0f, -0.4f), world);
@@ -120,19 +134,36 @@ namespace Assets._Project.Code.Editor
             Debug.Log($"[HubSceneBuilder] Cena salva em {ScenePath}");
         }
 
-        // Usado no modo batch: monta a cena e salva uma imagem da câmera em Logs/hub_preview.png
+        // Usado para conferir: monta a cena e salva imagens da câmera em Logs/ (hub e painel de expedição aberto)
         // (Logs/ e não Temp/, porque o Unity apaga a pasta Temp/ ao fechar)
         public static void BuildAndPreview()
         {
             Build();
             var cam = Camera.main;
+            var canvas = Object.FindFirstObjectByType<Canvas>();
+            canvas.renderMode = RenderMode.ScreenSpaceCamera; // o Overlay não aparece no render da câmera
+            canvas.worldCamera = cam;
+            canvas.planeDistance = 5;
+            canvas.sortingOrder = short.MaxValue; // por cima dos sprites, como o Overlay fica no jogo
+
+            SavePreview(cam, "Logs/hub_preview.png");
+            var panel = canvas.transform.Find("PainelExpedicao/Conteudo").gameObject;
+            panel.SetActive(true);
+            SavePreview(cam, "Logs/hub_expedition_preview.png");
+            panel.SetActive(false);
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        }
+
+        private static void SavePreview(Camera cam, string file)
+        {
             var rt = new RenderTexture(1280, 720, 24);
             cam.targetTexture = rt;
+            Canvas.ForceUpdateCanvases();
             cam.Render();
             RenderTexture.active = rt;
             var tex = new Texture2D(rt.width, rt.height, TextureFormat.RGB24, false);
             tex.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
-            string path = Path.GetFullPath("Logs/hub_preview.png");
+            string path = Path.GetFullPath(file);
             File.WriteAllBytes(path, tex.EncodeToPNG());
             Debug.Log($"[HubSceneBuilder] Preview salvo em {path}");
             cam.targetTexture = null;
@@ -228,6 +259,7 @@ namespace Assets._Project.Code.Editor
             {
                 var p = new Vector2((float)random.NextDouble() * 18f - 8.5f, (float)random.NextDouble() * 10f - 5.2f);
                 if (ClearingDistance(p) < 1.1f || Mathf.Abs(p.x - 0.5f) < 0.9f && p.y < -3f) continue;
+                if (Mathf.Abs(p.x - GatePosition.x) < 2.8f && p.y < GatePosition.y + 2.2f) continue; // espaço do portão
                 if (used.Any(u => Vector2.Distance(u, p) < 1.15f)) continue;
                 used.Add(p);
                 Place("Tumulo", sprites[graves[random.Next(graves.Length)]], p, decor);
@@ -238,7 +270,7 @@ namespace Assets._Project.Code.Editor
                 Place("Arvore Seca", sprites["DeadTree"], p, decor);
             foreach (var p in new[] { new Vector2(-2.4f, 1.3f), new Vector2(3.6f, 1.6f), new Vector2(-5.6f, -0.4f), new Vector2(7.6f, -1.6f), new Vector2(-2.6f, -4.4f) })
                 Place("Arbusto", sprites["Bush"], p, decor);
-            foreach (var p in new[] { new Vector2(-3f, 0.1f), new Vector2(3.6f, -0.4f), new Vector2(1.8f, -3.9f), new Vector2(-1.2f, 2.2f) })
+            foreach (var p in new[] { new Vector2(-3f, 0.1f), new Vector2(3.6f, -0.4f), new Vector2(3.4f, -3.7f), new Vector2(-1.2f, 2.2f) })
                 Place("Pedra", sprites[$"Rock_{"ABC"[random.Next(3)]}"], p, decor);
 
             // Pedaços de cerca velha nas bordas
@@ -259,13 +291,14 @@ namespace Assets._Project.Code.Editor
             return go;
         }
 
-        private static void PlaceInteractable(string name, string spritePath, Vector2 position, Transform parent, Material outlineMaterial)
+        private static GameObject PlaceInteractable(string name, string spritePath, Vector2 position, Transform parent, Material outlineMaterial)
         {
             var go = Place(name, LoadSprite(spritePath), position, parent);
             go.AddComponent<BoxCollider2D>();
             var interactable = new SerializedObject(go.AddComponent<HubInteractable>());
             interactable.FindProperty("outlineMaterial").objectReferenceValue = outlineMaterial;
             interactable.ApplyModifiedPropertiesWithoutUndo();
+            return go;
         }
 
         // O clique nos objetos do mundo passa pelo EventSystem, como na UI
