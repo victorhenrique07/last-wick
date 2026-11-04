@@ -1,0 +1,81 @@
+{
+  "schema": 1,
+  "promote_threshold": 2,
+  "window_days": 45,
+  "quarantine_threshold": 2,
+  "next_id": 5,
+  "lessons": [
+    {
+      "id": "L-001",
+      "key": "ac_gap::when two listeners of the same gameevents event depend on each other never rely on subscription order defer the dependent step to lateupdate",
+      "text": "When two listeners of the same GameEvents event depend on each other, never rely on subscription order; defer the dependent step to LateUpdate.",
+      "signal": "ac_gap",
+      "scope": "events",
+      "status": "candidate",
+      "features": [
+        "run-rewards"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "RunFinisher.cs OnBossDefeated (finding 1) (events)"
+      ],
+      "created": "2026-11-04T02:55:23Z",
+      "last_seen": "2026-11-04T02:55:23Z"
+    },
+    {
+      "id": "L-002",
+      "key": "weak_test::a walk for a rule that lists several cases must exercise every listed case the last one included not only the first",
+      "text": "A walk for a rule that lists several cases must exercise every listed case, the last one included, not only the first.",
+      "signal": "weak_test",
+      "scope": "walk",
+      "status": "candidate",
+      "features": [
+        "run-rewards"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "C3, C4 (finding 2) (walk)"
+      ],
+      "created": "2026-11-04T02:55:25Z",
+      "last_seen": "2026-11-04T02:55:25Z"
+    },
+    {
+      "id": "L-003",
+      "key": "ac_gap::implement every row of the design s error handling strategy and give each one a check",
+      "text": "Implement every row of the design's Error Handling Strategy and give each one a check.",
+      "signal": "ac_gap",
+      "scope": "error-handling",
+      "status": "candidate",
+      "features": [
+        "run-rewards"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "RunRewards.cs:52, RunFinisher.cs:71 (findings 3 and 4) (error-handling)"
+      ],
+      "created": "2026-11-04T02:55:25Z",
+      "last_seen": "2026-11-04T02:55:25Z"
+    },
+    {
+      "id": "L-004",
+      "key": "weak_test::record what was observed for each walked check a blanket confirmation is not evidence",
+      "text": "Record what was observed for each walked check; a blanket confirmation is not evidence.",
+      "signal": "weak_test",
+      "scope": "walk",
+      "status": "candidate",
+      "features": [
+        "run-rewards"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "C7, C9, C12, C17, C19 (finding 5) (walk)"
+      ],
+      "created": "2026-11-04T02:55:26Z",
+      "last_seen": "2026-11-04T02:55:26Z"
+    }
+  ]
+}
