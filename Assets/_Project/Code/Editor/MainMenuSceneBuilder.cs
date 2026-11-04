@@ -23,6 +23,7 @@ namespace Assets._Project.Code.Editor
         private const string FontPath = "Assets/_Project/Art/Fonts/PixelifySans.ttf";
         private const float SpritePixelsPerUnit = 100f / 3f; // 1 pixel da arte = 3 unidades do Canvas de 1920x1080
         private const int FrameBorder = 16;                  // cantos das molduras de 48 px do pacote
+        private const float MenuCenterX = 432;               // centro da coluna do menu, a partir da borda esquerda
 
         // Cores tiradas do pacote
         private static readonly Color Background = new Color32(20, 15, 11, 255);
@@ -57,17 +58,34 @@ namespace Assets._Project.Code.Editor
             var menu = canvasGo.AddComponent<MainMenu>();
             var fields = new SerializedObject(menu);
 
+            // Fundo: a ilustração cobre a tela inteira, cortando o excesso de cima e de baixo
+            var background = Node("Fundo", canvasGo.transform);
+            var backgroundImage = Img(background, Art("MenuBackground"), Color.white);
+            backgroundImage.raycastTarget = false;
+            var fitter = background.AddComponent<AspectRatioFitter>();
+            fitter.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
+            fitter.aspectRatio = backgroundImage.sprite.rect.width / backgroundImage.sprite.rect.height;
+
+            // Sombra da esquerda para o texto do menu ficar legível sobre a ilustração
+            var shade = Node("Sombra", canvasGo.transform);
+            Img(shade, Art("MenuShade"), Color.white).raycastTarget = false;
+            var shadeRect = shade.GetComponent<RectTransform>();
+            shadeRect.anchorMin = Vector2.zero;
+            shadeRect.anchorMax = new Vector2(0, 1);
+            shadeRect.pivot = new Vector2(0, 0.5f);
+            shadeRect.sizeDelta = new Vector2(1100, 0);
+
             // Título e arabesco
             var title = Label("Titulo", canvasGo.transform, "LAST WICK", 140, Gold, TextAnchor.MiddleCenter);
-            Place(title, new Vector2(1200, 170), new Vector2(0, 330));
+            PlaceLeft(title, new Vector2(900, 170), new Vector2(MenuCenterX, 330));
             var flourish = Node("Arabesco", canvasGo.transform);
             Img(flourish, Art("MenuFlourish"), Color.white).SetNativeSize();
-            flourish.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 225);
+            PlaceLeft(flourish, flourish.GetComponent<RectTransform>().sizeDelta, new Vector2(MenuCenterX, 225));
 
             // Moldura com as opções
             var frame = Node("Opcoes", canvasGo.transform);
             Img(frame, Art("MenuFrame"), Color.white, tiled: true);
-            Place(frame, new Vector2(624, 528), new Vector2(0, -130));
+            PlaceLeft(frame, new Vector2(624, 528), new Vector2(MenuCenterX, -130));
             var column = frame.AddComponent<VerticalLayoutGroup>();
             column.padding = new RectOffset(60, 60, 60, 60);
             column.spacing = 8;
@@ -243,11 +261,14 @@ namespace Assets._Project.Code.Editor
             {
                 string path = AssetDatabase.GUIDToAssetPath(guid);
                 var importer = (TextureImporter)AssetImporter.GetAtPath(path);
-                bool frame = Path.GetFileNameWithoutExtension(path).EndsWith("Frame");
+                string name = Path.GetFileNameWithoutExtension(path);
+                bool frame = name.EndsWith("Frame");
+                // A ilustração do fundo não tem grade de pixels exata e é ampliada 1,6x; o degradê também precisa de filtro
+                bool smooth = name == "MenuBackground" || name == "MenuShade";
                 importer.textureType = TextureImporterType.Sprite;
                 importer.spriteImportMode = SpriteImportMode.Single;
                 importer.spritePixelsPerUnit = SpritePixelsPerUnit;
-                importer.filterMode = FilterMode.Point;
+                importer.filterMode = smooth ? FilterMode.Bilinear : FilterMode.Point;
                 importer.textureCompression = TextureImporterCompression.Uncompressed;
                 importer.mipmapEnabled = false;
                 importer.alphaIsTransparency = true;
@@ -281,6 +302,15 @@ namespace Assets._Project.Code.Editor
         private static void Place(GameObject go, Vector2 size, Vector2 position)
         {
             var rect = go.GetComponent<RectTransform>();
+            rect.sizeDelta = size;
+            rect.anchoredPosition = position;
+        }
+
+        // Ancorado no meio da borda esquerda da tela; position.x conta a partir dela
+        private static void PlaceLeft(GameObject go, Vector2 size, Vector2 position)
+        {
+            var rect = go.GetComponent<RectTransform>();
+            rect.anchorMin = rect.anchorMax = new Vector2(0, 0.5f);
             rect.sizeDelta = size;
             rect.anchoredPosition = position;
         }
