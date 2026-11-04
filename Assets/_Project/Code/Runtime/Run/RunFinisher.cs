@@ -29,6 +29,9 @@ namespace Assets._Project.Code.Runtime.Run
 
             inventory = player.GetComponent<CardInventory>();
             stats = player.GetComponent<PlayerRunStats>();
+
+            if (rewards == null)
+                Debug.LogError("RunFinisher: sem RunRewards; a run vai entregar 0 de tudo.", this);
         }
 
         private void OnEnable()
@@ -70,20 +73,26 @@ namespace Assets._Project.Code.Runtime.Run
             Finish(reason);
         }
 
-        private RunResult BuildResult(RunEndReason reason) => new RunResult
+        private RunResult BuildResult(RunEndReason reason)
         {
-            Reason = reason,
-            ElapsedTime = timer.Elapsed,
-            RemainingTime = timer.Remaining,
-            Points = progress.Points,
-            Kills = progress.Kills,
-            MilestonesReached = progress.MilestonesReached,
-            Level = playerLevel.Level,
-            Cards = inventory.Cards,
-            Stats = stats,
-            Collected = rewards.Collected,
-            Delivered = RewardRules.Deliver(rewards.Collected, reason)
-        };
+            // Sem RunRewards, entrega 0 em vez de travar o fim da run (a tela de resultado ainda abre)
+            var collected = rewards != null ? rewards.Collected : default;
+
+            return new RunResult
+            {
+                Reason = reason,
+                ElapsedTime = timer.Elapsed,
+                RemainingTime = timer.Remaining,
+                Points = progress.Points,
+                Kills = progress.Kills,
+                MilestonesReached = progress.MilestonesReached,
+                Level = playerLevel.Level,
+                Cards = inventory.Cards,
+                Stats = stats,
+                Collected = collected,
+                Delivered = RewardRules.Deliver(collected, reason)
+            };
+        }
 
         private void Finish(RunEndReason reason)
         {
