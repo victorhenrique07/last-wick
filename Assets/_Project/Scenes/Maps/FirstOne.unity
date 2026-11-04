@@ -781,6 +781,7 @@ GameObject:
   - component: {fileID: 1480376263}
   - component: {fileID: 1480376265}
   - component: {fileID: 1480376264}
+  - component: {fileID: 1480376266}
   m_Layer: 0
   m_Name: Run
   m_TagString: Untagged
@@ -943,6 +944,7 @@ MonoBehaviour:
   timer: {fileID: 1480376265}
   progress: {fileID: 1480376261}
   playerLevel: {fileID: 1480376263}
+  rewards: {fileID: 1480376266}
 --- !u!114 &1480376265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -956,6 +958,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RunTimer
   config: {fileID: 11400000, guid: 764ecae89690ddd428ebb9dc83cf4339, type: 2}
+--- !u!114 &1480376266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1480376258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24ec547b6f8d2394ba0b0b7251bc36e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Assets._Project.Code.Runtime.Run.RunRewards
+  config: {fileID: 11400000, guid: b13a4415cbd44635b39838c54d9123fa, type: 2}
 --- !u!1001 &1678883237
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -219,8 +219,8 @@ T8 → T9 → T10 → T11 → T12
 
 **Done when**:
 
-- [ ] A cena salva com as referências ligadas
-- [ ] Console sem erros de compilação
+- [x] A cena salva com as referências ligadas
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
