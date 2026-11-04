@@ -70,11 +70,11 @@
 ## Handoff
 
 **Updated**: 2026-11-03
-**Feature**: run-rewards pausada em T9 de 12 (último commit `4239381`); o usuário pediu o menu principal antes de seguir
-**Phase/Task**: menu principal (AD-013), feito pelo Claude; depois volta para run-rewards T10 (`RewardEntryView`, Claude)
-**Completed**: run-rewards T1-T9. Bosses sem materiais no MVP (RWD-05 mudou). Ícones dos recursos em `Art/Sprites/UI/Victory/`.
-**In progress**: menu principal - cena, script e arte
-**Next step**: terminar o menu; depois T10, T11 e T12 do run-rewards e o fechamento (walk, check_proofs, Verifier)
+**Feature**: run-rewards - as 12 tasks commitadas (última `e8d6f59`); menu principal pronto (`a355182`, AD-013)
+**Phase/Task**: fechamento do run-rewards: walk das 21 checks em Play Mode, `check_proofs.py`, Verifier
+**Completed**: run-rewards T1-T12. Bosses sem materiais no MVP (RWD-05 mudou). Ícones em `Art/Sprites/UI/Victory/`. Menu principal com Novo jogo, Continuar, Opções (desabilitado) e Sair.
+**In progress**: nada
+**Next step**: combinar com o usuário como fazer o walk (C11 e C12 leem o `save.json`; fazer backup antes) e fechar a feature
 **Blockers**: nenhum
 **Uncommitted**: nada além das pastas de ferramentas (`.agents/`, `.claude/`, `.cursor/`, `.windsurf/`)
 **Branch**: main, sem push
