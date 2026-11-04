@@ -1,7 +1,8 @@
 # Padre: atributos permanentes Design
 
 **Spec**: `.specs/features/priest-stats/spec.md`
-**Status**: Draft
+**Status**: Approved
+**Approved**: 2026-11-04 - user: "Aprovo todas"
 
 ---
 

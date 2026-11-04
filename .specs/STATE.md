@@ -76,7 +76,7 @@
 
 **Updated**: 2026-11-04
 **Feature**: hub-flow concluída (`validate_verification.py` com 0 erros); run-rewards e menu principal concluídos antes
-**Phase/Task**: priest-stats - spec reescrita e aprovada (AD-014); design e tasks em rascunho, esperando aprovação
+**Phase/Task**: priest-stats T1 - `AttributeData` (usuário escreve); spec, design e tasks aprovados (AD-014)
 **Completed**: hub-flow T1-T7 (o Claude fez também T1 e T2, a pedido do usuário): HubPanel, ExpeditionPanel, portão `Gate.png`, ResourceCounterView, ResourceBar, `HubCanvasBuilder` e build `MainMenu`, `Hub`, `FirstOne`. Walk de 15 checks (Esc testado pelo usuário), Verifier com 2 findings de cobertura fechados em `cdb37d5`.
 **In progress**: nada
 **Next step**: priest-stats. O save-system ainda espera a validação final (check_proofs e Verifier) depois de blacksmith-weapon.
