@@ -87,8 +87,8 @@ namespace Assets._Project.Code.Editor
             Build();
             try
             {
-                Preview(Path.GetFullPath("Logs/victory_preview.png"), "A CHAMA RESISTE");
-                Preview(Path.GetFullPath("Logs/death_preview.png"), "A CHAMA SE APAGOU");
+                Preview(Path.GetFullPath("Logs/victory_preview.png"), "A CHAMA RESISTE", death: false);
+                Preview(Path.GetFullPath("Logs/death_preview.png"), "A CHAMA SE APAGOU", death: true);
             }
             catch (System.Exception e)
             {
@@ -108,12 +108,12 @@ namespace Assets._Project.Code.Editor
 
             var panel = Node("Painel", screen.transform);
             var panelRect = panel.GetComponent<RectTransform>();
-            panelRect.sizeDelta = new Vector2(1300, 1000);
-            panelRect.anchoredPosition = new Vector2(0, -26);
+            panelRect.sizeDelta = new Vector2(1300, 1032);
+            panelRect.anchoredPosition = new Vector2(0, -18); // a vela em cima ainda cabe na tela
             Img(panel, Art("PanelFrame"), Color.white, tiled: true);
             var column = panel.AddComponent<VerticalLayoutGroup>();
             column.padding = new RectOffset(76, 76, 78, 66);
-            column.spacing = 14;
+            column.spacing = 10;
             column.childAlignment = TextAnchor.UpperCenter;
             SetControl(column, forceWidth: true, forceHeight: false);
 
@@ -138,6 +138,27 @@ namespace Assets._Project.Code.Editor
             Link(fields, "bossesDefeated", SummaryItem(summary.transform, "IconSkull", "Bosses derrotados", "3"));
             Link(fields, "kills", SummaryItem(summary.transform, "IconGrave", "Inimigos mortos", "912"));
             Link(fields, "finalLevel", SummaryItem(summary.transform, "IconCrown", "Nível final", "24"));
+
+            // Recompensas: o que o jogador leva e, na morte, o texto de perda
+            var rewards = Node("Recompensas", panel.transform);
+            Img(rewards, Art("SummaryFrame"), Color.white, tiled: true);
+            var rewardsColumn = rewards.AddComponent<VerticalLayoutGroup>();
+            rewardsColumn.padding = new RectOffset(58, 58, 26, 24);
+            rewardsColumn.childAlignment = TextAnchor.MiddleCenter;
+            SetControl(rewardsColumn, forceWidth: true, forceHeight: false);
+            rewards.AddComponent<LayoutElement>().minHeight = 112; // a moldura não encolhe além das bordas quando a perda some
+            var resources = Node("Recursos", rewards.transform);
+            var resourcesRow = resources.AddComponent<HorizontalLayoutGroup>();
+            SetControl(resourcesRow, forceWidth: true, forceHeight: true);
+            Size(resources, height: 48);
+            Link(fields, "gold", RewardItem(resources.transform, "IconGold", "Ouro"));
+            Link(fields, "oil", RewardItem(resources.transform, "IconOil", "Óleo"));
+            Link(fields, "bones", RewardItem(resources.transform, "IconBone", "Osso"));
+            Link(fields, "iron", RewardItem(resources.transform, "IconIron", "Ferro"));
+            Link(fields, "wax", RewardItem(resources.transform, "IconWax", "Cera"));
+            var loss = Label("Perda", rewards.transform, "Metade do que você coletou se perdeu na escuridão.", 22, Muted, TextAnchor.MiddleCenter);
+            Size(loss, height: 28);
+            Link(fields, "lossLabel", loss);
 
             // Status e cartas lado a lado
             var row = Node("Blocos", panel.transform);
@@ -223,6 +244,31 @@ namespace Assets._Project.Code.Editor
             var content = Node("Conteudo", block.transform);
             content.AddComponent<LayoutElement>().flexibleHeight = 1;
             return content;
+        }
+
+        // Ícone, nome e quantidade numa linha só, centralizados
+        private static RewardEntryView RewardItem(Transform parent, string icon, string label)
+        {
+            var item = Node(label, parent);
+            var row = item.AddComponent<HorizontalLayoutGroup>();
+            row.spacing = 8;
+            row.childAlignment = TextAnchor.MiddleCenter;
+            SetControl(row, forceWidth: false, forceHeight: false);
+
+            var image = Node("Icone", item.transform);
+            Img(image, Art(icon), Color.white);
+            Size(image, 27, 27);
+            var name = Label("Nome", item.transform, label, 22, Muted, TextAnchor.MiddleLeft);
+            name.GetComponent<Text>().horizontalOverflow = HorizontalWrapMode.Overflow;
+            Size(name, height: 48);
+            var value = Label("Valor", item.transform, "0", 30, Cream, TextAnchor.MiddleLeft);
+            value.GetComponent<Text>().horizontalOverflow = HorizontalWrapMode.Overflow;
+            Size(value, height: 48);
+
+            var view = new SerializedObject(item.AddComponent<RewardEntryView>());
+            view.FindProperty("value").objectReferenceValue = value.GetComponent<Text>();
+            view.ApplyModifiedPropertiesWithoutUndo();
+            return item.GetComponent<RewardEntryView>();
         }
 
         // Rótulo em cima e, embaixo, ícone + valor, tudo centralizado
@@ -327,7 +373,7 @@ namespace Assets._Project.Code.Editor
             }
         }
 
-        private static void Preview(string path, string title)
+        private static void Preview(string path, string title, bool death)
         {
             var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             var camera = new GameObject("Camera").AddComponent<Camera>();
@@ -354,6 +400,17 @@ namespace Assets._Project.Code.Editor
             }
             hud.transform.Find("RunResultPanel/Painel/Blocos/Cartas/SemCartas").gameObject.SetActive(false);
             hud.transform.Find("RunResultPanel/Painel/Titulo").GetComponent<Text>().text = title;
+
+            // Recompensas de exemplo: na morte, coletado → metade
+            var rewards = hud.transform.Find("RunResultPanel/Painel/Recompensas");
+            var samples = new[] { ("Ouro", 70), ("Óleo", 115), ("Osso", 9), ("Ferro", 7), ("Cera", 1) };
+            foreach (var (name, collected) in samples)
+            {
+                var entry = rewards.Find($"Recursos/{name}").GetComponent<RewardEntryView>();
+                if (death) entry.Show(collected, collected / 2);
+                else entry.Show(collected);
+            }
+            rewards.Find("Perda").gameObject.SetActive(death);
 
             var target = new RenderTexture(1920, 1080, 24);
             camera.targetTexture = target;

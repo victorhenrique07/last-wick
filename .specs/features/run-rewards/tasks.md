@@ -279,8 +279,8 @@ T8 → T9 → T10 → T11 → T12
 
 **Done when**:
 
-- [ ] As prévias de vitória e de morte em `Logs/` mostram o bloco
-- [ ] Console sem erros de compilação
+- [x] As prévias de vitória e de morte em `Logs/` mostram o bloco
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
@@ -382,7 +382,7 @@ Proof: walk - Morrer no começo da run sem matar nada e ver 0 nas 5 entradas.
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** T9 - os ícones ficam em `Art/Sprites/UI/Victory/` (IconGold, IconOil, IconBone, IconIron, IconWax), ao lado dos outros ícones da tela, e não em `UI/Resources/`: uma pasta chamada `Resources` é especial no Unity e entraria inteira no build; decisão do agente | T5 - os bosses não rendem materiais no MVP; RWD-05 e C5 mudaram. Usuário, na T5: "O boss não vai dropar material. Pelo menos nao por enquanto. Talvez apenas materiais especificos que são só dele, mas não agora no MVP." | T4 - o sorteio de material usa um enum dos materiais em vez de `rng.Next(3)` solto. Usuário: "acho melhor criar um Enum com os tipos de cada material, por que ficaria mais facil de adicionar um material novo no futuro."
+**Settled mid-build:** T11 - os campos `gold`, `oil`, `bones`, `iron`, `wax` e `lossLabel` entram no `RunResultPanel` já na T11, porque o builder liga as referências neles; a T12 só escreve a lógica que os preenche; decisão do agente | T9 - os ícones ficam em `Art/Sprites/UI/Victory/` (IconGold, IconOil, IconBone, IconIron, IconWax), ao lado dos outros ícones da tela, e não em `UI/Resources/`: uma pasta chamada `Resources` é especial no Unity e entraria inteira no build; decisão do agente | T5 - os bosses não rendem materiais no MVP; RWD-05 e C5 mudaram. Usuário, na T5: "O boss não vai dropar material. Pelo menos nao por enquanto. Talvez apenas materiais especificos que são só dele, mas não agora no MVP." | T4 - o sorteio de material usa um enum dos materiais em vez de `rng.Next(3)` solto. Usuário: "acho melhor criar um Enum com os tipos de cada material, por que ficaria mais facil de adicionar um material novo no futuro."
 **Dispatched:** none
 **Walked:** none
 

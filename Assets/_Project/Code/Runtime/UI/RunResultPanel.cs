@@ -44,6 +44,14 @@ namespace Assets._Project.Code.Runtime.UI
         [SerializeField] private CardSlotView cardSlotPrefab;
         [SerializeField] private GameObject noCardsLabel;
 
+        [Header("Recompensas")]
+        [SerializeField] private RewardEntryView gold;
+        [SerializeField] private RewardEntryView oil;
+        [SerializeField] private RewardEntryView bones;
+        [SerializeField] private RewardEntryView iron;
+        [SerializeField] private RewardEntryView wax;
+        [SerializeField] private GameObject lossLabel; // "Metade do que você coletou...", só na morte e na escuridão
+
         void OnEnable() => GameEvents.RunFinished += RaiseResultPanel;
         void OnDisable() => GameEvents.RunFinished -= RaiseResultPanel;
 
