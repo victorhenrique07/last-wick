@@ -191,8 +191,8 @@ T2 → T3 → T4 → T5 → T6 → T7
 
 **Done when**:
 
-- [ ] Build Settings mostra `MainMenu`, `Hub` e `FirstOne` nos índices 0, 1 e 2 e não mostra `SampleScene`
-- [ ] Console sem erros de compilação
+- [x] Build Settings mostra `MainMenu`, `Hub` e `FirstOne` nos índices 0, 1 e 2 e não mostra `SampleScene`
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
