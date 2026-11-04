@@ -1,7 +1,9 @@
 using Assets._Project.Code.Runtime.Cards;
+using Assets._Project.Code.Runtime.Core;
+using Assets._Project.Code.Runtime.Save;
+using LastWick.Combat;
 using LastWick.Player;
 using UnityEngine;
-using Assets._Project.Code.Runtime.Core;
 
 namespace Assets._Project.Code.Runtime.Run
 {
@@ -13,6 +15,9 @@ namespace Assets._Project.Code.Runtime.Run
         [SerializeField] private RunTimer timer;
         [SerializeField] private RunProgress progress;
         [SerializeField] private PlayerLevel playerLevel;
+        [SerializeField] private RunRewards rewards;
+
+        private bool finished;
 
         private CardInventory inventory;
         private PlayerRunStats stats;
@@ -41,14 +46,15 @@ namespace Assets._Project.Code.Runtime.Run
         {
             if (bossIndex != config.Milestones.Length - 1) return;
 
-            GameEvents.RaiseRunFinished(BuildResult(RunEndReason.Victory));
+            Finish(RunEndReason.Victory);
         }
 
         // A escuridão dos 10:00 também mata o player; o relógio zerado diz qual foi o caso
         private void OnPlayerDied()
         {
             var reason = timer.Remaining <= 0f ? RunEndReason.Darkness : RunEndReason.Death;
-            GameEvents.RaiseRunFinished(BuildResult(reason));
+
+            Finish(reason);
         }
 
         private RunResult BuildResult(RunEndReason reason) => new RunResult
@@ -61,7 +67,23 @@ namespace Assets._Project.Code.Runtime.Run
             MilestonesReached = progress.MilestonesReached,
             Level = playerLevel.Level,
             Cards = inventory.Cards,
-            Stats = stats
+            Stats = stats,
+            Collected = rewards.Collected,
+            Delivered = RewardRules.Deliver(rewards.Collected, reason)
         };
+
+        private void Finish(RunEndReason reason)
+        {
+            if (finished) return;
+
+            finished = true;
+
+            var result = BuildResult(reason);
+
+            SaveSystem.Add(result.Delivered);
+            SaveSystem.Save();
+
+            GameEvents.RaiseRunFinished(result);
+        }
     }
 }

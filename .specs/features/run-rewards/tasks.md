@@ -198,9 +198,9 @@ T8 → T9 → T10 → T11 → T12
 
 **Done when**:
 
-- [ ] O save é gravado antes de `RaiseRunFinished`
-- [ ] Um segundo fim na mesma run é ignorado
-- [ ] Console sem erros de compilação
+- [x] O save é gravado antes de `RaiseRunFinished`
+- [x] Um segundo fim na mesma run é ignorado
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
