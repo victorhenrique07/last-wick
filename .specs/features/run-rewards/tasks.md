@@ -259,8 +259,8 @@ T8 → T9 → T10 → T11 → T12
 
 **Done when**:
 
-- [ ] `Show(delivered)` e `Show(collected, delivered)` mudam o texto
-- [ ] Console sem erros de compilação
+- [x] `Show(delivered)` e `Show(collected, delivered)` mudam o texto
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
