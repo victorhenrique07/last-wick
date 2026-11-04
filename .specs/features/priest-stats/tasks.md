@@ -70,8 +70,8 @@ T6 → T7 → T8 → T9 → T10 → T11
 
 **Done when**:
 
-- [ ] O Inspector de um `AttributeData` mostra ID, nome, ícone e uma lista de efeitos com status e ganho
-- [ ] Console sem erros de compilação
+- [x] O Inspector de um `AttributeData` mostra ID, nome, ícone e uma lista de efeitos com status e ganho
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
@@ -377,7 +377,7 @@ Proof: walk - Pôr no save um nível 3 de um ID inexistente e ler "Nível 3" e c
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** T1 - a velocidade do projétil sai do padre e fica só nas cartas; PRST-13, o enum e a C13 mudaram. Usuário, na T1: "esse campo nao vai existir. Isso será aumentado através das cartas durante a run."
+**Settled mid-build:** T1 - `PlayerStatType` e `AttributeEffect` ficam em arquivos próprios em `Runtime/Player/`; sem asset de teste no Inspector (usuário: "Já sabemos que vai funcionar."), conferido na T7 | T1 - a velocidade do projétil sai do padre e fica só nas cartas; PRST-13, o enum e a C13 mudaram. Usuário, na T1: "esse campo nao vai existir. Isso será aumentado através das cartas durante a run."
 **Dispatched:** none
 **Walked:** none
 
