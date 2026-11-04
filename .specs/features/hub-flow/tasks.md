@@ -111,8 +111,8 @@ T2 → T3 → T4 → T5 → T6 → T7
 
 **Done when**:
 
-- [ ] Importado com PPU 16, Point e pivô na base
-- [ ] Console sem erros de compilação
+- [x] Importado com PPU 16, Point e pivô na base
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
