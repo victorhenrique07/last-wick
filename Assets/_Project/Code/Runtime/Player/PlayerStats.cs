@@ -23,6 +23,10 @@ namespace LastWick.Player
         [Tooltip("Dano do próprio player, somado ao dano da arma.")]
         [Min(0f)] public float Damage = 0f;
 
+        [Header("Defesa")]
+        [Tooltip("Defesa do player, reduzindo o dano recebido.")]
+        [Range(0f, 1f)] public float DamageReduction = 0f;
+
         [Header("Luz")]
         [Min(0f)] public float LightRadius = 5f;
 

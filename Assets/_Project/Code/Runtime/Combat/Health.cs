@@ -16,6 +16,7 @@ namespace LastWick.Combat
 
         // Ligado pela esquiva durante os frames de invencibilidade.
         public bool IsInvulnerable { get; set; }
+        public float DamageReductionMultiplier { get; set; } = 1f;
 
         public event Action<DamageInfo> Damaged;
         public event Action<float> Healed;
@@ -32,7 +33,7 @@ namespace LastWick.Combat
             if (IsDead || IsInvulnerable || info.Amount <= 0f)
                 return;
 
-            Current = Mathf.Max(0f, Current - info.Amount);
+            Current = Mathf.Max(0f, Current - info.Amount * DamageReductionMultiplier);
             Damaged?.Invoke(info);
 
             if (IsDead)
