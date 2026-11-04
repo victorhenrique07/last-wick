@@ -124,7 +124,7 @@ T6 → T7 → T8 → T9 → T10 → T11
 
 ### T4: `PlayerRunStats` usa o `StatBlock` (usuário)
 
-**What**: Trocar `baseStats.X` por `block.X`, multiplicar cadência e projétil pelo bloco, prender a esquiva em 0,2 s e a defesa no teto, e passar a defesa ao `Health`.
+**What**: Trocar `baseStats.X` por `block.X`, multiplicar a cadência pelo bloco, prender a esquiva em 0,2 s e a defesa no teto, e passar a defesa ao `Health`.
 **Where**: `Assets/_Project/Code/Runtime/Player/PlayerRunStats.cs`
 **Depends on**: T3
 **Reuses**: `PermanentStats.Build`
@@ -294,7 +294,7 @@ Proof: walk - Clicar na igreja no hub.
 Proof: walk - Num save novo, ler "Nível 0" e custo 5.
 
 **C3** - Cada atributo mostra nome, nível e cada efeito com atual → próximo (PRST-03, AC 3)
-Proof: walk - Ler "Vitalidade Nv 0" e "Vida máxima 100 → 110"; ler as 6 linhas da Agilidade.
+Proof: walk - Ler "Vitalidade Nv 0" e "Vida máxima 100 → 110"; ler as 5 linhas da Agilidade.
 
 **C4** - Comprar tira o custo do ouro (PRST-04, AC 4)
 Proof: walk - Com 20 de ouro, comprar Vitalidade e ver 15.
@@ -323,8 +323,8 @@ Proof: walk - Com Vitalidade 3, começar a run com 130 de vida máxima.
 **C12** - Força sobe o dano base de qualquer arma (PRST-12, AC 3)
 Proof: walk - Com Força 2, ver `CalculateDamage` da arma 2 acima do de antes.
 
-**C13** - Agilidade move os seis status, e a recarga da esquiva cai (PRST-13, AC 4)
-Proof: walk - Com Agilidade 5, ler velocidade +0,25, esquiva +0,25, recarga −0,2 s, cadência ×1,1, projétil ×1,1 e coleta +0,25.
+**C13** - Agilidade move os cinco status, e a recarga da esquiva cai (PRST-13, AC 4)
+Proof: walk - Com Agilidade 5, ler velocidade +0,25, esquiva +0,25, recarga −0,2 s, cadência ×1,1 e coleta +0,25; a velocidade do projétil não muda.
 
 **C14** - Resistência sobe a defesa (PRST-14, AC 5)
 Proof: walk - Com Resistência 10, ler defesa 0,2 no `PlayerRunStats`.
@@ -377,7 +377,7 @@ Proof: walk - Pôr no save um nível 3 de um ID inexistente e ler "Nível 3" e c
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** none
+**Settled mid-build:** T1 - a velocidade do projétil sai do padre e fica só nas cartas; PRST-13, o enum e a C13 mudaram. Usuário, na T1: "esse campo nao vai existir. Isso será aumentado através das cartas durante a run."
 **Dispatched:** none
 **Walked:** none
 

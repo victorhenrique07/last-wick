@@ -24,6 +24,7 @@ O ouro dos bosses não tem uso, e o player começa toda run com os mesmos status
 | Defesa na tela de resultado | A grade de status da tela é fixa; a defesa aparece no menu do padre. |
 | Luz | Sobe na fogueira (feature `campfire-light`), nunca no padre. |
 | NPC animado do padre | O MVP usa a igreja como símbolo. |
+| Velocidade do projétil no padre | Sobe só pelas cartas durante a run. Usuário, na T1: "esse campo nao vai existir. Isso será aumentado através das cartas durante a run." |
 | Valores finais de custo e de ganho | Provisórios; balanceamento depois do MVP. |
 
 ---
@@ -37,13 +38,13 @@ O ouro dos bosses não tem uso, e o player começa toda run com os mesmos status
 | Atributos | Vitalidade, Força, Agilidade e Resistência | Usuário escolheu os quatro; "não existirá destreza. Apenas agilidade, pois são a mesma coisa." | y |
 | Vitalidade | Vida máxima | Rascunho aprovado: "está correto." | y |
 | Força | Dano base do personagem, que vale para todas as armas | Usuário: "A força sobe o DANO BASE do PERSONAGEM. Esse dano base vai se refletir em todas as armas." | y |
-| Agilidade | Velocidade de movimento, distância da esquiva, menos recarga da esquiva, cadência de tiro, velocidade do projétil e um pouco de raio de coleta de XP | Usuário: Agilidade absorve a Destreza e "aumenta o raio de coleta de XP, mas bem pouco." | y |
+| Agilidade | Velocidade de movimento, distância da esquiva, menos recarga da esquiva, cadência de tiro e um pouco de raio de coleta de XP; a velocidade do projétil fica só nas cartas | Usuário: Agilidade absorve a Destreza e "aumenta o raio de coleta de XP, mas bem pouco." Usuário, na T1: "esse campo nao vai existir. Isso será aumentado através das cartas durante a run." | y |
 | Resistência | Defesa | Usuário pediu um nome que abranja vários tipos para receber novos efeitos depois | y |
 | Defesa | Reduz uma porcentagem do dano recebido, com teto | Usuário escolheu "Percentual com teto" | y |
 | Custo | Pelo nível total do personagem: o próximo ponto custa o mesmo em qualquer atributo | Usuário escolheu "Pelo nível total" | y |
 | Fórmula do custo (provisória) | 5 + 5 x nível total, em ouro | Mantém a curva da spec anterior; uma vitória (70 de ouro) compra 4 pontos no começo | y |
 | Ganho por ponto | Linear, sem soft cap | Usuário escolheu "Linear no MVP" | y |
-| Ganhos por ponto (provisórios) | Vitalidade: vida +10. Força: dano base +1. Agilidade: velocidade +0,05, distância da esquiva +0,05, recarga da esquiva -0,04 s, cadência +2%, velocidade do projétil +2%, coleta de XP +0,05. Resistência: defesa +2% | Passos pequenos para muitos níveis; valores ajustados no balanceamento | y |
+| Ganhos por ponto (provisórios) | Vitalidade: vida +10. Força: dano base +1. Agilidade: velocidade +0,05, distância da esquiva +0,05, recarga da esquiva -0,04 s, cadência +2%, coleta de XP +0,05. Resistência: defesa +2% | Passos pequenos para muitos níveis; valores ajustados no balanceamento | y |
 | Teto da defesa (provisório) | 60% | Nunca zerar o dano recebido | y |
 | Pisos | Recarga da esquiva nunca abaixo de 0,2 s | Regra da spec anterior, mantida | y |
 | Onde ficam os números | Um asset por atributo, com uma lista de efeitos (status + ganho por ponto) | Usuário: novos efeitos e atributos "sem mexer no nome dos ups" | y |
@@ -90,7 +91,7 @@ O ouro dos bosses não tem uso, e o player começa toda run com os mesmos status
 1. WHEN uma run começar THEN o player SHALL somar à base do `PlayerStats`, para cada status, o ganho por ponto vezes o nível de cada atributo que move esse status. [PRST-10]
 2. The Vitalidade SHALL subir a vida máxima. [PRST-11]
 3. The Força SHALL subir o dano base do personagem, que entra no dano de qualquer arma. [PRST-12]
-4. The Agilidade SHALL subir a velocidade de movimento, a distância da esquiva, a cadência de tiro, a velocidade do projétil e o raio de coleta de XP, e SHALL diminuir a recarga da esquiva. [PRST-13]
+4. The Agilidade SHALL subir a velocidade de movimento, a distância da esquiva, a cadência de tiro e o raio de coleta de XP, e SHALL diminuir a recarga da esquiva. [PRST-13]
 5. The Resistência SHALL subir a defesa. [PRST-14]
 6. The bônus das cartas SHALL ser aplicado sobre os valores que já incluem os pontos do padre. [PRST-15]
 7. The tela de resultado SHALL mostrar os status finais com os pontos do padre incluídos. [PRST-16]

@@ -78,7 +78,7 @@ flowchart LR
 - **Purpose**: Um atributo do padre com os status que ele move (PRST-20).
 - **Location**: `Assets/_Project/Code/Runtime/Priest/AttributeData.cs`; assets em `Assets/_Project/Data/Priest/`
 - **Interfaces**:
-  - `enum PlayerStatType { MaxHealth, Damage, MoveSpeed, DodgeDistance, DodgeCooldown, FireRate, ProjectileSpeed, XpPickupRadius, Defense }`
+  - `enum PlayerStatType { MaxHealth, Damage, MoveSpeed, DodgeDistance, DodgeCooldown, FireRate, XpPickupRadius, Defense }`
   - `[Serializable] struct AttributeEffect { PlayerStatType Stat; float GainPerLevel; }`
   - `AttributeData`: `string Id`, `string DisplayName`, `Sprite Icon`, `IReadOnlyList<AttributeEffect> Effects`
 - **Dependencies**: nenhuma.
@@ -97,7 +97,7 @@ flowchart LR
 - **Purpose**: Calcular a base da run antes das cartas, e os valores que o menu mostra.
 - **Location**: `Assets/_Project/Code/Runtime/Player/PermanentStats.cs`
 - **Interfaces**:
-  - `struct StatBlock { MaxHealth, MoveSpeed, DodgeDistance, DodgeInvulnerability, DodgeCooldown, Damage, LightRadius, XpPickupRadius, FireRate, ProjectileSpeed, Defense }` - `FireRate` e `ProjectileSpeed` são multiplicadores que começam em 1
+  - `struct StatBlock { MaxHealth, MoveSpeed, DodgeDistance, DodgeInvulnerability, DodgeCooldown, Damage, LightRadius, XpPickupRadius, FireRate, Defense }` - `FireRate` é um multiplicador que começa em 1
   - `static StatBlock Build(PlayerStats baseStats, IEnumerable<AttributeData> attributes, Func<AttributeData, int> levelOf)` - copia o `PlayerStats` e soma `GainPerLevel × nível` de cada efeito no campo do seu `Stat` (PRST-10, PRST-22)
   - `static StatBlock Build(PlayerStats baseStats, SaveData save, GameDatabase db)` - atalho com os níveis do save, usado pelo `PlayerRunStats`
   - `static float Get(StatBlock block, PlayerStatType stat)` - o valor de um status, usado pelo menu
@@ -107,7 +107,7 @@ flowchart LR
 
 ### PlayerRunStats (mudança)
 
-- **Interfaces**: no `Awake`, `block = PermanentStats.Build(baseStats, SaveSystem.Data, SaveSystem.Database)` antes do primeiro `Refresh`. O `Refresh` usa `block` no lugar de `baseStats`. `FireRateMultiplier = block.FireRate × cartas` e `ProjectileSpeedMultiplier = block.ProjectileSpeed × cartas`. A recarga da esquiva fica em no mínimo 0,2 s depois das cartas (PRST-26). `Defense = Mathf.Min(block.Defense, baseStats.DefenseCap)` (PRST-27), e `health.DamageTakenMultiplier = 1 − Defense`.
+- **Interfaces**: no `Awake`, `block = PermanentStats.Build(baseStats, SaveSystem.Data, SaveSystem.Database)` antes do primeiro `Refresh`. O `Refresh` usa `block` no lugar de `baseStats`. `FireRateMultiplier = block.FireRate × cartas`; a velocidade do projétil continua vindo só das cartas. A recarga da esquiva fica em no mínimo 0,2 s depois das cartas (PRST-26). `Defense = Mathf.Min(block.Defense, baseStats.DefenseCap)` (PRST-27), e `health.DamageTakenMultiplier = 1 − Defense`.
 
 ### GameDatabase (mudança)
 
@@ -132,7 +132,7 @@ flowchart LR
 - **Interfaces**:
   - `PriestMenu.Open()` - cria uma linha por item de `GameDatabase.Attributes`, assina `SaveSystem.Changed` enquanto aberto e redesenha tudo
   - `AttributeRowView.Show(icon, name, level, effectLines, canBuy, onBuy)` - `effectLines` são textos "Vida máxima 100 → 110"
-  - Rótulo e formato de cada `PlayerStatType` num só lugar (`StatLabels`): defesa, cadência e velocidade do projétil em %, recarga em segundos
+  - Rótulo e formato de cada `PlayerStatType` num só lugar (`StatLabels`): defesa e cadência em %, recarga em segundos
 - **Layout**: painel gótico. No topo, "Nível N" e o custo com o ícone de ouro (vermelho quando falta). Embaixo, uma linha por atributo: ícone, nome, "Nv N", as linhas de efeito "atual → próximo" e o botão "Abençoar". Rodapé com "Fechar".
 
 ---
@@ -165,7 +165,7 @@ flowchart LR
 | Decision | Choice | Rationale |
 | -------- | ------ | --------- |
 | Como o efeito diz qual status muda | Enum `PlayerStatType` | Simples de escolher no Inspector; sem reflexão por nome de campo. |
-| Todos os efeitos somam | `GainPerLevel` somado ao campo; a recarga da esquiva usa ganho negativo (−0,04 s) e cadência e projétil somam ao multiplicador (0,02 = +2%) | Uma regra só para qualquer efeito; o asset decide o sinal. |
+| Todos os efeitos somam | `GainPerLevel` somado ao campo; a recarga da esquiva usa ganho negativo (−0,04 s) e a cadência soma ao multiplicador (0,02 = +2%) | Uma regra só para qualquer efeito; o asset decide o sinal. |
 | Valores "atual → próximo" no menu | `PermanentStats.Build` duas vezes, com o nível e com o nível + 1 | O menu mostra exatamente a conta que a run vai usar. |
 | Onde fica o custo | `GameDatabase.PriestBaseCost` e `PriestCostStep` | O custo é do personagem, não de um atributo; balanceável no Inspector. |
 | Defesa no `Health` | `DamageTakenMultiplier` | Um ponto só para reduzir dano; cartas de defesa no futuro usam o mesmo campo. |
