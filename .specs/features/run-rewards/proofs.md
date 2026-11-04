@@ -1,7 +1,7 @@
 # run-rewards proofs
 
-**HEAD**: bb7ee0a
-**Tree**: dirty - .agents/, .claude/, .cursor/, .windsurf/
+**HEAD**: 5c4425a
+**Tree**: clean
 **Shell**: C:/Program Files/Git\bin\bash.exe
 **Result**: 21 pass, 0 fail
 
