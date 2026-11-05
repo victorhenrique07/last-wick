@@ -190,8 +190,8 @@ T6 → T7 → T8 → T9
 
 **Done when**:
 
-- [ ] `TryBuy` no nível 10 devolve falso
-- [ ] Console sem erros de compilação
+- [x] `TryBuy` no nível 10 devolve falso
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
