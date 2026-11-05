@@ -27,9 +27,6 @@ namespace LastWick.Player
         [Tooltip("Defesa do player, reduzindo o dano recebido.")]
         [Range(0f, 1f)] public float DamageReduction = 0f;
 
-        [Header("Luz")]
-        [Min(0f)] public float LightRadius = 5f;
-
         [Header("Coleta")]
         [Min(0f)] public float XpPickupRadius = 2f;
     }

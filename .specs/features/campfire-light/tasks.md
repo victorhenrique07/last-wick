@@ -150,8 +150,8 @@ T6 → T7 → T8 → T9
 
 **Done when**:
 
-- [ ] Nenhum código lê `PlayerStats.LightRadius`
-- [ ] Console sem erros de compilação
+- [x] Nenhum código lê `PlayerStats.LightRadius`
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
