@@ -213,8 +213,8 @@ T6 → T7 → T8 → T9 → T10 → T11
 
 **Done when**:
 
-- [ ] 4 ícones importados como os outros ícones da UI e ligados aos assets
-- [ ] Console sem erros de compilação
+- [x] 4 ícones importados como os outros ícones da UI e ligados aos assets
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build

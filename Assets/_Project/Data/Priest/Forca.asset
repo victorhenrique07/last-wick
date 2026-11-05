@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Assets._Project.Code.Runtime.Priest.AttributeData
   Id: forca
   DisplayName: "For\xE7a"
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: d69abddc47e325546b7539c05425f49f, type: 3}
   effects:
   - Stat: 1
     GainPerLevel: 1

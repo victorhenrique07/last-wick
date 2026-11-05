@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Assets._Project.Code.Runtime.Priest.AttributeData
   Id: resistencia
   DisplayName: "Resist\xEAncia"
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: 65e03e3c152a94346904124241c65d06, type: 3}
   effects:
   - Stat: 7
     GainPerLevel: 0.02

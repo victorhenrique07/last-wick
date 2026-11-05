@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Assets._Project.Code.Runtime.Priest.AttributeData
   Id: vitalidade
   DisplayName: Vitalidade
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: 61b25a0a085956040ba5599651bd631e, type: 3}
   effects:
   - Stat: 0
     GainPerLevel: 10

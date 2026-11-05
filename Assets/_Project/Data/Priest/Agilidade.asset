@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Assets._Project.Code.Runtime.Priest.AttributeData
   Id: agilidade
   DisplayName: Agilidade
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: edb1a13329a377b4d955af9202f90610, type: 3}
   effects:
   - Stat: 2
     GainPerLevel: 0.05
