@@ -61,7 +61,7 @@ flowchart LR
 | ------ | ------------------ |
 | `save-system` | `PriestLevels` por `AttributeData.Id`; `Save()` depois de cada compra (SAVE-13). |
 | `campfire-light` | Adiciona a luz ao `PermanentStats.Build`; o padre nunca mexe na luz. |
-| `GameDatabase` | Lista `Attributes` com os 4 assets na ordem do menu, e o custo (`PriestBaseCost` 5, `PriestCostStep` 5). |
+| `GameDatabase` | Lista `Attributes` com os 4 assets na ordem do menu, e o custo (`PriestBaseCost` 5, `PriestCostGrowth` 1,8). |
 | `hub-flow` | O painel do padre é um `HubPanel` no Canvas do hub. |
 
 ---
@@ -111,7 +111,7 @@ flowchart LR
 
 ### GameDatabase (mudança)
 
-- **Interfaces**: `IReadOnlyList<AttributeData> Attributes`, `AttributeData FindAttribute(string id)`, `int PriestBaseCost` (5), `int PriestCostStep` (5).
+- **Interfaces**: `IReadOnlyList<AttributeData> Attributes`, `AttributeData FindAttribute(string id)`, `int PriestBaseCost` (5), `float PriestCostGrowth` (1,8).
 
 ### PriestShop
 
@@ -120,7 +120,7 @@ flowchart LR
 - **Interfaces**:
   - `static int LevelOf(AttributeData attribute)`
   - `static int CharacterLevel()` - `PermanentStats.CharacterLevel(SaveSystem.Data)`
-  - `static int NextCost()` - `PriestBaseCost + PriestCostStep × CharacterLevel()` (PRST-07)
+  - `static int NextCost()` - `Mathf.RoundToInt(PriestBaseCost × PriestCostGrowth ^ CharacterLevel())` (PRST-07)
   - `static bool CanBuy()` - ouro do save ≥ `NextCost()`
   - `static bool TryBuy(AttributeData attribute)` - `TrySpend` do custo, nível + 1, `NotifyChanged`, `Save` (PRST-04, PRST-05, PRST-25)
 - **Dependencies**: `SaveSystem`, `PermanentStats`.
@@ -167,6 +167,6 @@ flowchart LR
 | Como o efeito diz qual status muda | Enum `PlayerStatType` | Simples de escolher no Inspector; sem reflexão por nome de campo. |
 | Todos os efeitos somam | `GainPerLevel` somado ao campo; a recarga da esquiva usa ganho negativo (−0,04 s) e a cadência soma ao multiplicador (0,02 = +2%) | Uma regra só para qualquer efeito; o asset decide o sinal. |
 | Valores "atual → próximo" no menu | `PermanentStats.Build` duas vezes, com o nível e com o nível + 1 | O menu mostra exatamente a conta que a run vai usar. |
-| Onde fica o custo | `GameDatabase.PriestBaseCost` e `PriestCostStep` | O custo é do personagem, não de um atributo; balanceável no Inspector. |
+| Onde fica o custo | `GameDatabase.PriestBaseCost` e `PriestCostGrowth` | O custo é do personagem, não de um atributo; balanceável no Inspector. |
 | Defesa no `Health` | `DamageTakenMultiplier` | Um ponto só para reduzir dano; cartas de defesa no futuro usam o mesmo campo. |
 | Defesa multiplicativa | `1 − (1 − ganho)^nível`, sem teto | Como a absorção dos soulslikes: cada ponto rende um pouco menos e o dano nunca zera (escolha do usuário). |

@@ -42,7 +42,7 @@ O ouro dos bosses não tem uso, e o player começa toda run com os mesmos status
 | Resistência | Defesa | Usuário pediu um nome que abranja vários tipos para receber novos efeitos depois | y |
 | Defesa | Reduz uma porcentagem do dano recebido; os pontos se multiplicam como a absorção dos soulslikes: cada ponto tira 2% do dano que sobrou, defesa = 1 - (1 - 0,02)^nível. Rende um pouco menos a cada ponto e nunca chega a 100%, sem teto | Usuário, na T2, depois de comparar com a defesa dos soulslikes: escolheu "Multiplicando (soulslike)". Substitui o "Percentual com teto" | y |
 | Custo | Pelo nível total do personagem: o próximo ponto custa o mesmo em qualquer atributo | Usuário escolheu "Pelo nível total" | y |
-| Fórmula do custo (provisória) | 5 + 5 x nível total, em ouro | Mantém a curva da spec anterior; uma vitória (70 de ouro) compra 4 pontos no começo | y |
+| Fórmula do custo | Cada ponto custa 1,8 vez o anterior: 5 x 1,8 ^ nível total, arredondado para o inteiro mais próximo (5, 9, 16, 29, 52, 94...) | Usuário, na T5: "o custo será sempre 1.8x do nível anterior." Uma vitória (70 de ouro) compra 4 pontos no começo (5 + 9 + 16 + 29); por volta do nível 5 um ponto passa a custar mais que uma vitória | y |
 | Ganho por ponto | Linear, sem soft cap | Usuário escolheu "Linear no MVP" | y |
 | Ganhos por ponto (provisórios) | Vitalidade: vida +10. Força: dano base +1. Agilidade: velocidade +0,05, distância da esquiva +0,05, recarga da esquiva -0,04 s, cadência +2%, coleta de XP +0,05. Resistência: 2% do dano que sobrou por ponto | Passos pequenos para muitos níveis; valores ajustados no balanceamento | y |
 | Pisos | Recarga da esquiva nunca abaixo de 0,2 s | Regra da spec anterior, mantida | y |
@@ -71,11 +71,11 @@ O ouro dos bosses não tem uso, e o player começa toda run com os mesmos status
 4. WHEN o jogador comprar um ponto num atributo com ouro suficiente THEN o padre SHALL tirar o custo do ouro do save. [PRST-04]
 5. WHEN o jogador comprar um ponto num atributo com ouro suficiente THEN o padre SHALL subir em 1 o nível desse atributo no save. [PRST-05]
 6. The nível do personagem SHALL ser a soma dos níveis de todos os atributos. [PRST-06]
-7. The custo do próximo ponto SHALL ser 5 + 5 x nível do personagem, em ouro, e SHALL ser o mesmo para qualquer atributo. [PRST-07]
+7. The custo do próximo ponto SHALL ser 5 x 1,8 ^ nível do personagem, arredondado para o inteiro mais próximo, em ouro, e SHALL ser o mesmo para qualquer atributo. [PRST-07]
 8. WHEN o jogador comprar um ponto THEN o menu SHALL mostrar o novo nível do personagem, o novo custo e os novos valores de todos os atributos. [PRST-08]
 9. WHEN o jogador clicar em "Fechar" ou apertar Esc THEN o hub SHALL fechar o menu do padre. [PRST-09]
 
-**Independent Test**: Com 20 de ouro, comprar Vitalidade (5) e Força (10): sobram 5, o personagem fica no nível 2 e o próximo ponto custa 15 em qualquer atributo.
+**Independent Test**: Com 20 de ouro, comprar Vitalidade (5) e Força (9): sobram 6, o personagem fica no nível 2 e o próximo ponto custa 16 em qualquer atributo.
 
 ---
 

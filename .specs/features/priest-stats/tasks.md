@@ -144,7 +144,7 @@ T6 → T7 → T8 → T9 → T10 → T11
 
 ### T5: `GameDatabase` com os atributos e o custo (usuário)
 
-**What**: Adicionar a lista `Attributes`, `FindAttribute`, `PriestBaseCost` e `PriestCostStep`, com aviso para ID vazio.
+**What**: Adicionar a lista `Attributes`, `FindAttribute`, `PriestBaseCost` e `PriestCostGrowth`, e a versão de `PermanentStats.Build` que lê o save, com aviso para ID vazio.
 **Where**: `Assets/_Project/Code/Runtime/Save/GameDatabase.cs`
 **Depends on**: T4
 **Reuses**: `FindCard`
@@ -172,7 +172,7 @@ T6 → T7 → T8 → T9 → T10 → T11
 
 **Done when**:
 
-- [ ] Com 20 de ouro, `TryBuy` em dois atributos deixa 5 de ouro, nível 2 e `NextCost` 15
+- [ ] Com 20 de ouro, `TryBuy` em dois atributos deixa 6 de ouro, nível 2 e `NextCost` 16
 - [ ] Sem ouro, `TryBuy` devolve falso e não muda o save
 - [ ] Console sem erros de compilação
 
@@ -305,11 +305,11 @@ Proof: walk - Ler `PriestLevels` no `save.json` com o ID da Vitalidade em 1.
 **C6** - O nível do personagem é a soma dos atributos (PRST-06, AC 6)
 Proof: walk - Comprar Vitalidade e Força e ler "Nível 2".
 
-**C7** - O custo é 5 + 5 × nível e igual em qualquer atributo (PRST-07, AC 7)
-Proof: walk - Com 20 de ouro, comprar Vitalidade (5) e Força (10): sobra 5 e o próximo custa 15 em todos.
+**C7** - O custo é 5 × 1,8^nível, arredondado, e igual em qualquer atributo (PRST-07, AC 7)
+Proof: walk - Com 20 de ouro, comprar Vitalidade (5) e Força (9): sobram 6 e o próximo custa 16 em todos.
 
 **C8** - Depois da compra, o menu mostra o novo nível, o novo custo e os novos valores (PRST-08, AC 8)
-Proof: walk - Depois de comprar Vitalidade, ler "Vida máxima 110 → 120" e o custo 10.
+Proof: walk - Depois de comprar Vitalidade, ler "Vida máxima 110 → 120" e o custo 9.
 
 **C9** - "Fechar" e Esc fecham o menu (PRST-09, AC 9)
 Proof: walk - Fechar pelo botão; reabrir e apertar Esc no Game view.
@@ -360,7 +360,7 @@ Proof: walk - Com 0 de ouro, abrir o menu e ver os 4 botões desligados.
 Proof: walk - No mesmo teste, ler a cor do custo.
 
 **C25** - Cliques rápidos compram um ponto por clique, sem ouro negativo (PRST-25, edge case)
-Proof: walk - Com 20 de ouro, clicar 5 vezes em Vitalidade: 2 pontos e 5 de ouro.
+Proof: walk - Com 20 de ouro, clicar 5 vezes em Vitalidade: 2 pontos e 6 de ouro.
 
 **C26** - A recarga da esquiva não fica abaixo de 0,2 s (PRST-26, edge case)
 Proof: walk - Com Agilidade 50, ler 0,2 s de recarga.
@@ -369,7 +369,7 @@ Proof: walk - Com Agilidade 50, ler 0,2 s de recarga.
 Proof: walk - Com Resistência 100, ler defesa 0,867 e um golpe de 10 tirando 1,33; o ganho do ponto 100 é menor que o do ponto 1.
 
 **C28** - Nível de atributo removido fica no save e conta no nível (PRST-28, edge case)
-Proof: walk - Pôr no save um nível 3 de um ID inexistente e ler "Nível 3" e custo 20, sem efeito na run.
+Proof: walk - Pôr no save um nível 3 de um ID inexistente e ler "Nível 3" e custo 29, sem efeito na run.
 
 ---
 
@@ -377,7 +377,7 @@ Proof: walk - Pôr no save um nível 3 de um ID inexistente e ler "Nível 3" e c
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** T3 - o Claude escreveu o `PermanentStats` a pedido do usuário ("faça isso pra mim"); a versão `Build(PlayerStats, SaveData, GameDatabase)` vai para a T5, que passa a vir antes da T4, porque depende da lista de atributos do `GameDatabase`; o `Build` também prende a recarga em 0,2 s para o menu | T2 - nomes do usuário: `PlayerStats.DamageReduction` (no lugar de `Defense`) e `Health.DamageReductionMultiplier` (no lugar de `DamageTakenMultiplier`); o multiplicador é o quanto do dano passa (1 − redução) | T2 - a defesa multiplica (1 − 0,98^nível), sem teto; PRST-18, PRST-27, C14, C17, C18, C27 e o `DefenseCap` mudaram. Usuário, na T2, depois de comparar com a defesa dos soulslikes: escolheu "Multiplicando (soulslike)". | T1 - `PlayerStatType` e `AttributeEffect` ficam em arquivos próprios em `Runtime/Player/`; sem asset de teste no Inspector (usuário: "Já sabemos que vai funcionar."), conferido na T7 | T1 - a velocidade do projétil sai do padre e fica só nas cartas; PRST-13, o enum e a C13 mudaram. Usuário, na T1: "esse campo nao vai existir. Isso será aumentado através das cartas durante a run."
+**Settled mid-build:** T5 - o custo cresce 1,8× por nível: 5 × 1,8^nível, arredondado; `PriestCostStep` vira `PriestCostGrowth`; PRST-07, C7, C8, C25 e C28 mudaram. Usuário, na T5: "o custo será sempre 1.8x do nível anterior." | T3 - o Claude escreveu o `PermanentStats` a pedido do usuário ("faça isso pra mim"); a versão `Build(PlayerStats, SaveData, GameDatabase)` vai para a T5, que passa a vir antes da T4, porque depende da lista de atributos do `GameDatabase`; o `Build` também prende a recarga em 0,2 s para o menu | T2 - nomes do usuário: `PlayerStats.DamageReduction` (no lugar de `Defense`) e `Health.DamageReductionMultiplier` (no lugar de `DamageTakenMultiplier`); o multiplicador é o quanto do dano passa (1 − redução) | T2 - a defesa multiplica (1 − 0,98^nível), sem teto; PRST-18, PRST-27, C14, C17, C18, C27 e o `DefenseCap` mudaram. Usuário, na T2, depois de comparar com a defesa dos soulslikes: escolheu "Multiplicando (soulslike)". | T1 - `PlayerStatType` e `AttributeEffect` ficam em arquivos próprios em `Runtime/Player/`; sem asset de teste no Inspector (usuário: "Já sabemos que vai funcionar."), conferido na T7 | T1 - a velocidade do projétil sai do padre e fica só nas cartas; PRST-13, o enum e a C13 mudaram. Usuário, na T1: "esse campo nao vai existir. Isso será aumentado através das cartas durante a run."
 **Dispatched:** none
 **Walked:** none
 
