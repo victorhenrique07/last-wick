@@ -356,7 +356,7 @@ Proof: walk - Pôr um efeito de vida na Força de teste e ver a vida subir na ru
 **C23** - Sem ouro, os botões de compra ficam desligados (PRST-23, edge case)
 Proof: walk - Com 0 de ouro, abrir o menu e ver os 4 botões desligados.
 
-**C24** - Sem ouro, o custo fica vermelho (PRST-24, edge case)
+**C24** - Sem ouro, o custo fica na cor de aviso (PRST-24, edge case)
 Proof: walk - No mesmo teste, ler a cor do custo.
 
 **C25** - Cliques rápidos compram um ponto por clique, sem ouro negativo (PRST-25, edge case)

@@ -45,6 +45,7 @@ O ouro dos bosses não tem uso, e o player começa toda run com os mesmos status
 | Fórmula do custo | Cada ponto custa 1,8 vez o anterior: 5 x 1,8 ^ nível total, arredondado para o inteiro mais próximo (5, 9, 16, 29, 52, 94...) | Usuário, na T5: "o custo será sempre 1.8x do nível anterior." Uma vitória (70 de ouro) compra 4 pontos no começo (5 + 9 + 16 + 29); por volta do nível 5 um ponto passa a custar mais que uma vitória | y |
 | Ganho por ponto | Linear, sem soft cap | Usuário escolheu "Linear no MVP" | y |
 | Ganhos por ponto (provisórios) | Vitalidade: vida +10. Força: dano base +1. Agilidade: velocidade +0,05, distância da esquiva +0,05, recarga da esquiva -0,04 s, cadência +2%, coleta de XP +0,05. Resistência: 2% do dano que sobrou por ponto | Passos pequenos para muitos níveis; valores ajustados no balanceamento | y |
+| Cor do custo sem ouro | Terracota da paleta (#C96D45), a cor de aviso do jogo | Usuário, depois da revisão independente: escolheu "Terracota da paleta" em vez de um vermelho fora da paleta | y |
 | Pisos | Recarga da esquiva nunca abaixo de 0,2 s | Regra da spec anterior, mantida | y |
 | Onde ficam os números | Um asset por atributo, com uma lista de efeitos (status + ganho por ponto) | Usuário: novos efeitos e atributos "sem mexer no nome dos ups" | y |
 | Ordem de aplicação | O padre soma à base do `PlayerStats`; as cartas se aplicam por cima | AD-012 | y |
@@ -134,7 +135,7 @@ O ouro dos bosses não tem uso, e o player começa toda run com os mesmos status
 ## Edge Cases
 
 - IF o jogador não tiver ouro para o próximo ponto THEN o menu SHALL desativar o botão de compra de todos os atributos. [PRST-23]
-- IF o jogador não tiver ouro para o próximo ponto THEN o menu SHALL mostrar o custo em vermelho. [PRST-24]
+- IF o jogador não tiver ouro para o próximo ponto THEN o menu SHALL mostrar o custo na cor de aviso da paleta (terracota #C96D45, a mesma do aviso de deck inválido). [PRST-24]
 - WHEN o jogador clicar várias vezes seguidas em comprar THEN o padre SHALL cobrar e subir um ponto por clique, sem deixar o ouro negativo. [PRST-25]
 - IF a recarga da esquiva com os pontos e as cartas ficar abaixo de 0,2 s THEN o player SHALL usar 0,2 s. [PRST-26]
 - WHEN a Resistência tiver muitos pontos THEN a defesa SHALL continuar abaixo de 100%, e cada ponto SHALL render menos que o anterior. [PRST-27]
