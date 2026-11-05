@@ -273,8 +273,8 @@ T6 → T7 → T8 → T9 → T10 → T11
 
 **Done when**:
 
-- [ ] A prévia em `Logs/` mostra o menu do padre aberto
-- [ ] Console sem erros de compilação
+- [x] A prévia em `Logs/` mostra o menu do padre aberto
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build

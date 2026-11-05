@@ -97,16 +97,15 @@ namespace Assets._Project.Code.Editor
             var world = new GameObject("Mundo").transform;
 
             // NPCs: clicáveis, com contorno quando o mouse passa por cima
-            PlaceInteractable("Igreja (Padre)", "Hub/Church.png", new Vector2(0.5f, 1.4f), world, outlineMaterial);
+            var church = PlaceInteractable("Igreja (Padre)", "Hub/Church.png", new Vector2(0.5f, 1.4f), world, outlineMaterial);
             PlaceInteractable("Bigorna (Ferreiro)", "Hub/Anvil.png", new Vector2(-4.5f, -1.6f), world, outlineMaterial);
             PlaceInteractable("Mesa de Tarot (Mago)", "Hub/TarotTable.png", new Vector2(5.5f, -2f), world, outlineMaterial);
 
             // Portão no fim da trilha de baixo: a saída para a run (HUB-01), com o painel de expedição no Canvas
             var gate = PlaceInteractable("Portao (Expedicao)", "Hub/Gate.png", GatePosition, world, outlineMaterial);
-            var expedition = HubCanvasBuilder.Build();
-            var onClick = (UnityEvent)typeof(HubInteractable).GetField("onClick", BindingFlags.NonPublic | BindingFlags.Instance)
-                .GetValue(gate.GetComponent<HubInteractable>());
-            UnityEventTools.AddPersistentListener(onClick, new UnityAction(expedition.Open));
+            var expedition = HubCanvasBuilder.Build(out var priestMenu);
+            LinkClick(gate, expedition.Open);
+            LinkClick(church, priestMenu.Open); // PRST-01
             CreateEventSystem();
 
             var flame = Place("Fogueira", LoadSprite("Hub/HubFlame.png"), Center + new Vector2(0f, -0.4f), world);
@@ -289,6 +288,13 @@ namespace Assets._Project.Code.Editor
             sr.sprite = sprite;
             sr.sortingOrder = Mathf.RoundToInt(-position.y * 10f); // mais embaixo na tela = desenhado na frente
             return go;
+        }
+
+        private static void LinkClick(GameObject interactable, UnityAction action)
+        {
+            var onClick = (UnityEvent)typeof(HubInteractable).GetField("onClick", BindingFlags.NonPublic | BindingFlags.Instance)
+                .GetValue(interactable.GetComponent<HubInteractable>());
+            UnityEventTools.AddPersistentListener(onClick, action);
         }
 
         private static GameObject PlaceInteractable(string name, string spritePath, Vector2 position, Transform parent, Material outlineMaterial)

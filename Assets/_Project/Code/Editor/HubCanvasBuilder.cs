@@ -1,10 +1,13 @@
+using System.IO;
 using Assets._Project.Code.Runtime.Hub;
+using Assets._Project.Code.Runtime.Priest;
 using Assets._Project.Code.Runtime.UI;
 using UnityEditor;
 using UnityEditor.Events;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using LastWick.Player;
 
 namespace Assets._Project.Code.Editor
 {
@@ -14,16 +17,19 @@ namespace Assets._Project.Code.Editor
     {
         private const string ArtPath = "Assets/_Project/Art/Sprites/UI/Victory";
         private const string FontPath = "Assets/_Project/Art/Fonts/PixelifySans.ttf";
+        private const string AttributeRowPath = "Assets/_Project/Prefabs/UI/Priest/AttributeRow.prefab";
+        private const string PlayerStatsPath = "Assets/_Project/Data/Progression/PlayerStats.asset";
 
         private static readonly Color Dim = new Color(0.02f, 0.02f, 0.02f, 0.78f);
         private static readonly Color Cream = new Color32(232, 220, 192, 255);
         private static readonly Color Muted = new Color32(172, 194, 195, 255);
         private static readonly Color ShadowColor = new Color32(19, 20, 20, 255);
+        private static readonly Color Warning = new Color32(201, 109, 69, 255);
 
         private static Font font;
 
-        // Devolve o painel de expedição, para o builder ligar o clique do portão
-        public static ExpeditionPanel Build()
+        // Devolve o painel de expedição e o menu do padre, para o builder ligar o clique do portão e da igreja
+        public static ExpeditionPanel Build(out PriestMenu priestMenu)
         {
             font = AssetDatabase.LoadAssetAtPath<Font>(FontPath);
 
@@ -40,6 +46,7 @@ namespace Assets._Project.Code.Editor
             canvasGo.AddComponent<GraphicRaycaster>();
 
             BuildResourceBar(canvasGo.transform);
+            priestMenu = BuildPriestMenu(canvasGo.transform, BuildAttributeRowPrefab());
             return BuildExpeditionPanel(canvasGo.transform);
         }
 
@@ -143,6 +150,126 @@ namespace Assets._Project.Code.Editor
             return expedition;
         }
 
+        // Menu do padre: nível, custo do próximo ponto e uma linha por atributo, criadas em runtime pelo PriestMenu
+        private static PriestMenu BuildPriestMenu(Transform canvas, AttributeRowView rowPrefab)
+        {
+            var host = Node("PainelPadre", canvas);
+            Stretch(host);
+            var hubPanel = host.AddComponent<HubPanel>();
+            var menu = host.AddComponent<PriestMenu>();
+
+            var root = Node("Conteudo", host.transform);
+            Stretch(root);
+            Img(root, null, Dim); // fundo em tela cheia: escurece o hub e segura os cliques
+
+            var panel = Node("Painel", root.transform);
+            Img(panel, Art("PanelFrame"), Color.white, tiled: true);
+            var panelRect = panel.GetComponent<RectTransform>();
+            panelRect.sizeDelta = new Vector2(1386, 819); // múltiplos do ornamento de 63 unidades
+            panelRect.anchoredPosition = new Vector2(0, -50); // abaixo da barra de recursos
+            var column = panel.AddComponent<VerticalLayoutGroup>();
+            column.padding = new RectOffset(84, 84, 72, 60);
+            column.spacing = 8;
+            column.childAlignment = TextAnchor.UpperCenter;
+            SetControl(column, forceWidth: true, forceHeight: false);
+
+            Size(Label("Titulo", panel.transform, "O Padre", 48, Cream, TextAnchor.MiddleCenter), height: 60);
+            Ornament(panel.transform, "Arabesco", Art("TitleFlourish"));
+
+            var header = Node("Cabecalho", panel.transform);
+            var headerRow = header.AddComponent<HorizontalLayoutGroup>();
+            headerRow.spacing = 60;
+            headerRow.childAlignment = TextAnchor.MiddleCenter;
+            SetControl(headerRow, forceWidth: false, forceHeight: true);
+            Size(header, height: 48);
+            var level = Label("Nivel", header.transform, "Nível 0", 32, Cream, TextAnchor.MiddleCenter);
+            level.GetComponent<Text>().horizontalOverflow = HorizontalWrapMode.Overflow;
+            var cost = Label("Custo", header.transform, "Próximo ponto: 5 de ouro", 28, Cream, TextAnchor.MiddleCenter);
+            cost.GetComponent<Text>().horizontalOverflow = HorizontalWrapMode.Overflow;
+
+            var rows = Node("Atributos", panel.transform);
+            var rowsLayout = rows.AddComponent<VerticalLayoutGroup>();
+            rowsLayout.spacing = 6;
+            rowsLayout.childAlignment = TextAnchor.UpperCenter;
+            SetControl(rowsLayout, forceWidth: true, forceHeight: false);
+            rows.AddComponent<LayoutElement>().flexibleHeight = 1;
+
+            var footer = Node("Rodape", panel.transform);
+            var footerRow = footer.AddComponent<HorizontalLayoutGroup>();
+            footerRow.childAlignment = TextAnchor.MiddleCenter;
+            SetControl(footerRow, forceWidth: false, forceHeight: true);
+            Size(footer, height: 72);
+            Button(footer.transform, "Fechar", menu.Close);
+
+            var hubFields = new SerializedObject(hubPanel);
+            hubFields.FindProperty("root").objectReferenceValue = root;
+            hubFields.ApplyModifiedPropertiesWithoutUndo();
+
+            var fields = new SerializedObject(menu);
+            fields.FindProperty("panel").objectReferenceValue = hubPanel;
+            fields.FindProperty("baseStats").objectReferenceValue = AssetDatabase.LoadAssetAtPath<PlayerStats>(PlayerStatsPath);
+            fields.FindProperty("levelLabel").objectReferenceValue = level.GetComponent<Text>();
+            fields.FindProperty("costLabel").objectReferenceValue = cost.GetComponent<Text>();
+            fields.FindProperty("rowsContainer").objectReferenceValue = rows.transform;
+            fields.FindProperty("rowPrefab").objectReferenceValue = rowPrefab;
+            fields.FindProperty("costColor").colorValue = Cream;
+            fields.FindProperty("missingGoldColor").colorValue = Warning;
+            fields.ApplyModifiedPropertiesWithoutUndo();
+
+            root.SetActive(false);
+            return menu;
+        }
+
+        // Prefab de uma linha: ícone, nome e nível, os efeitos "atual → próximo" e o botão "Abençoar"
+        private static AttributeRowView BuildAttributeRowPrefab()
+        {
+            var row = new GameObject("AttributeRow", typeof(RectTransform));
+            row.layer = LayerMask.NameToLayer("UI");
+            var layout = row.AddComponent<HorizontalLayoutGroup>();
+            layout.padding = new RectOffset(8, 8, 6, 6);
+            layout.spacing = 24;
+            layout.childAlignment = TextAnchor.MiddleLeft;
+            SetControl(layout, forceWidth: false, forceHeight: false);
+            row.AddComponent<LayoutElement>().minHeight = 84;
+
+            var icon = Node("Icone", row.transform);
+            var iconImage = Img(icon, null, Color.white);
+            iconImage.raycastTarget = false;
+            Size(icon, 45, 45); // 9 px x 5
+
+            var title = Node("Nome", row.transform);
+            var titleColumn = title.AddComponent<VerticalLayoutGroup>();
+            titleColumn.childAlignment = TextAnchor.MiddleLeft;
+            SetControl(titleColumn, forceWidth: true, forceHeight: false);
+            Size(title, width: 240);
+            title.GetComponent<LayoutElement>().flexibleWidth = 0; // o espaço livre vai todo para os efeitos
+            var name = Label("Atributo", title.transform, "Vitalidade", 32, Cream, TextAnchor.MiddleLeft);
+            Size(name, height: 40);
+            var level = Label("Nivel", title.transform, "Nv 0", 24, Muted, TextAnchor.MiddleLeft);
+            Size(level, height: 30);
+
+            var effects = Label("Efeitos", row.transform, "Vida máxima  100 → 110", 22, Cream, TextAnchor.MiddleLeft);
+            effects.GetComponent<Text>().lineSpacing = 1.1f;
+            effects.AddComponent<LayoutElement>().flexibleWidth = 1;
+
+            var buy = Button(row.transform, "Abençoar", null);
+            Size(buy.gameObject, height: 72);
+
+            var view = row.AddComponent<AttributeRowView>();
+            var fields = new SerializedObject(view);
+            fields.FindProperty("icon").objectReferenceValue = iconImage;
+            fields.FindProperty("nameLabel").objectReferenceValue = name.GetComponent<Text>();
+            fields.FindProperty("levelLabel").objectReferenceValue = level.GetComponent<Text>();
+            fields.FindProperty("effectsLabel").objectReferenceValue = effects.GetComponent<Text>();
+            fields.FindProperty("buyButton").objectReferenceValue = buy;
+            fields.ApplyModifiedPropertiesWithoutUndo();
+
+            Directory.CreateDirectory(Path.GetDirectoryName(AttributeRowPath));
+            var prefab = PrefabUtility.SaveAsPrefabAsset(row, AttributeRowPath);
+            Object.DestroyImmediate(row);
+            return prefab.GetComponent<AttributeRowView>();
+        }
+
         // Botão da barra gótica; escurece quando desligado (o "Partir" com deck inválido)
         private static Button Button(Transform parent, string text, UnityAction onClick)
         {
@@ -159,7 +286,8 @@ namespace Assets._Project.Code.Editor
             colors.pressedColor = new Color(0.7f, 0.7f, 0.7f);
             colors.disabledColor = new Color(0.35f, 0.35f, 0.35f, 0.6f);
             button.colors = colors;
-            UnityEventTools.AddPersistentListener(button.onClick, onClick);
+            if (onClick != null) // a linha de atributo liga o clique em runtime
+                UnityEventTools.AddPersistentListener(button.onClick, onClick);
             var label = Label("Texto", go.transform, text, 28, Cream, TextAnchor.MiddleCenter);
             Stretch(label);
             return button;
