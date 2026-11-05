@@ -14,3 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Assets._Project.Code.Runtime.Save.GameDatabase
   cardCollection: {fileID: 11400000, guid: 7edaf826be2b94e469f0417eafae6a75, type: 2}
   startingDeck: {fileID: 11400000, guid: 61f7699b954bcca439239f8526601472, type: 2}
+  attributes:
+  - {fileID: 11400000, guid: 5a13f19e0c0c6194a946405af7d12bd7, type: 2}
+  - {fileID: 11400000, guid: 5f95e2a7634b2d24da9bde7dc3dfe9fc, type: 2}
+  - {fileID: 11400000, guid: 9fb40be73e3db9a4ba4ab22e1dae53eb, type: 2}
+  - {fileID: 11400000, guid: 05571c31accf8b8498f94bc7ff88e51f, type: 2}
+  priestBaseCost: 5
+  priestCostStep: 1.8

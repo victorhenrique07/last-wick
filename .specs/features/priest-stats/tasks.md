@@ -193,8 +193,8 @@ T6 → T7 → T8 → T9 → T10 → T11
 
 **Done when**:
 
-- [ ] Os 4 assets têm IDs próprios e os efeitos da spec, na ordem do menu
-- [ ] Console sem erros de compilação
+- [x] Os 4 assets têm IDs próprios e os efeitos da spec, na ordem do menu
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build

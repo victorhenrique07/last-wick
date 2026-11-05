@@ -18,5 +18,6 @@ MonoBehaviour:
   DodgeInvulnerability: 0.5
   DodgeCooldown: 2
   Damage: 0
+  DamageReduction: 0
   LightRadius: 5
   XpPickupRadius: 2
