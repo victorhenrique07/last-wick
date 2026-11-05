@@ -1,6 +1,6 @@
 # campfire-light proofs
 
-**HEAD**: 8e0e6e7
+**HEAD**: f28e0c8
 **Tree**: clean
 **Shell**: C:/Program Files/Git\bin\bash.exe
 **Result**: 11 pass, 0 fail
