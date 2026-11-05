@@ -110,8 +110,8 @@ T6 → T7 → T8 → T9
 
 **Done when**:
 
-- [ ] O campo aparece no Inspector
-- [ ] Console sem erros de compilação
+- [x] O campo aparece no Inspector
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
@@ -281,7 +281,7 @@ Proof: walk - Com 0 de óleo, abrir o menu.
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** T2 - o Claude escreveu o `LightRules` a pedido do usuário ("pode fazer isso também.") | T1 - o Claude terminou o `LightConfig` a pedido do usuário ("Faça o LightConfig e termine o RunRewards.") | antes da T1 - os orbes de óleo saíram do jogo: LIGHT-10 a LIGHT-15, LIGHT-18 e LIGHT-19, as tasks do orbe (antigas T7 a T10) e as checks C10 a C15, C18 e C19 foram removidas, e o `LightConfig` fica só com luz e custo. Usuário, em 2026-11-04: "Acredito que isso possa ser removido do gdd. nao vamos spawnar o oleo no mapa. será apenas de bosses."
+**Settled mid-build:** T3 em diante - o Claude faz o resto da fogueira. Usuário: "pode fazer a fogueira." | T2 - o Claude escreveu o `LightRules` a pedido do usuário ("pode fazer isso também.") | T1 - o Claude terminou o `LightConfig` a pedido do usuário ("Faça o LightConfig e termine o RunRewards.") | antes da T1 - os orbes de óleo saíram do jogo: LIGHT-10 a LIGHT-15, LIGHT-18 e LIGHT-19, as tasks do orbe (antigas T7 a T10) e as checks C10 a C15, C18 e C19 foram removidas, e o `LightConfig` fica só com luz e custo. Usuário, em 2026-11-04: "Acredito que isso possa ser removido do gdd. nao vamos spawnar o oleo no mapa. será apenas de bosses."
 **Dispatched:** none
 **Walked:** none
 

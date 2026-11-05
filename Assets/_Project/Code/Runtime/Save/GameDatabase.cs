@@ -1,4 +1,5 @@
 ﻿using Assets._Project.Code.Runtime.Cards;
+using Assets._Project.Code.Runtime.Light;
 using Assets._Project.Code.Runtime.Priest;
 using System;
 using System.Collections.Generic;
@@ -21,11 +22,16 @@ namespace Assets._Project.Code.Runtime.Save
         [Tooltip("Incremento de custo para cada nível de atributo no padre.")]
         [SerializeField, Min(0)] private float priestCostStep = 1.8f;
 
+        [Header("Fogueira")]
+        [Tooltip("Raio da luz por nível e custo em óleo de cada nível.")]
+        [SerializeField] private LightConfig light;
+
         public CardCollection CardCollection => cardCollection;
         public DeckData StartingDeck => startingDeck;
         public IReadOnlyList<AttributeData> Attributes => attributes;
         public int PriestBaseCost => priestBaseCost;
         public float PriestCostStep => priestCostStep;
+        public LightConfig Light => light;
 
         private void OnValidate()
         {
