@@ -360,7 +360,17 @@ namespace Assets._Project.Code.Editor
             cam.orthographicSize = 5f;
             cam.clearFlags = CameraClearFlags.SolidColor;
             cam.backgroundColor = new Color32(19, 20, 20, 255);
+            cam.allowHDR = false;  // pixel art: sem HDR nem MSAA, que borram as bordas dos pixels
+            cam.allowMSAA = false;
             go.AddComponent<UniversalAdditionalCameraData>();
+
+            // 320x180 com sprites de 16 px: 11,25 unidades de altura, escala inteira (6x em 1080p)
+            var pixelPerfect = go.AddComponent<PixelPerfectCamera>();
+            pixelPerfect.assetsPPU = PixelsPerUnit;
+            pixelPerfect.refResolutionX = 320;
+            pixelPerfect.refResolutionY = 180;
+            pixelPerfect.gridSnapping = PixelPerfectCamera.GridSnapping.PixelSnapping;
+            pixelPerfect.cropFrame = PixelPerfectCamera.CropFrame.None;
             go.AddComponent<Physics2DRaycaster>(); // deixa o EventSystem enxergar os Collider2D do mundo
         }
 

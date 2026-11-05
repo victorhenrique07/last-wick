@@ -82,6 +82,11 @@
 - **Reason**: Usuário: "Acredito que isso possa ser removido do gdd. nao vamos spawnar o oleo no mapa. será apenas de bosses."
 - **Status**: active
 
+### AD-017
+- **Decision**: As câmeras da run e do hub usam o Pixel Perfect Camera do URP com resolução de referência 320x180 e sprites de 16 px por unidade: 11,25 unidades de altura visíveis (escala 6x em 1080p), alinhamento de pixels ligado, sem barras pretas, e HDR e MSAA desligados. Toda arte de mundo nova usa 16 px por unidade.
+- **Reason**: Usuário: "Está tudo muito perto." Comparou 8 unidades (antes), 320x180 e 384x216, e escolheu "320x180".
+- **Status**: active
+
 ## Handoff
 
 **Updated**: 2026-11-04
