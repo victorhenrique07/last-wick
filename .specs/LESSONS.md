@@ -9,10 +9,10 @@
 Corroborated across multiple features. Safe to apply as guidance.
 
 ### L-002 - A walk for a rule that lists several cases must exercise every listed case, the last one included, not only the first.
-- signal: `weak_test` · recurrence: 2 feature(s) · scope: `walk` · harmful: 0
-- features: run-rewards, hub-flow
-- evidence: C3, C4 (finding 2) (walk) (+1 more)
-- last seen: 2026-11-04T12:21:06Z
+- signal: `weak_test` · recurrence: 3 feature(s) · scope: `walk` · harmful: 0
+- features: run-rewards, hub-flow, priest-stats
+- evidence: C3, C4 (finding 2) (walk) (+2 more)
+- last seen: 2026-11-05T01:30:29Z
 
 ## Candidates (under observation - do NOT load as guidance yet)
 
@@ -35,6 +35,18 @@ Seen once or not yet corroborated. Tracked, not trusted.
 - features: run-rewards
 - evidence: C7, C9, C12, C17, C19 (finding 5) (walk)
 - last seen: 2026-11-04T02:55:26Z
+
+### L-005 - Every loop over a designer-edited asset list skips null entries and entries without an ID before reading them.
+- signal: `ac_gap` · recurrence: 1 feature(s) · scope: `data` · harmful: 0
+- features: priest-stats
+- evidence: PermanentStats.cs:48 (finding 1) (data)
+- last seen: 2026-11-05T01:30:27Z
+
+### L-006 - Exponential costs are computed in double and clamped before converting to int.
+- signal: `ac_gap` · recurrence: 1 feature(s) · scope: `economy` · harmful: 0
+- features: priest-stats
+- evidence: PriestShop.NextCost (finding 5) (economy)
+- last seen: 2026-11-05T01:30:28Z
 
 ## Quarantined (failed when applied - ignore)
 

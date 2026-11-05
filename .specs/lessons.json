@@ -3,7 +3,7 @@
   "promote_threshold": 2,
   "window_days": 45,
   "quarantine_threshold": 2,
-  "next_id": 5,
+  "next_id": 7,
   "lessons": [
     {
       "id": "L-001",
@@ -32,16 +32,18 @@
       "status": "confirmed",
       "features": [
         "run-rewards",
-        "hub-flow"
+        "hub-flow",
+        "priest-stats"
       ],
-      "recurrence": 2,
+      "recurrence": 3,
       "harmful": 0,
       "evidence": [
         "C3, C4 (finding 2) (walk)",
-        "C11, C13 (findings 1 e 2) (walk)"
+        "C11, C13 (findings 1 e 2) (walk)",
+        "C6, C26 (findings 2 and 4) (walk)"
       ],
       "created": "2026-11-04T02:55:25Z",
-      "last_seen": "2026-11-04T12:21:06Z"
+      "last_seen": "2026-11-05T01:30:29Z"
     },
     {
       "id": "L-003",
@@ -78,6 +80,42 @@
       ],
       "created": "2026-11-04T02:55:26Z",
       "last_seen": "2026-11-04T02:55:26Z"
+    },
+    {
+      "id": "L-005",
+      "key": "ac_gap::every loop over a designer edited asset list skips null entries and entries without an id before reading them",
+      "text": "Every loop over a designer-edited asset list skips null entries and entries without an ID before reading them.",
+      "signal": "ac_gap",
+      "scope": "data",
+      "status": "candidate",
+      "features": [
+        "priest-stats"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "PermanentStats.cs:48 (finding 1) (data)"
+      ],
+      "created": "2026-11-05T01:30:27Z",
+      "last_seen": "2026-11-05T01:30:27Z"
+    },
+    {
+      "id": "L-006",
+      "key": "ac_gap::exponential costs are computed in double and clamped before converting to int",
+      "text": "Exponential costs are computed in double and clamped before converting to int.",
+      "signal": "ac_gap",
+      "scope": "economy",
+      "status": "candidate",
+      "features": [
+        "priest-stats"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "PriestShop.NextCost (finding 5) (economy)"
+      ],
+      "created": "2026-11-05T01:30:28Z",
+      "last_seen": "2026-11-05T01:30:28Z"
     }
   ]
 }
