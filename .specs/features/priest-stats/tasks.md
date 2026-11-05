@@ -152,8 +152,8 @@ T6 → T7 → T8 → T9 → T10 → T11
 
 **Done when**:
 
-- [ ] O Inspector do `GameDatabase` mostra a lista de atributos e os dois números do custo
-- [ ] Console sem erros de compilação
+- [x] O Inspector do `GameDatabase` mostra a lista de atributos e os dois números do custo
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
@@ -377,7 +377,7 @@ Proof: walk - Pôr no save um nível 3 de um ID inexistente e ler "Nível 3" e c
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** T5 - o custo cresce 1,8× por nível: 5 × 1,8^nível, arredondado; `PriestCostStep` vira `PriestCostGrowth`; PRST-07, C7, C8, C25 e C28 mudaram. Usuário, na T5: "o custo será sempre 1.8x do nível anterior." | T3 - o Claude escreveu o `PermanentStats` a pedido do usuário ("faça isso pra mim"); a versão `Build(PlayerStats, SaveData, GameDatabase)` vai para a T5, que passa a vir antes da T4, porque depende da lista de atributos do `GameDatabase`; o `Build` também prende a recarga em 0,2 s para o menu | T2 - nomes do usuário: `PlayerStats.DamageReduction` (no lugar de `Defense`) e `Health.DamageReductionMultiplier` (no lugar de `DamageTakenMultiplier`); o multiplicador é o quanto do dano passa (1 − redução) | T2 - a defesa multiplica (1 − 0,98^nível), sem teto; PRST-18, PRST-27, C14, C17, C18, C27 e o `DefenseCap` mudaram. Usuário, na T2, depois de comparar com a defesa dos soulslikes: escolheu "Multiplicando (soulslike)". | T1 - `PlayerStatType` e `AttributeEffect` ficam em arquivos próprios em `Runtime/Player/`; sem asset de teste no Inspector (usuário: "Já sabemos que vai funcionar."), conferido na T7 | T1 - a velocidade do projétil sai do padre e fica só nas cartas; PRST-13, o enum e a C13 mudaram. Usuário, na T1: "esse campo nao vai existir. Isso será aumentado através das cartas durante a run."
+**Settled mid-build:** T5 - nome do usuário: o crescimento do custo é `GameDatabase.PriestCostStep` (float 1,8, multiplicador), não `PriestCostGrowth`; `FindAttribute` sem proteção para posição vazia, sem uso por enquanto | T5 - o custo cresce 1,8× por nível: 5 × 1,8^nível, arredondado; `PriestCostStep` vira `PriestCostGrowth`; PRST-07, C7, C8, C25 e C28 mudaram. Usuário, na T5: "o custo será sempre 1.8x do nível anterior." | T3 - o Claude escreveu o `PermanentStats` a pedido do usuário ("faça isso pra mim"); a versão `Build(PlayerStats, SaveData, GameDatabase)` vai para a T5, que passa a vir antes da T4, porque depende da lista de atributos do `GameDatabase`; o `Build` também prende a recarga em 0,2 s para o menu | T2 - nomes do usuário: `PlayerStats.DamageReduction` (no lugar de `Defense`) e `Health.DamageReductionMultiplier` (no lugar de `DamageTakenMultiplier`); o multiplicador é o quanto do dano passa (1 − redução) | T2 - a defesa multiplica (1 − 0,98^nível), sem teto; PRST-18, PRST-27, C14, C17, C18, C27 e o `DefenseCap` mudaram. Usuário, na T2, depois de comparar com a defesa dos soulslikes: escolheu "Multiplicando (soulslike)". | T1 - `PlayerStatType` e `AttributeEffect` ficam em arquivos próprios em `Runtime/Player/`; sem asset de teste no Inspector (usuário: "Já sabemos que vai funcionar."), conferido na T7 | T1 - a velocidade do projétil sai do padre e fica só nas cartas; PRST-13, o enum e a C13 mudaram. Usuário, na T1: "esse campo nao vai existir. Isso será aumentado através das cartas durante a run."
 **Dispatched:** none
 **Walked:** none
 

@@ -58,6 +58,9 @@ namespace Assets._Project.Code.Runtime.Player
             return block;
         }
 
+        public static StatBlock Build(PlayerStats baseStats, SaveData save, GameDatabase database) => 
+            Build(baseStats, database.Attributes, attr => SaveData.GetLevel(save.PriestLevels, attr.Id));
+
         public static float Get(StatBlock block, PlayerStatType stat) => stat switch
         {
             PlayerStatType.MaxHealth => block.MaxHealth,
