@@ -84,6 +84,10 @@ namespace Assets._Project.Code.Runtime.Save
 
             saveData.Resources = saveData.Resources.ClampedToZero();
 
+            // Nível de luz fora do intervalo (save editado ou MaxLevel reduzido) volta para 0..máximo
+            int maxLight = Database.Light != null ? Database.Light.MaxLevel : int.MaxValue;
+            saveData.LightLevel = Math.Clamp(saveData.LightLevel, 0, maxLight);
+
             var nonexistentCards = saveData.UnlockedCards.Except(saveData.UnlockedCards.Where(id => Database.FindCard(id) != null)).ToList();
             if (nonexistentCards.Any())
             {

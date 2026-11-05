@@ -1,4 +1,5 @@
 using Assets._Project.Code.Runtime.Save;
+using UnityEngine;
 
 namespace Assets._Project.Code.Runtime.Light
 {
@@ -7,7 +8,8 @@ namespace Assets._Project.Code.Runtime.Light
     {
         private static LightConfig Config => SaveSystem.Database.Light;
 
-        public static int Level => SaveSystem.Data.LightLevel;
+        // Preso em 0..máximo, mesmo que o save tenha mudado depois de carregar
+        public static int Level => Mathf.Clamp(SaveSystem.Data.LightLevel, 0, Config.MaxLevel);
 
         public static bool IsMaxed => Level >= Config.MaxLevel; // LIGHT-16
 
@@ -22,7 +24,7 @@ namespace Assets._Project.Code.Runtime.Light
             if (IsMaxed) return false;
             if (!SaveSystem.TrySpend(new ResourceBag { Oil = NextCost })) return false;
 
-            SaveSystem.Data.LightLevel++;
+            SaveSystem.Data.LightLevel = Level + 1;
             SaveSystem.NotifyChanged();
             SaveSystem.Save();
             return true;
