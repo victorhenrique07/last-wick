@@ -210,8 +210,8 @@ T6 → T7 → T8 → T9
 
 **Done when**:
 
-- [ ] Sem óleo, o custo fica na cor de aviso e o botão desligado
-- [ ] Console sem erros de compilação
+- [x] Sem óleo, o custo fica na cor de aviso e o botão desligado
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
