@@ -87,6 +87,11 @@
 - **Reason**: Usuário: "Está tudo muito perto." e, depois, "por que os personagens estao tremendo ao andar?" (o alinhamento dos sprites causava o tremor). Comparou 8 unidades (antes), 320x180 e 384x216, e escolheu "320x180".
 - **Status**: active
 
+### AD-018
+- **Decision**: Cartas podem ter mecânica própria (feature card-effects): um prefab de efeito opcional no `CardData`, criado no player quando a carta é escolhida. Ao pegar a carta de novo, o sistema só avisa o efeito do número de cópias; cada mecânica decide se vira mais uma instância ou fica mais forte. A feature entra junto da mesa de tarot (AD-015) e é provada com a primeira carta de efeito real.
+- **Reason**: Usuário: "depende da carta. isso será uma mecânica dela."; escolheu "Junto da mesa de tarot", "Eu escrevo o código (AD-001)" e "Provar com a 1ª carta real".
+- **Status**: active
+
 ## Handoff
 
 **Updated**: 2026-11-05
@@ -94,7 +99,7 @@
 **Phase/Task**: próxima etapa (AD-015): fechamento do save-system, depois balanceamento, mesa de tarot e ferreiro
 **Completed**: campfire-light T1-T9 sem os orbes de óleo (AD-016): `LightConfig`, `LightRules`, luz da run pelo nível da fogueira, `CampfireShop`, menu "A Fogueira" nas velas do hub. O Claude fez as tasks a pedido. Walk de 11 checks (Esc testado pelo usuário), Verifier com 2 findings fechados em `c2f327a` (nível de luz preso em 0..máximo). Pixel Perfect Camera 320x180 na run e no hub (AD-017), sem alinhamento de pixels nos sprites e com a câmera arredondada (tremor corrigido em `00e5434`).
 **In progress**: nada
-**Next step**: fechar o save-system: rodar o walk das checks que já dá para provar (as de cartas e armas ficam pendentes até a mesa de tarot e o ferreiro), check_proofs e Verifier. Depois, o balanceamento.
+**Next step**: spec do card-effects escrita, aguardando aprovação. Depois, fechar o save-system: rodar o walk das checks que já dá para provar (as de cartas e armas ficam pendentes até a mesa de tarot e o ferreiro), check_proofs e Verifier. Depois, o balanceamento.
 **Blockers**: nenhum
 **Uncommitted**: nada (as pastas de ferramentas estão no `.git/info/exclude` local)
 **Branch**: main, sem push desde `9adb184`
