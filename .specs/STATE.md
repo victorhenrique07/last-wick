@@ -75,7 +75,7 @@
 ### AD-015
 - **Decision**: Nova ordem do MVP: fogueira (campfire-light) → fechamento do save-system → balanceamento → mesa de tarot → ferreiro. O fechamento do save deixa pendentes as checks que dependem de cartas e armas, e o balanceamento ganha uma segunda passada depois da mesa e do ferreiro.
 - **Reason**: Usuário: "Podemos deixar a mesa de tarot e ferreiro para depois da ultima etapa? quero deixar a fogueira pronta, ajustar o save e o balanceamento e depois implementar o desbloqueio de cartas e as armas."
-- **Status**: active
+- **Status**: superseded by AD-019
 
 ### AD-016
 - **Decision**: Não há óleo espalhado no mapa: os orbes de óleo saíram do jogo, e o óleo vem só dos bosses (110 por vitória). Substitui a parte dos orbes da AD-005 e do One-Pager.
@@ -92,14 +92,19 @@
 - **Reason**: Usuário: "depende da carta. isso será uma mecânica dela."; escolheu "Junto da mesa de tarot", "Eu escrevo o código (AD-001)" e "Provar com a 1ª carta real".
 - **Status**: active
 
+### AD-019
+- **Decision**: Nova ordem do MVP, que substitui a da AD-015: mesa de tarot (com o card-effects, AD-018) → ferreiro → fechamento do save-system, completo e sem checks pendentes → balanceamento, numa passada só (incluindo o fechamento formal do spawn-waves). A segunda passada de balanceamento da AD-015 deixa de existir.
+- **Reason**: Pergunta "qual ordem você acha melhor?"; usuário: "vamos seguir essa ordem então." Balancear antes das cartas e das armas seria refeito depois, e o save fecha uma vez só, sem pendências.
+- **Status**: active
+
 ## Handoff
 
 **Updated**: 2026-11-05
 **Feature**: campfire-light concluída (`validate_verification.py` com 0 erros); priest-stats, hub-flow, run-rewards e menu principal concluídos antes
-**Phase/Task**: próxima etapa (AD-015): fechamento do save-system, depois balanceamento, mesa de tarot e ferreiro
+**Phase/Task**: próxima etapa (AD-019): mesa de tarot com card-effects, depois ferreiro, fechamento do save e balanceamento
 **Completed**: campfire-light T1-T9 sem os orbes de óleo (AD-016): `LightConfig`, `LightRules`, luz da run pelo nível da fogueira, `CampfireShop`, menu "A Fogueira" nas velas do hub. O Claude fez as tasks a pedido. Walk de 11 checks (Esc testado pelo usuário), Verifier com 2 findings fechados em `c2f327a` (nível de luz preso em 0..máximo). Pixel Perfect Camera 320x180 na run e no hub (AD-017), sem alinhamento de pixels nos sprites e com a câmera arredondada (tremor corrigido em `00e5434`).
 **In progress**: nada
-**Next step**: spec do card-effects aprovada (design e tasks quando entrar, junto da mesa de tarot). Depois, fechar o save-system: rodar o walk das checks que já dá para provar (as de cartas e armas ficam pendentes até a mesa de tarot e o ferreiro), check_proofs e Verifier. Depois, o balanceamento.
+**Next step**: mesa de tarot (AD-019), com o card-effects junto: revisar o design da spec, depois tasks. Depois o ferreiro, o fechamento do save-system completo e o balanceamento numa passada só.
 **Blockers**: nenhum
 **Uncommitted**: nada (as pastas de ferramentas estão no `.git/info/exclude` local)
 **Branch**: main, sem push desde `9adb184`
