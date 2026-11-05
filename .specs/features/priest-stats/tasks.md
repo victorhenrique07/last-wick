@@ -233,8 +233,8 @@ T6 → T7 → T8 → T9 → T10 → T11
 
 **Done when**:
 
-- [ ] `Show` troca nome, nível, efeitos e liga ou desliga o botão
-- [ ] Console sem erros de compilação
+- [x] `Show` troca nome, nível, efeitos e liga ou desliga o botão
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
