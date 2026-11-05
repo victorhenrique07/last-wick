@@ -1,6 +1,6 @@
+using System;
 using Assets._Project.Code.Runtime.Player;
 using Assets._Project.Code.Runtime.Save;
-using UnityEngine;
 
 namespace Assets._Project.Code.Runtime.Priest
 {
@@ -16,7 +16,10 @@ namespace Assets._Project.Code.Runtime.Priest
         public static int NextCost()
         {
             var db = SaveSystem.Database;
-            return Mathf.RoundToInt(db.PriestBaseCost * Mathf.Pow(db.PriestCostStep, CharacterLevel()));
+            double cost = db.PriestBaseCost * Math.Pow(db.PriestCostStep, CharacterLevel());
+
+            // Em níveis muito altos a conta passaria do int e viraria negativa; o custo fica no máximo
+            return cost >= int.MaxValue ? int.MaxValue : (int)Math.Round(cost, MidpointRounding.ToEven);
         }
 
         public static bool CanBuy() => SaveSystem.Data.Resources.Gold >= NextCost();

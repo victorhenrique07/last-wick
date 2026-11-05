@@ -47,6 +47,9 @@ namespace Assets._Project.Code.Runtime.Player
 
             foreach (var attribute in attributes)
             {
+                // Posição vazia ou atributo sem ID na lista: ignorado, como o menu faz
+                if (attribute == null || string.IsNullOrEmpty(attribute.Id)) continue;
+
                 int level = levelOf(attribute);
                 if (level <= 0) continue;
 
