@@ -86,10 +86,10 @@
 
 **Updated**: 2026-11-04
 **Feature**: priest-stats concluída (`validate_verification.py` com 0 erros); hub-flow, run-rewards e menu principal concluídos antes
-**Phase/Task**: campfire-light T2 - `LightRules` (usuário); T1 feita pelo Claude a pedido; orbes removidos (AD-016)
+**Phase/Task**: campfire-light T3 - `GameDatabase` com `Light` (usuário); T1 e T2 feitas pelo Claude a pedido; orbes removidos (AD-016)
 **Completed**: priest-stats T1-T11 no modelo de atributos (AD-014): Vitalidade, Força, Agilidade e Resistência, custo 5 × 1,8^nível, defesa multiplicativa, menu "O Padre" no hub. O usuário escreveu T1, T2 e T5; o Claude fez o resto a pedido. Walk de 28 checks (Esc testado pelo usuário), Verifier com 5 findings fechados (`9823ef4`, `30407d3`, `3a1996a`). Atributos ficam lineares no MVP; faixas com soft cap ficam para o balanceamento (estudo da curva da FromSoftware feito em 2026-11-04).
 **In progress**: nada
-**Next step**: campfire-light T2 (`LightRules`, usuário). O design dela foi feito sobre o `PermanentStats` antigo: revisar antes de começar (a fogueira só preenche `LightRadius` no `StatBlock`). Depois da fogueira: fechamento do save-system, balanceamento, mesa de tarot e ferreiro (AD-015).
+**Next step**: campfire-light T3 (`GameDatabase` com `Light`, usuário). O design dela foi feito sobre o `PermanentStats` antigo: revisar antes de começar (a fogueira só preenche `LightRadius` no `StatBlock`). Depois da fogueira: fechamento do save-system, balanceamento, mesa de tarot e ferreiro (AD-015).
 **Blockers**: nenhum
 **Uncommitted**: nada (as pastas de ferramentas estão no `.git/info/exclude` local)
 **Branch**: main, sem push desde `0a7ec81`
