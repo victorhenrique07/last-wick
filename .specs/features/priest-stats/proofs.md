@@ -1,6 +1,6 @@
 # priest-stats proofs
 
-**HEAD**: 414d454
+**HEAD**: a35455a
 **Tree**: clean
 **Shell**: C:/Program Files/Git\bin\bash.exe
 **Result**: 28 pass, 0 fail
