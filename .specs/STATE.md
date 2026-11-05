@@ -25,7 +25,7 @@
 ### AD-005
 - **Decision**: A fogueira (nível de luz comprado com óleo) e os orbes de óleo no escuro entram no MVP.
 - **Reason**: Usuário: "entra no MVP. esqueci desse ponto."
-- **Status**: active
+- **Status**: active para a fogueira; os orbes de óleo foram substituídos pela AD-016
 
 ### AD-006
 - **Decision**: A saída do hub para a run é um portão de cemitério clicável no fim da trilha de baixo, que abre um painel de confirmação.
@@ -75,6 +75,11 @@
 ### AD-015
 - **Decision**: Nova ordem do MVP: fogueira (campfire-light) → fechamento do save-system → balanceamento → mesa de tarot → ferreiro. O fechamento do save deixa pendentes as checks que dependem de cartas e armas, e o balanceamento ganha uma segunda passada depois da mesa e do ferreiro.
 - **Reason**: Usuário: "Podemos deixar a mesa de tarot e ferreiro para depois da ultima etapa? quero deixar a fogueira pronta, ajustar o save e o balanceamento e depois implementar o desbloqueio de cartas e as armas."
+- **Status**: active
+
+### AD-016
+- **Decision**: Não há óleo espalhado no mapa: os orbes de óleo saíram do jogo, e o óleo vem só dos bosses (110 por vitória). Substitui a parte dos orbes da AD-005 e do One-Pager.
+- **Reason**: Usuário: "Acredito que isso possa ser removido do gdd. nao vamos spawnar o oleo no mapa. será apenas de bosses."
 - **Status**: active
 
 ## Handoff

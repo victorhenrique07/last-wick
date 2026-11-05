@@ -48,20 +48,12 @@ A luz da run passa a vir da fogueira.
 T1 → T2 → T3 → T4 → T5 → T6
 ```
 
-### Phase 2: Orbes
-
-Os orbes de óleo na run.
-
-```
-T6 → T7 → T8 → T9 → T10
-```
-
-### Phase 3: Fogueira no hub
+### Phase 2: Fogueira no hub
 
 A compra de luz no hub.
 
 ```
-T10 → T11 → T12 → T13
+T6 → T7 → T8 → T9
 ```
 
 ---
@@ -70,15 +62,15 @@ T10 → T11 → T12 → T13
 
 ### T1: Criar `LightConfig` (usuário)
 
-**What**: Criar o ScriptableObject com os números de luz, custo e orbes.
+**What**: Criar o ScriptableObject com os números de luz e custo.
 **Where**: `Assets/_Project/Code/Runtime/Light/LightConfig.cs`
 **Depends on**: None
 **Reuses**: formato do `RunConfig`
-**Requirement**: LIGHT-04, LIGHT-15
+**Requirement**: LIGHT-04, LIGHT-08
 
 **Done when**:
 
-- [ ] O Inspector mostra os 11 campos
+- [ ] O Inspector mostra os 5 campos
 - [ ] Console sem erros de compilação
 
 **Tests**: none
@@ -90,11 +82,11 @@ T10 → T11 → T12 → T13
 
 ### T2: Criar `LightRules` (usuário)
 
-**What**: Criar `Radius`, `CostOf` e `PickOrbPositions`.
+**What**: Criar `Radius` e `CostOf`.
 **Where**: `Assets/_Project/Code/Runtime/Light/LightRules.cs`
 **Depends on**: T1
 **Reuses**: nada
-**Requirement**: LIGHT-04, LIGHT-08, LIGHT-14, LIGHT-18
+**Requirement**: LIGHT-04, LIGHT-08
 
 **Done when**:
 
@@ -104,7 +96,7 @@ T10 → T11 → T12 → T13
 **Tests**: none
 **Gate**: build
 
-**Commit**: `feat(light): adiciona regras de luz e orbes`
+**Commit**: `feat(light): adiciona regras de luz`
 
 ---
 
@@ -170,15 +162,15 @@ T10 → T11 → T12 → T13
 
 ### T6: Criar `LightConfig.asset` (Claude)
 
-**What**: Preencher os valores da spec e medir a área do tilemap da `FirstOne` para `SpawnArea`; ligar no `GameDatabase`.
+**What**: Preencher os valores da spec e ligar no `GameDatabase`.
 **Where**: `Assets/_Project/Data/Progression/LightConfig.asset`
 **Depends on**: T5
-**Reuses**: tilemap da `FirstOne`
-**Requirement**: LIGHT-15
+**Reuses**: valores da spec
+**Requirement**: LIGHT-04, LIGHT-08
 
 **Done when**:
 
-- [ ] `SpawnArea` cobre o chão do mapa
+- [ ] O asset tem raio 3 + 0,5 por nível até 10 e custo 40 + 20
 - [ ] Console sem erros de compilação
 
 **Tests**: none
@@ -188,91 +180,11 @@ T10 → T11 → T12 → T13
 
 ---
 
-### T7: Criar `OilOrb` (usuário)
-
-**What**: Pulsar o brilho e levantar `OilCollected` ao encostar no player.
-**Where**: `Assets/_Project/Code/Runtime/Light/OilOrb.cs`
-**Depends on**: T6
-**Reuses**: `XpOrb`
-**Requirement**: LIGHT-11, LIGHT-13
-
-**Done when**:
-
-- [ ] Encostar no orbe o remove
-- [ ] Console sem erros de compilação
-
-**Tests**: none
-**Gate**: build
-
-**Commit**: `feat(light): adiciona o orbe de óleo`
-
----
-
-### T8: Arte e prefab do orbe (Claude)
-
-**What**: Desenhar a gota âmbar e montar o prefab com material unlit, trigger e `OilOrb`.
-**Where**: `Assets/_Project/Prefabs/Drops/OilOrb.prefab`
-**Depends on**: T7
-**Reuses**: prefab `XpOrb`
-**Requirement**: LIGHT-11, LIGHT-12
-
-**Done when**:
-
-- [ ] O orbe aparece no escuro e não ilumina nada
-- [ ] Console sem erros de compilação
-
-**Tests**: none
-**Gate**: build
-
-**Commit**: `art(light): adiciona arte e prefab do orbe de óleo`
-
----
-
-### T9: Criar `OilOrbSpawner` (usuário)
-
-**What**: Sortear as posições no `Start` e criar os orbes, com aviso se faltar espaço.
-**Where**: `Assets/_Project/Code/Runtime/Light/OilOrbSpawner.cs`
-**Depends on**: T8
-**Reuses**: `LightRules.PickOrbPositions`
-**Requirement**: LIGHT-10, LIGHT-14, LIGHT-18
-
-**Done when**:
-
-- [ ] 8 orbes nascem no começo da run
-- [ ] Console sem erros de compilação
-
-**Tests**: none
-**Gate**: build
-
-**Commit**: `feat(light): espalha os orbes de óleo na run`
-
----
-
-### T10: Ligar o spawner na `FirstOne` (Claude)
-
-**What**: Pôr o `OilOrbSpawner` na cena com o `LightConfig` e o prefab.
-**Where**: `Assets/_Project/Scenes/Maps/FirstOne.unity`
-**Depends on**: T9
-**Reuses**: objeto da run
-**Requirement**: LIGHT-10
-
-**Done when**:
-
-- [ ] A cena salva com as referências
-- [ ] Console sem erros de compilação
-
-**Tests**: none
-**Gate**: build
-
-**Commit**: `chore(light): liga os orbes na cena`
-
----
-
-### T11: Criar `CampfireShop` (usuário)
+### T7: Criar `CampfireShop` (usuário)
 
 **What**: Criar `IsMaxed`, `NextCost`, `CanBuy` e `TryBuy`.
 **Where**: `Assets/_Project/Code/Runtime/Light/CampfireShop.cs`
-**Depends on**: T10
+**Depends on**: T6
 **Reuses**: `SaveSystem.TrySpend`
 **Requirement**: LIGHT-04, LIGHT-05, LIGHT-06, LIGHT-16
 
@@ -288,17 +200,17 @@ T10 → T11 → T12 → T13
 
 ---
 
-### T12: Criar `CampfireMenu` (usuário)
+### T8: Criar `CampfireMenu` (usuário)
 
 **What**: Mostrar nível, raios, custo e o botão, e comprar pelo `CampfireShop`.
 **Where**: `Assets/_Project/Code/Runtime/Hub/CampfireMenu.cs`
-**Depends on**: T11
+**Depends on**: T7
 **Reuses**: `HubPanel`
 **Requirement**: LIGHT-02, LIGHT-03, LIGHT-07, LIGHT-16, LIGHT-17
 
 **Done when**:
 
-- [ ] Sem óleo, o custo fica vermelho e o botão desligado
+- [ ] Sem óleo, o custo fica na cor de aviso e o botão desligado
 - [ ] Console sem erros de compilação
 
 **Tests**: none
@@ -308,11 +220,11 @@ T10 → T11 → T12 → T13
 
 ---
 
-### T13: Velas clicáveis e painel no builder (Claude)
+### T9: Velas clicáveis e painel no builder (Claude)
 
 **What**: Importar o `HubFlame` com a margem de 2 px do contorno, pôr `HubInteractable` nas velas e montar o painel da fogueira.
 **Where**: `Assets/_Project/Code/Editor/HubSceneBuilder.cs`
-**Depends on**: T12
+**Depends on**: T8
 **Reuses**: `PlaceInteractable`, painel de expedição
 **Requirement**: LIGHT-01, LIGHT-02
 
@@ -357,35 +269,11 @@ Proof: walk - Com nível 4, ler raio 5,0 no Inspector do `PlayerLight`, sem cart
 **C9** - As cartas de luz multiplicam o raio da fogueira (LIGHT-09, AC 2)
 Proof: walk - Com nível 4 e "+20% luz", ler 6,0.
 
-**C10** - A run cria 8 orbes (LIGHT-10, AC 1)
-Proof: walk - Contar 8 objetos `OilOrb` na Hierarchy no começo da run.
-
-**C11** - O orbe pulsa e aparece fora da luz do player (LIGHT-11, AC 2)
-Proof: walk - Ver os orbes pulsando no escuro com a luz no nível 0.
-
-**C12** - O orbe não ilumina o chão nem os inimigos (LIGHT-12, AC 3)
-Proof: walk - Pôr um inimigo ao lado de um orbe longe do player: o inimigo continua no escuro.
-
-**C13** - Encostar soma 5 de óleo e remove o orbe (LIGHT-13, AC 4)
-Proof: walk - Encostar num orbe e ver `RunRewards.Collected.Oil` subir 5.
-
-**C14** - Os orbes ficam a 6 do início e a 4 entre si (LIGHT-14, AC 5)
-Proof: walk - Com Gizmos, medir as distâncias dos 8 orbes em 3 runs.
-
-**C15** - Quantidade, óleo e distâncias ficam no `LightConfig.asset` (LIGHT-15, AC 6)
-Proof: walk - Mudar `OrbCount` para 3 e ver 3 orbes.
-
-**C16** - No nível 10, o menu mostra "Luz no máximo" e desliga a compra (LIGHT-16, edge case)
+**C10** - No nível 10, o menu mostra "Luz no máximo" e desliga a compra (LIGHT-16, edge case)
 Proof: walk - Pôr `LightLevel` 10 no `save.json` e abrir o menu.
 
-**C17** - Sem óleo, a compra fica desligada e o custo na cor de aviso (LIGHT-17, edge case)
+**C11** - Sem óleo, a compra fica desligada e o custo na cor de aviso (LIGHT-17, edge case)
 Proof: walk - Com 0 de óleo, abrir o menu.
-
-**C18** - Sem espaço, cria os que couberem e avisa (LIGHT-18, edge case)
-Proof: walk - Diminuir `SpawnArea` para 4×4 e ver menos orbes e o aviso no Console.
-
-**C19** - Encostar depois do fim da run não soma óleo (LIGHT-19, edge case)
-Proof: walk - Vencer e, com a tela aberta, mover o player sobre um orbe pelo Inspector: `Collected.Oil` não muda.
 
 ---
 
@@ -393,7 +281,7 @@ Proof: walk - Vencer e, com a tela aberta, mover o player sobre um orbe pelo Ins
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** none
+**Settled mid-build:** antes da T1 - os orbes de óleo saíram do jogo: LIGHT-10 a LIGHT-15, LIGHT-18 e LIGHT-19, as tasks do orbe (antigas T7 a T10) e as checks C10 a C15, C18 e C19 foram removidas, e o `LightConfig` fica só com luz e custo. Usuário, em 2026-11-04: "Acredito que isso possa ser removido do gdd. nao vamos spawnar o oleo no mapa. será apenas de bosses."
 **Dispatched:** none
 **Walked:** none
 
@@ -402,11 +290,10 @@ The feature's live state, written as it happens - a compaction gives no warning.
 ## Phase Execution Map
 
 ```
-Phase 1 → Phase 2 → Phase 3
+Phase 1 → Phase 2
 
 Phase 1:  T1 ------→ T2 ------→ T3 ------→ T4 ------→ T5 ------→ T6
-Phase 2:  T7 ------→ T8 ------→ T9 ------→ T10
-Phase 3:  T11 ------→ T12 ------→ T13
+Phase 2:  T7 ------→ T8 ------→ T9
 ```
 
-Execution is strictly sequential. A feature tem 13 tasks; no Execute, as fases viram lotes de cerca de 7 tasks.
+Execution is strictly sequential. A feature tem 9 tasks.

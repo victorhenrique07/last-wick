@@ -63,11 +63,10 @@ Todo drop cai no chão e é coletado automaticamente ao encostar; os materiais s
 | Bosses | Materiais gerais | Ferreiro e mago |
 | Bosses | Ouro | Padre (única fonte) |
 | Bosses | Óleo garantido | Fogueira (luz) |
-| Escuro do mapa | Óleo extra | Fogueira (luz) |
 
 Com a visão curta, drops longe do jogador ficam no escuro: buscá-los é um risco que o jogador escolhe correr.
 
-**Orbes de óleo:** nascem em posições aleatórias do mapa a cada run e são a única fonte de óleo fora dos bosses (cerca de 40 dos ~150 de uma vitória). O óleo vai para a fogueira do hub, que sobe a luz. Os orbes servem para recompensar quem se arrisca a explorar o escuro, em vez de só ficar parado matando hordas. Cada orbe é um ponto de luz fraco e pulsante, visível em qualquer lugar da tela mesmo no escuro, mas que não ilumina o que está em volta: o jogador vê aonde ir, mas não vê o que o espera no caminho.
+**Óleo:** vem só dos bosses. Não há óleo espalhado pelo mapa. O óleo vai para a fogueira do hub, que sobe a luz.
 
 **Fora por enquanto:** raridades, monstros de elite e drops temporários (baús, ímã, bombas).
 
@@ -80,7 +79,7 @@ O ataque é 100% manual: o jogador controla movimento, ataque e esquiva, e defin
 - **Ataque:** manual. O jogador mira com o mouse e segura o botão para atacar. A arma define o ataque principal (no MVP, uma arma inicial fixa, que o ferreiro melhora).
 - **Cartas de ataque:** as que somam ataques extras disparam sozinhas; as que mudam a arma principal seguem o ataque manual dela. As demais cartas modificam o build.
 - **Esquiva:** cooldown de 2 s, 0,5 s de invencibilidade e 2 a 3 unidades de distância, no estilo dos soulslikes da FromSoftware.
-- **Visão:** raio pequeno ao redor do jogador. Aumenta de forma permanente na fogueira, gastando óleo (garantido nos bosses e extra escondido no escuro do mapa; não usa os pontos de status) e durante a run com cartas. Cada nível de luz pede mais óleo. No MVP, não diminui durante a run.
+- **Visão:** raio pequeno ao redor do jogador. Aumenta de forma permanente na fogueira, gastando óleo (só dos bosses; não usa os pontos de status) e durante a run com cartas. Cada nível de luz pede mais óleo. No MVP, não diminui durante a run.
 - **Inimigos no escuro:** fora da luz aparecem só como silhuetas, que vão sumindo de forma linear com a distância: 100% de opacidade na borda da luz até 0% a 3 unidades além dela. Assim os inimigos surgem aos poucos do escuro, sem parecer que nasceram do lado do jogador.
 
 **Deck**
@@ -218,7 +217,7 @@ Uma vitória rende 70 de ouro antes do bônus de tempo.
 
 - Raio de visão fixo na run: 3,0 no nível 0, +0,5 por nível de luz, até o nível 10 (raio 8,0).
 - Custo em óleo do nível *n*: `40 + 20 × (n − 1)`, ou seja 40, 60, 80… até 220 no nível 10. Chegar ao máximo custa 1300 de óleo.
-- Óleo por run: boss de marco 30 cada, boss final 50, mais 8 orbes de 5 escondidos no escuro (40). Uma vitória completa rende cerca de 150, então o máximo leva umas 9 vitórias.
+- Óleo por run: boss de marco 30 cada, boss final 50. Uma vitória completa rende 110, então o máximo leva umas 12 vitórias.
 - Pós-MVP: cada dificuldade acima da 1 tira 0,5 de raio, de forma cumulativa, com raio mínimo de 2,0 e máximo de 8,0. O nível de luz nunca fica negativo; a penalidade só reduz o raio. Fórmula: `raio = min(8,0; max(2,0; 3,0 + 0,5 × nível − 0,5 × (dificuldade − 1)))`, com nível máximo de `10 + (dificuldade desbloqueada − 1)` (recomendação a confirmar).
 
 **Esquiva**
@@ -257,7 +256,7 @@ Com cerca de 900 abates isso dá uns 180 materiais e 36 curas por run, o equival
 - [x] Cartas: 3 opções por nível, repetir sobe o nível da carta, sem nível máximo, efeitos até o fim da run.
 - [x] Ferreiro entra no MVP para melhorar a arma inicial; é ele quem dá uso aos materiais.
 - [x] Materiais gerais: Osso, Ferro e Cera.
-- [x] Orbes de óleo em posições aleatórias a cada run, visíveis como um ponto de luz fraco e pulsante.
+- [x] Óleo só dos bosses; os orbes de óleo no escuro saíram do jogo (decisão de 2026-11-04).
 - [x] Sem rejogar mapas anteriores, por enquanto.
 
 **Abertas**
