@@ -8,7 +8,7 @@
 
 ## Architecture Overview
 
-Um componente novo na cena da run, `RunRewards`, soma o que foi coletado num `ResourceBag`. Ele escuta três eventos: `EnemyKilled` (sorteio de material), `BossDefeated` (ouro e óleo do boss) e o novo `OilCollected` (orbes da fogueira). Os números vêm do asset `RewardConfig`.
+Um componente novo na cena da run, `RunRewards`, soma o que foi coletado num `ResourceBag`. Ele escuta dois eventos: `EnemyKilled` (sorteio de material) e `BossDefeated` (ouro e óleo do boss). O `OilCollected` dos orbes de óleo existiu até 2026-11-04 e saiu com eles (AD-016). Os números vêm do asset `RewardConfig`.
 
 O save não muda durante a run (RWD-12). No fim, o `RunFinisher` pede o coletado ao `RunRewards`, calcula o entregue com `RewardRules.Deliver`, soma ao save, grava e só então levanta `RunFinished`. Assim a tela de resultado já recebe as duas quantidades no `RunResult`.
 

@@ -21,7 +21,7 @@ Hoje a run termina sem render nada: o `RunResult` já tem campos de ouro, óleo,
 | Drop de cura | É uma mecânica da run, não uma recompensa permanente; feature separada. |
 | Bônus por terminar antes dos 10:00 | A fórmula está em aberto no One-Pager ("fica com o Victor"). |
 | Sair no meio da run | Não existe menu de pausa; vira feature junto com ele. |
-| Orbes de óleo no mapa | Fazem parte da feature `fogueira-light`; aqui só somamos o óleo que eles entregam. |
+| Óleo fora dos bosses | Os orbes de óleo saíram do jogo (AD-016); a RWD-06 e o evento `OilCollected` foram removidos. Usuário, em 2026-11-04, ao tirar os orbes de óleo do jogo (AD-016): "Pode remover". |
 | Materiais dos bosses | Fora do MVP; talvez materiais próprios de cada boss no futuro. Usuário, na T5: "O boss não vai dropar material. Pelo menos nao por enquanto. Talvez apenas materiais especificos que são só dele, mas não agora no MVP." |
 | Valores finais de chance e quantidade | Provisórios; balanceamento depois do MVP. |
 
@@ -60,7 +60,6 @@ Hoje a run termina sem render nada: o `RunResult` já tem campos de ouro, óleo,
 3. WHEN o boss 1, 2 ou final morrer THEN a run SHALL somar 10, 20 ou 40 de ouro, respectivamente. [RWD-03]
 4. WHEN o boss 1, 2 ou final morrer THEN a run SHALL somar 30, 30 ou 50 de óleo, respectivamente. [RWD-04]
 5. WHEN um boss morrer THEN a run SHALL não somar osso, ferro nem cera. [RWD-05]
-6. WHEN um orbe de óleo for coletado THEN a run SHALL somar o óleo do orbe ao óleo coletado. [RWD-06]
 7. The chance de material, os materiais possíveis e as recompensas de cada boss SHALL ficar num asset de dados editável no Inspector. [RWD-07]
 
 **Independent Test**: Matar 50 monstros e o boss 1 numa run de teste e conferir, no `RunResult`, cerca de 10 materiais dos monstros, 10 de ouro e 30 de óleo.
@@ -123,7 +122,6 @@ Dimensões implícitas: transições de estado (RWD-12, RWD-20) e validação (R
 | RWD-03 | P1: Cada abate e cada boss rendem recursos | - | Pending |
 | RWD-04 | P1: Cada abate e cada boss rendem recursos | - | Pending |
 | RWD-05 | P1: Cada abate e cada boss rendem recursos | - | Pending |
-| RWD-06 | P1: Cada abate e cada boss rendem recursos | - | Pending |
 | RWD-07 | P1: Cada abate e cada boss rendem recursos | - | Pending |
 | RWD-08 | P1: Perda na morte | - | Pending |
 | RWD-09 | P1: Perda na morte | - | Pending |
@@ -156,5 +154,5 @@ Dimensões implícitas: transições de estado (RWD-12, RWD-20) e validação (R
 
 ## Success Criteria
 
-- [ ] Uma vitória completa rende 70 de ouro e 110 de óleo antes dos orbes.
+- [ ] Uma vitória completa rende 70 de ouro e 110 de óleo.
 - [ ] O save depois de uma morte mostra metade, arredondada para baixo, de cada recurso coletado.

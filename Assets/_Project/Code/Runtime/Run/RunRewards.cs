@@ -30,7 +30,6 @@ namespace Assets._Project.Code.Runtime.Run
         {
             GameEvents.EnemyKilled += OnEnemyKilled;
             GameEvents.BossDefeated += OnBossDefeated;
-            GameEvents.OilCollected += OnOilCollected;
             GameEvents.RunFinished += OnRunFinished;
         }
 
@@ -38,7 +37,6 @@ namespace Assets._Project.Code.Runtime.Run
         {
             GameEvents.EnemyKilled -= OnEnemyKilled;
             GameEvents.BossDefeated -= OnBossDefeated;
-            GameEvents.OilCollected -= OnOilCollected;
             GameEvents.RunFinished -= OnRunFinished;
         }
 
@@ -68,14 +66,6 @@ namespace Assets._Project.Code.Runtime.Run
 
             collected.Gold += boss.Gold;
             collected.Oil += boss.Oil;
-        }
-
-        private void OnOilCollected(int amount)
-        {
-            if (finished)
-                return;
-
-            collected.Oil += amount;
         }
 
         private void OnRunFinished(RunResult result)

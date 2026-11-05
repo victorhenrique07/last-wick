@@ -15,7 +15,6 @@ Não dá para rodar o Unity Editor nesta verificação; os exemplos próprios fo
 | C3 | Walked: boss 1 no Play Mode (+10, confirmado pelo save) e bosses 1 e 2 no Editor na T5 | no - o boss final nunca foi morto, nem no Play Mode nem no Editor, e é justamente o caso que o código erra (os 40 de ouro não entram) |
 | C4 | Walked: o mesmo teste da C3 (+30 do boss 1 no save, +30 do boss 2 no Editor) | no - os 50 de óleo do boss final nunca foram observados e o código os perde |
 | C5 | Walked: delta do `save.json` e T5 no Editor | yes - por construção: `BossReward` não tem campo de material e `OnBossDefeated` só soma `Gold` e `Oil`; o delta do save sozinho não separaria material de boss do de monstro |
-| C6 | Walked: teste do agente no Editor na T5, `RaiseOilCollected(5)` subiu `Oil` em 5 | yes - na camada do evento; o orbe é da `campfire-light` e ainda não existe |
 | C7 | walk "Mudar a chance para 1 no asset" - só "está tudo confirmado" | no - nenhuma observação registrada; o código (`RewardConfig.asset` com 0,2 e 10/30, 20/30, 40/50) atende, mas a prova não falharia se não atendesse |
 | C8 | Walked: tela da morte mostrando "coletado → entregue" (relato do usuário) e T12 no Editor | yes - a seta mostra `Collected` de cada recurso; um campo vazio apareceria como 0 → 0 numa run com coleta |
 | C9 | walk "Vencer e ver Delivered igual a Collected" - só "está tudo confirmado" | no - o único walk registrado termina em morte; nenhuma vitória foi observada. O código (`Deliver` devolve `collected` na vitória) atende |
