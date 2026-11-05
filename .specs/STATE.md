@@ -75,12 +75,12 @@
 ## Handoff
 
 **Updated**: 2026-11-04
-**Feature**: hub-flow concluída (`validate_verification.py` com 0 erros); run-rewards e menu principal concluídos antes
-**Phase/Task**: priest-stats T1 - `AttributeData` (usuário escreve); spec, design e tasks aprovados (AD-014)
-**Completed**: hub-flow T1-T7 (o Claude fez também T1 e T2, a pedido do usuário): HubPanel, ExpeditionPanel, portão `Gate.png`, ResourceCounterView, ResourceBar, `HubCanvasBuilder` e build `MainMenu`, `Hub`, `FirstOne`. Walk de 15 checks (Esc testado pelo usuário), Verifier com 2 findings de cobertura fechados em `cdb37d5`.
+**Feature**: priest-stats concluída (`validate_verification.py` com 0 erros); hub-flow, run-rewards e menu principal concluídos antes
+**Phase/Task**: próxima feature do roadmap: campfire-light (fogueira e orbes de óleo)
+**Completed**: priest-stats T1-T11 no modelo de atributos (AD-014): Vitalidade, Força, Agilidade e Resistência, custo 5 × 1,8^nível, defesa multiplicativa, menu "O Padre" no hub. O usuário escreveu T1, T2 e T5; o Claude fez o resto a pedido. Walk de 28 checks (Esc testado pelo usuário), Verifier com 5 findings fechados (`9823ef4`, `30407d3`, `3a1996a`). Atributos ficam lineares no MVP; faixas com soft cap ficam para o balanceamento (estudo da curva da FromSoftware feito em 2026-11-04).
 **In progress**: nada
-**Next step**: priest-stats. O save-system ainda espera a validação final (check_proofs e Verifier) depois de blacksmith-weapon.
+**Next step**: campfire-light. O design dela foi feito sobre o `PermanentStats` antigo: revisar antes de começar (a fogueira só preenche `LightRadius` no `StatBlock`). O save-system ainda espera a validação final depois de blacksmith-weapon.
 **Blockers**: nenhum
 **Uncommitted**: nada (as pastas de ferramentas estão no `.git/info/exclude` local)
-**Branch**: main, sem push desde `27041c2`
-**Como trabalhamos**: AD-001 - o usuário escreve o código das tasks marcadas "usuário", a menos que peça ao Claude ("pode fazer essa spec inteira" na hub-flow); o agente explica, revisa, compila, marca a task e commita uma por task, em português, no estilo do repo. Com a Unity aberta, o agente confere e monta cenas pelo Editor via `unity command` (script eval, console status, editor.playmode); sem foco, o Play Mode só avança com `editor.playmode set_run_in_background --enable true` (desligar no fim), e tecla simulada não chega ao Input System (testes de teclado ficam com o usuário). Walks que gravam no save fazem backup e restauram o `save.json`. Com a Unity fechada, compila em batch mode (sem `-nographics` quando precisa renderizar prévias).
+**Branch**: main, sem push desde `0a7ec81`
+**Como trabalhamos**: AD-001 - o usuário escreve o código das tasks marcadas "usuário", a menos que peça ao Claude (pediu na hub-flow e no fim do priest-stats); o agente explica, revisa, compila, marca a task e commita uma por task, em português, no estilo do repo. Com a Unity aberta, o agente confere e monta cenas pelo Editor via `unity command` (script eval, console status, editor.playmode); sem foco, o Play Mode só avança com `editor.playmode set_run_in_background --enable true` (desligar no fim), e tecla simulada não chega ao Input System (testes de teclado ficam com o usuário). Walks que gravam no save fazem backup e restauram o `save.json`. Com a Unity fechada, compila em batch mode (sem `-nographics` quando precisa renderizar prévias).
