@@ -130,7 +130,7 @@ T10 → T11 → T12 → T13
 
 ### T4: `PermanentStats` com a luz da fogueira (usuário)
 
-**What**: Preencher `LightRadius` com `LightRules.Radius(LightLevel)`.
+**What**: Na versão de `Build` que lê o save, preencher `LightRadius` com `LightRules.Radius(db.Light, save.LightLevel)`; na genérica, deixar `LightRadius` em 0 em vez de copiar o `PlayerStats`.
 **Where**: `Assets/_Project/Code/Runtime/Player/PermanentStats.cs`
 **Depends on**: T3
 **Reuses**: `Build` do padre
@@ -310,7 +310,7 @@ T10 → T11 → T12 → T13
 
 ### T13: Velas clicáveis e painel no builder (Claude)
 
-**What**: Pôr `HubInteractable` nas velas e montar o painel da fogueira.
+**What**: Importar o `HubFlame` com a margem de 2 px do contorno, pôr `HubInteractable` nas velas e montar o painel da fogueira.
 **Where**: `Assets/_Project/Code/Editor/HubSceneBuilder.cs`
 **Depends on**: T12
 **Reuses**: `PlaceInteractable`, painel de expedição
@@ -378,7 +378,7 @@ Proof: walk - Mudar `OrbCount` para 3 e ver 3 orbes.
 **C16** - No nível 10, o menu mostra "Luz no máximo" e desliga a compra (LIGHT-16, edge case)
 Proof: walk - Pôr `LightLevel` 10 no `save.json` e abrir o menu.
 
-**C17** - Sem óleo, a compra fica desligada e o custo vermelho (LIGHT-17, edge case)
+**C17** - Sem óleo, a compra fica desligada e o custo na cor de aviso (LIGHT-17, edge case)
 Proof: walk - Com 0 de óleo, abrir o menu.
 
 **C18** - Sem espaço, cria os que couberem e avisa (LIGHT-18, edge case)

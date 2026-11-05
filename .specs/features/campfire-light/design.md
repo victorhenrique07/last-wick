@@ -14,7 +14,7 @@ O design tem duas metades ligadas pelo save.
 
 **Na run.** A luz e os orbes funcionam assim:
 
-- **Raio da luz.** `PermanentStats.Build` (feature `priest-stats`) passa a preencher `LightRadius` com `LightRules.Radius(nível)`. Esse valor substitui o `PlayerStats.LightRadius`, e as cartas continuam multiplicando por cima (LIGHT-08, LIGHT-09).
+- **Raio da luz.** O `PermanentStats` (feature `priest-stats`) tem duas versões de `Build`. A que lê o save, usada pela run, passa a preencher `LightRadius` com `LightRules.Radius(db.Light, save.LightLevel)`. A genérica, usada pelo menu do padre, deixa `LightRadius` em 0, porque o padre não mostra luz. Nenhuma das duas lê mais o `PlayerStats.LightRadius`, que sai na T5, e as cartas continuam multiplicando por cima (LIGHT-08, LIGHT-09).
 - **Orbes.** Um `OilOrbSpawner` sorteia as posições no `Start`. Cada `OilOrb` levanta `GameEvents.OilCollected`, que o `RunRewards` soma (LIGHT-13).
 
 Todos os números ficam no `LightConfig` (LIGHT-15).
@@ -45,9 +45,9 @@ flowchart TD
 | Component | Location | How to Use |
 | --------- | -------- | ---------- |
 | `PlayerLight.Radius` | `Assets/_Project/Code/Runtime/Light/PlayerLight.cs` | Recebe o raio final, sem mudança. |
-| `PermanentStats.Build` | feature `priest-stats` | Ganha a linha da luz. |
+| `PermanentStats.Build` | feature `priest-stats` | A versão que lê o save preenche a luz; a genérica (menu do padre) deixa 0. |
 | `XpOrb` | `Assets/_Project/Code/Runtime/Core/XpOrb.cs` | Mesmo padrão de coleta por `OnTriggerEnter2D` com a tag `Player`. O orbe de óleo não é atraído, porque a spec pede coleta ao encostar. |
-| `HubInteractable` + `HubOutline.mat` | `Assets/_Project/Code/Runtime/Hub/HubInteractable.cs` | As velas ganham contorno e clique (LIGHT-01, LIGHT-02). |
+| `HubInteractable` + `HubOutline.mat` | `Assets/_Project/Code/Runtime/Hub/HubInteractable.cs` | As velas ganham contorno e clique (LIGHT-01, LIGHT-02); o sprite `HubFlame` passa a ser importado com a margem de 2 px do contorno, como a igreja. |
 | `HubPanel` | feature `hub-flow` | Abrir, fechar e Esc (LIGHT-07). |
 | `RunRewards` | feature `run-rewards` | Já soma `OilCollected` e ignora depois do fim (LIGHT-19). |
 | Material `Sprite-Unlit-Default` (URP) | pacote URP | O sprite do orbe não é afetado pela escuridão 2D e não emite luz (LIGHT-11, LIGHT-12). |
@@ -98,7 +98,7 @@ flowchart TD
   - `CampfireShop.NextCost`
   - `CampfireShop.CanBuy`
   - `CampfireShop.TryBuy()` - `TrySpend(new ResourceBag { Oil = cost })`, `LightLevel++`, `NotifyChanged`, `Save`
-  - `CampfireMenu.Open()` mostra "Nível N", "Raio atual → próximo", o custo em óleo (vermelho quando falta) e o botão "Alimentar a chama"; no nível 10 mostra "Luz no máximo" e desliga o botão
+  - `CampfireMenu.Open()` mostra "Nível N", "Raio atual → próximo", o custo em óleo (na cor de aviso da paleta quando falta) e o botão "Alimentar a chama"; no nível 10 mostra "Luz no máximo" e desliga o botão
 - **Dependencies**: `LightConfig` (referência no menu e no `GameDatabase`), `SaveSystem`, `HubPanel`.
 
 ### OilOrbSpawner

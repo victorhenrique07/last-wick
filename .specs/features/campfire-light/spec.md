@@ -36,6 +36,7 @@ A visão é o diferencial do jogo, mas hoje o raio da luz é um número fixo do 
 | Raio do `PlayerStats` | O raio da fogueira substitui o `LightRadius` do `PlayerStats` como base da run | O One-Pager diz que a luz sobe só na fogueira | y |
 | Onde os orbes nascem | Pontos sorteados dentro de uma área retangular do mapa, a pelo menos 6 unidades do início do player e 4 unidades uns dos outros | "Escondidos no escuro": longe da luz inicial e espalhados | y |
 | Como o orbe é coletado | Ao encostar no player, como o XP | Mesma regra de coleta do One-Pager | y |
+| Cor do custo sem óleo | Cor de aviso da paleta (terracota #C96D45), igual ao padre (PRST-24) | Revisão de 2026-11-04 depois do priest-stats. Usuário, ao aprovar os ajustes da revisão de 2026-11-04: "ok. pode atualizar o design da spec da fogueira". | y |
 | Como provar | Conferência manual em Play Mode | Escolha do usuário na feature anterior | y |
 
 **Open questions:** none - all resolved or logged above.
@@ -101,7 +102,7 @@ A visão é o diferencial do jogo, mas hoje o raio da luz é um número fixo do 
 ## Edge Cases
 
 - WHILE o nível de luz for 10 the menu SHALL mostrar "Luz no máximo" e desativar a compra. [LIGHT-16]
-- IF o jogador não tiver óleo para o próximo nível THEN o menu SHALL desativar a compra e mostrar o custo em vermelho. [LIGHT-17]
+- IF o jogador não tiver óleo para o próximo nível THEN o menu SHALL desativar a compra e mostrar o custo na cor de aviso da paleta (terracota #C96D45), como o padre. [LIGHT-17]
 - IF a área do mapa não couber todos os orbes com as distâncias mínimas THEN a run SHALL criar os que couberem e registrar um aviso no Console. [LIGHT-18]
 - WHEN o player encostar num orbe depois do fim da run THEN a run SHALL não somar o óleo. [LIGHT-19]
 
