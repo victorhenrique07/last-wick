@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca6ef9eb81375784e9f7886e4057bbd3, type: 3}
+  m_Name: LightConfig
+  m_EditorClassIdentifier: Assembly-CSharp::Assets._Project.Code.Runtime.Light.LightConfig
+  baseRadius: 3
+  radiusPerLevel: 0.5
+  maxLevel: 10
+  baseCost: 40
+  costStep: 20

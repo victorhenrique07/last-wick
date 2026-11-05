@@ -170,8 +170,8 @@ T6 → T7 → T8 → T9
 
 **Done when**:
 
-- [ ] O asset tem raio 3 + 0,5 por nível até 10 e custo 40 + 20
-- [ ] Console sem erros de compilação
+- [x] O asset tem raio 3 + 0,5 por nível até 10 e custo 40 + 20
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
