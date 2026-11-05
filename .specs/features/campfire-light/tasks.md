@@ -130,8 +130,8 @@ T6 → T7 → T8 → T9
 
 **Done when**:
 
-- [ ] Nível 0 dá raio 3,0 sem cartas
-- [ ] Console sem erros de compilação
+- [x] Nível 0 dá raio 3,0 sem cartas
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build

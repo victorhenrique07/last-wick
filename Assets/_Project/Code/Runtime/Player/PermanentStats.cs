@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Assets._Project.Code.Runtime.Light;
 using Assets._Project.Code.Runtime.Priest;
 using Assets._Project.Code.Runtime.Save;
 using LastWick.Player;
@@ -39,7 +40,7 @@ namespace Assets._Project.Code.Runtime.Player
                 DodgeInvulnerability = baseStats.DodgeInvulnerability,
                 DodgeCooldown = baseStats.DodgeCooldown,
                 Damage = baseStats.Damage,
-                LightRadius = baseStats.LightRadius,
+                LightRadius = 0f, // a luz vem da fogueira: só a versão que lê o save preenche
                 XpPickupRadius = baseStats.XpPickupRadius,
                 FireRate = 1f,
                 DamageReduction = baseStats.DamageReduction
@@ -61,8 +62,18 @@ namespace Assets._Project.Code.Runtime.Player
             return block;
         }
 
-        public static StatBlock Build(PlayerStats baseStats, SaveData save, GameDatabase database) => 
-            Build(baseStats, database.Attributes, attr => SaveData.GetLevel(save.PriestLevels, attr.Id));
+        // A da run: atributos do padre e luz da fogueira, ambos lidos do save (AD-012, LIGHT-08)
+        public static StatBlock Build(PlayerStats baseStats, SaveData save, GameDatabase database)
+        {
+            var block = Build(baseStats, database.Attributes, attr => SaveData.GetLevel(save.PriestLevels, attr.Id));
+
+            if (database.Light != null)
+                block.LightRadius = LightRules.Radius(database.Light, save.LightLevel);
+            else
+                Debug.LogError("PermanentStats: o GameDatabase não tem LightConfig; a run começa sem luz.");
+
+            return block;
+        }
 
         public static float Get(StatBlock block, PlayerStatType stat) => stat switch
         {
