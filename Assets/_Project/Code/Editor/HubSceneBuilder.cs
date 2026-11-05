@@ -369,7 +369,7 @@ namespace Assets._Project.Code.Editor
             pixelPerfect.assetsPPU = PixelsPerUnit;
             pixelPerfect.refResolutionX = 320;
             pixelPerfect.refResolutionY = 180;
-            pixelPerfect.gridSnapping = PixelPerfectCamera.GridSnapping.PixelSnapping;
+            pixelPerfect.gridSnapping = PixelPerfectCamera.GridSnapping.None; // personagens andam suave; quem fica na grade é a câmera
             pixelPerfect.cropFrame = PixelPerfectCamera.CropFrame.None;
             go.AddComponent<Physics2DRaycaster>(); // deixa o EventSystem enxergar os Collider2D do mundo
         }
