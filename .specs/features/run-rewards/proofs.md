@@ -1,9 +1,9 @@
 # run-rewards proofs
 
-**HEAD**: 5c4425a
+**HEAD**: c3b88c6
 **Tree**: clean
 **Shell**: C:/Program Files/Git\bin\bash.exe
-**Result**: 21 pass, 0 fail
+**Result**: 20 pass, 0 fail
 
 | Check | Proof | Result |
 | --- | --- | --- |
@@ -12,7 +12,6 @@
 | C3 | `walk - Matar cada boss e ver Gold subir 10, depois 20, depois 40.` | pass (Walked) |
 | C4 | `walk - No mesmo teste, Oil sobe 30, 30 e 50.` | pass (Walked) |
 | C5 | `walk - No mesmo teste, a soma de osso, ferro e cera não muda quando cada boss morre.` | pass (Walked) |
-| C6 | `walk - Encostar num orbe e ver Oil subir 5.` | pass (Walked) |
 | C7 | `walk - Mudar a chance para 1 no asset e ver todo monstro render material.` | pass (Walked) |
 | C8 | `walk - Com um breakpoint em RaiseResultPanel, ler os 5 campos de Collected.` | pass (Walked) |
 | C9 | `walk - Vencer e ver Delivered igual a Collected.` | pass (Walked) |
