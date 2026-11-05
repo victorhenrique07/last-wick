@@ -89,13 +89,13 @@
 
 ## Handoff
 
-**Updated**: 2026-11-04
-**Feature**: priest-stats concluída (`validate_verification.py` com 0 erros); hub-flow, run-rewards e menu principal concluídos antes
-**Phase/Task**: campfire-light T3 - `GameDatabase` com `Light` (usuário); T1 e T2 feitas pelo Claude a pedido; orbes removidos (AD-016)
-**Completed**: priest-stats T1-T11 no modelo de atributos (AD-014): Vitalidade, Força, Agilidade e Resistência, custo 5 × 1,8^nível, defesa multiplicativa, menu "O Padre" no hub. O usuário escreveu T1, T2 e T5; o Claude fez o resto a pedido. Walk de 28 checks (Esc testado pelo usuário), Verifier com 5 findings fechados (`9823ef4`, `30407d3`, `3a1996a`). Atributos ficam lineares no MVP; faixas com soft cap ficam para o balanceamento (estudo da curva da FromSoftware feito em 2026-11-04).
+**Updated**: 2026-11-05
+**Feature**: campfire-light concluída (`validate_verification.py` com 0 erros); priest-stats, hub-flow, run-rewards e menu principal concluídos antes
+**Phase/Task**: próxima etapa (AD-015): fechamento do save-system, depois balanceamento, mesa de tarot e ferreiro
+**Completed**: campfire-light T1-T9 sem os orbes de óleo (AD-016): `LightConfig`, `LightRules`, luz da run pelo nível da fogueira, `CampfireShop`, menu "A Fogueira" nas velas do hub. O Claude fez as tasks a pedido. Walk de 11 checks (Esc testado pelo usuário), Verifier com 2 findings fechados em `c2f327a` (nível de luz preso em 0..máximo). Pixel Perfect Camera 320x180 na run e no hub (AD-017), sem alinhamento de pixels nos sprites e com a câmera arredondada (tremor corrigido em `00e5434`).
 **In progress**: nada
-**Next step**: campfire-light T3 (`GameDatabase` com `Light`, usuário). O design dela foi feito sobre o `PermanentStats` antigo: revisar antes de começar (a fogueira só preenche `LightRadius` no `StatBlock`). Depois da fogueira: fechamento do save-system, balanceamento, mesa de tarot e ferreiro (AD-015).
+**Next step**: fechar o save-system: rodar o walk das checks que já dá para provar (as de cartas e armas ficam pendentes até a mesa de tarot e o ferreiro), check_proofs e Verifier. Depois, o balanceamento.
 **Blockers**: nenhum
 **Uncommitted**: nada (as pastas de ferramentas estão no `.git/info/exclude` local)
-**Branch**: main, sem push desde `0a7ec81`
-**Como trabalhamos**: AD-001 - o usuário escreve o código das tasks marcadas "usuário", a menos que peça ao Claude (pediu na hub-flow e no fim do priest-stats); o agente explica, revisa, compila, marca a task e commita uma por task, em português, no estilo do repo. Com a Unity aberta, o agente confere e monta cenas pelo Editor via `unity command` (script eval, console status, editor.playmode); sem foco, o Play Mode só avança com `editor.playmode set_run_in_background --enable true` (desligar no fim), e tecla simulada não chega ao Input System (testes de teclado ficam com o usuário). Walks que gravam no save fazem backup e restauram o `save.json`. Com a Unity fechada, compila em batch mode (sem `-nographics` quando precisa renderizar prévias).
+**Branch**: main, sem push desde `9adb184`
+**Como trabalhamos**: AD-001 - o usuário escreve o código das tasks marcadas "usuário", a menos que peça ao Claude (pediu na hub-flow, no fim do priest-stats e na fogueira); o agente explica, revisa, compila, marca a task e commita uma por task, em português, no estilo do repo. Com a Unity aberta, o agente confere e monta cenas pelo Editor via `unity command` (script eval, console status, editor.playmode); sem foco, o Play Mode só avança com `editor.playmode set_run_in_background --enable true` (desligar no fim), e tecla simulada não chega ao Input System (testes de teclado ficam com o usuário). Walks que gravam no save fazem backup e restauram o `save.json`. Com a Unity fechada, compila em batch mode (sem `-nographics` quando precisa renderizar prévias).

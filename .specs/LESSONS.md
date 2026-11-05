@@ -48,6 +48,12 @@ Seen once or not yet corroborated. Tracked, not trusted.
 - evidence: PriestShop.NextCost (finding 5) (economy)
 - last seen: 2026-11-05T01:30:28Z
 
+### L-007 - Every level read from the save is clamped to its valid range when the save loads and again where it is used.
+- signal: `ac_gap` · recurrence: 1 feature(s) · scope: `save` · harmful: 0
+- features: campfire-light
+- evidence: SaveSystem.Sanitize / CampfireShop.Level (findings 1 and 2) (save)
+- last seen: 2026-11-05T04:35:40Z
+
 ## Quarantined (failed when applied - ignore)
 
 A confirmed lesson that recurred alongside failure. Kept for the maintainer to review.

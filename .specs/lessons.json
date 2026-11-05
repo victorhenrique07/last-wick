@@ -3,7 +3,7 @@
   "promote_threshold": 2,
   "window_days": 45,
   "quarantine_threshold": 2,
-  "next_id": 7,
+  "next_id": 8,
   "lessons": [
     {
       "id": "L-001",
@@ -116,6 +116,24 @@
       ],
       "created": "2026-11-05T01:30:28Z",
       "last_seen": "2026-11-05T01:30:28Z"
+    },
+    {
+      "id": "L-007",
+      "key": "ac_gap::every level read from the save is clamped to its valid range when the save loads and again where it is used",
+      "text": "Every level read from the save is clamped to its valid range when the save loads and again where it is used.",
+      "signal": "ac_gap",
+      "scope": "save",
+      "status": "candidate",
+      "features": [
+        "campfire-light"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "SaveSystem.Sanitize / CampfireShop.Level (findings 1 and 2) (save)"
+      ],
+      "created": "2026-11-05T04:35:40Z",
+      "last_seen": "2026-11-05T04:35:40Z"
     }
   ]
 }
