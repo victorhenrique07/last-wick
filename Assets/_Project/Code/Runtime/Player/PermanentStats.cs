@@ -27,7 +27,7 @@ namespace Assets._Project.Code.Runtime.Player
     // num atributo para mostrar o "próximo valor" com a mesma conta.
     public static class PermanentStats
     {
-        private const float MinDodgeCooldown = 0.2f; // PRST-26
+        public const float MinDodgeCooldown = 0.2f; // PRST-26
 
         public static StatBlock Build(PlayerStats baseStats, IEnumerable<AttributeData> attributes, Func<AttributeData, int> levelOf)
         {

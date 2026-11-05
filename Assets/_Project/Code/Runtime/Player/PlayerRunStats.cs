@@ -1,11 +1,13 @@
 using System;
 using Assets._Project.Code.Runtime.Cards;
+using Assets._Project.Code.Runtime.Player;
+using Assets._Project.Code.Runtime.Save;
 using LastWick.Combat;
 using UnityEngine;
 
 namespace LastWick.Player
 {
-    // Status do player na run atual: os valores base mais os bônus das cartas.
+    // Status do player na run atual: a base permanente (PlayerStats + padre) mais os bônus das cartas.
     // Só valem durante a partida e nunca voltam para o PlayerStats.
     [RequireComponent(typeof(CardInventory), typeof(Health), typeof(PlayerLight))]
     public class PlayerRunStats : MonoBehaviour
@@ -15,6 +17,7 @@ namespace LastWick.Player
         private CardInventory inventory;
         private Health health;
         private PlayerLight playerLight;
+        private StatBlock block; // montado uma vez por run: os pontos do padre não mudam durante a partida
         private float flatDamage;
         private float damageMultiplier;
 
@@ -25,6 +28,7 @@ namespace LastWick.Player
         public float DodgeCooldown { get; private set; }
         public float LightRadius { get; private set; }
         public float XpPickupRadius { get; private set; }
+        public float DamageReduction { get; private set; }
 
         // A base destes fica na arma e no projétil.
         public float FireRateMultiplier { get; private set; }
@@ -37,6 +41,7 @@ namespace LastWick.Player
             inventory = GetComponent<CardInventory>();
             health = GetComponent<Health>();
             playerLight = GetComponent<PlayerLight>();
+            block = PermanentStats.Build(baseStats, SaveSystem.Data, SaveSystem.Database);
             Refresh();
         }
 
@@ -45,30 +50,33 @@ namespace LastWick.Player
 
         public float CalculateDamage(float weaponDamage)
         {
-            return (baseStats.Damage + weaponDamage + flatDamage) * damageMultiplier;
+            return (block.Damage + weaponDamage + flatDamage) * damageMultiplier;
         }
 
         private void Refresh()
         {
-            MaxHealth = baseStats.MaxHealth * Multiplier(card => card.MaxHealthBonus);
-            MoveSpeed = baseStats.MoveSpeed * Multiplier(card => card.MoveSpeedBonus);
+            MaxHealth = block.MaxHealth * Multiplier(card => card.MaxHealthBonus);
+            MoveSpeed = block.MoveSpeed * Multiplier(card => card.MoveSpeedBonus);
 
-            DodgeDistance = baseStats.DodgeDistance * Multiplier(card => card.DodgeDistanceBonus);
-            DodgeInvulnerability = baseStats.DodgeInvulnerability * Multiplier(card => card.DodgeInvulnerabilityBonus);
-            DodgeCooldown = baseStats.DodgeCooldown * inventory.ReductionMultiplier(card => card.DodgeCooldownReduction);
+            DodgeDistance = block.DodgeDistance * Multiplier(card => card.DodgeDistanceBonus);
+            DodgeInvulnerability = block.DodgeInvulnerability * Multiplier(card => card.DodgeInvulnerabilityBonus);
+            DodgeCooldown = block.DodgeCooldown * inventory.ReductionMultiplier(card => card.DodgeCooldownReduction);
+            DodgeCooldown = Mathf.Max(PermanentStats.MinDodgeCooldown, DodgeCooldown); // as cartas reduzem de novo por cima
 
-            LightRadius = baseStats.LightRadius * Multiplier(card => card.LightRadiusBonus);
-            XpPickupRadius = baseStats.XpPickupRadius * Multiplier(card => card.XpPickupRadiusBonus);
+            LightRadius = block.LightRadius * Multiplier(card => card.LightRadiusBonus);
+            XpPickupRadius = block.XpPickupRadius * Multiplier(card => card.XpPickupRadiusBonus);
+            DamageReduction = block.DamageReduction;
 
             flatDamage = inventory.Total(card => card.BaseDamageBonus);
             damageMultiplier = Multiplier(card => card.DamageBonus);
 
-            FireRateMultiplier = Multiplier(card => card.FireRateBonus);
+            FireRateMultiplier = block.FireRate * Multiplier(card => card.FireRateBonus);
             ProjectileSpeedMultiplier = Multiplier(card => card.ProjectileSpeedBonus);
             ProjectileLifetimeMultiplier = Multiplier(card => card.ProjectileLifetimeBonus);
             BonusPierce = Mathf.RoundToInt(inventory.Total(card => card.PierceBonus));
 
             health.SetMax(MaxHealth);
+            health.DamageReductionMultiplier = 1f - DamageReduction;
             playerLight.Radius = LightRadius;
         }
 
