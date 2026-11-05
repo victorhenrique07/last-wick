@@ -72,14 +72,19 @@
 - **Reason**: Usuário: "não vai ser assim. Será igual Soulslike." e "está correto." para o rascunho dos atributos; escolheu custo "Pelo nível total", ganho "Linear no MVP" e, depois de comparar com os soulslikes, a defesa "Multiplicando (soulslike)"; pediu um nome amplo para a Resistência receber novos efeitos depois.
 - **Status**: active
 
+### AD-015
+- **Decision**: Nova ordem do MVP: fogueira (campfire-light) → fechamento do save-system → balanceamento → mesa de tarot → ferreiro. O fechamento do save deixa pendentes as checks que dependem de cartas e armas, e o balanceamento ganha uma segunda passada depois da mesa e do ferreiro.
+- **Reason**: Usuário: "Podemos deixar a mesa de tarot e ferreiro para depois da ultima etapa? quero deixar a fogueira pronta, ajustar o save e o balanceamento e depois implementar o desbloqueio de cartas e as armas."
+- **Status**: active
+
 ## Handoff
 
 **Updated**: 2026-11-04
 **Feature**: priest-stats concluída (`validate_verification.py` com 0 erros); hub-flow, run-rewards e menu principal concluídos antes
-**Phase/Task**: próxima feature do roadmap: campfire-light (fogueira e orbes de óleo)
+**Phase/Task**: campfire-light - revisão do design antes da T1 (AD-015)
 **Completed**: priest-stats T1-T11 no modelo de atributos (AD-014): Vitalidade, Força, Agilidade e Resistência, custo 5 × 1,8^nível, defesa multiplicativa, menu "O Padre" no hub. O usuário escreveu T1, T2 e T5; o Claude fez o resto a pedido. Walk de 28 checks (Esc testado pelo usuário), Verifier com 5 findings fechados (`9823ef4`, `30407d3`, `3a1996a`). Atributos ficam lineares no MVP; faixas com soft cap ficam para o balanceamento (estudo da curva da FromSoftware feito em 2026-11-04).
 **In progress**: nada
-**Next step**: campfire-light. O design dela foi feito sobre o `PermanentStats` antigo: revisar antes de começar (a fogueira só preenche `LightRadius` no `StatBlock`). O save-system ainda espera a validação final depois de blacksmith-weapon.
+**Next step**: campfire-light. O design dela foi feito sobre o `PermanentStats` antigo: revisar antes de começar (a fogueira só preenche `LightRadius` no `StatBlock`). Depois da fogueira: fechamento do save-system, balanceamento, mesa de tarot e ferreiro (AD-015).
 **Blockers**: nenhum
 **Uncommitted**: nada (as pastas de ferramentas estão no `.git/info/exclude` local)
 **Branch**: main, sem push desde `0a7ec81`
