@@ -230,8 +230,8 @@ T6 → T7 → T8 → T9
 
 **Done when**:
 
-- [ ] Passar o mouse nas velas mostra o contorno
-- [ ] Console sem erros de compilação
+- [x] Passar o mouse nas velas mostra o contorno
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build

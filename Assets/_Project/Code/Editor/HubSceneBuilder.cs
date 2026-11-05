@@ -76,7 +76,7 @@ namespace Assets._Project.Code.Editor
             ConfigureSingleSprite(SpritesPath + "/Hub/Church.png", NpcSpritePadding);
             ConfigureSingleSprite(SpritesPath + "/Hub/Anvil.png", NpcSpritePadding);
             ConfigureSingleSprite(SpritesPath + "/Hub/TarotTable.png", NpcSpritePadding);
-            ConfigureSingleSprite(SpritesPath + "/Hub/HubFlame.png", 0);
+            ConfigureSingleSprite(SpritesPath + "/Hub/HubFlame.png", NpcSpritePadding); // margem de 2 px para o contorno
             ConfigureSingleSprite(SpritesPath + "/Hub/Gate.png", NpcSpritePadding);
             var outlineMaterial = CreateOutlineMaterial();
             SliceSheet(TilesetPath, TilesetPieces);
@@ -103,12 +103,14 @@ namespace Assets._Project.Code.Editor
 
             // Portão no fim da trilha de baixo: a saída para a run (HUB-01), com o painel de expedição no Canvas
             var gate = PlaceInteractable("Portao (Expedicao)", "Hub/Gate.png", GatePosition, world, outlineMaterial);
-            var expedition = HubCanvasBuilder.Build(out var priestMenu);
+            var expedition = HubCanvasBuilder.Build(out var priestMenu, out var campfireMenu);
             LinkClick(gate, expedition.Open);
             LinkClick(church, priestMenu.Open); // PRST-01
             CreateEventSystem();
 
-            var flame = Place("Fogueira", LoadSprite("Hub/HubFlame.png"), Center + new Vector2(0f, -0.4f), world);
+            // A fogueira (o grupo de velas) abre o menu de luz (LIGHT-01, LIGHT-02)
+            var flame = PlaceInteractable("Fogueira", "Hub/HubFlame.png", Center + new Vector2(0f, -0.4f), world, outlineMaterial);
+            LinkClick(flame, campfireMenu.Open);
             AddPointLight(flame.transform, new Vector2(0f, 0.4f), new Color(1f, 0.72f, 0.4f), 1.5f, 6.5f);
 
             foreach (float x in new[] { -0.9f, 1.9f })

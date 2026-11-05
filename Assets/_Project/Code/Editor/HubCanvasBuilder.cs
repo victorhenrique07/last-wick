@@ -28,8 +28,8 @@ namespace Assets._Project.Code.Editor
 
         private static Font font;
 
-        // Devolve o painel de expedição e o menu do padre, para o builder ligar o clique do portão e da igreja
-        public static ExpeditionPanel Build(out PriestMenu priestMenu)
+        // Devolve o painel de expedição e os menus do padre e da fogueira, para o builder ligar os cliques do mundo
+        public static ExpeditionPanel Build(out PriestMenu priestMenu, out CampfireMenu campfireMenu)
         {
             font = AssetDatabase.LoadAssetAtPath<Font>(FontPath);
 
@@ -47,6 +47,7 @@ namespace Assets._Project.Code.Editor
 
             BuildResourceBar(canvasGo.transform);
             priestMenu = BuildPriestMenu(canvasGo.transform, BuildAttributeRowPrefab());
+            campfireMenu = BuildCampfireMenu(canvasGo.transform);
             return BuildExpeditionPanel(canvasGo.transform);
         }
 
@@ -148,6 +149,63 @@ namespace Assets._Project.Code.Editor
 
             root.SetActive(false);
             return expedition;
+        }
+
+        // Menu da fogueira: nível de luz, raio atual → próximo, custo em óleo e "Alimentar a chama"
+        private static CampfireMenu BuildCampfireMenu(Transform canvas)
+        {
+            var host = Node("PainelFogueira", canvas);
+            Stretch(host);
+            var hubPanel = host.AddComponent<HubPanel>();
+            var menu = host.AddComponent<CampfireMenu>();
+
+            var root = Node("Conteudo", host.transform);
+            Stretch(root);
+            Img(root, null, Dim); // fundo em tela cheia: escurece o hub e segura os cliques
+
+            var panel = Node("Painel", root.transform);
+            Img(panel, Art("PanelFrame"), Color.white, tiled: true);
+            panel.GetComponent<RectTransform>().sizeDelta = new Vector2(1134, 546); // múltiplos do ornamento de 63 unidades
+            var column = panel.AddComponent<VerticalLayoutGroup>();
+            column.padding = new RectOffset(80, 80, 76, 64);
+            column.spacing = 10;
+            column.childAlignment = TextAnchor.MiddleCenter;
+            SetControl(column, forceWidth: true, forceHeight: false);
+
+            Size(Label("Titulo", panel.transform, "A Fogueira", 48, Cream, TextAnchor.MiddleCenter), height: 60);
+            Ornament(panel.transform, "Arabesco", Art("TitleFlourish"));
+            var level = Label("Nivel", panel.transform, "Nível 0 de 10", 32, Cream, TextAnchor.MiddleCenter);
+            Size(level, height: 44);
+            var radius = Label("Raio", panel.transform, "Raio da luz  3,0 → 3,5", 28, Muted, TextAnchor.MiddleCenter);
+            Size(radius, height: 38);
+            var cost = Label("Custo", panel.transform, "Custo: 40 de óleo", 28, Cream, TextAnchor.MiddleCenter);
+            Size(cost, height: 38);
+
+            var buttons = Node("Botoes", panel.transform);
+            var row = buttons.AddComponent<HorizontalLayoutGroup>();
+            row.spacing = 24;
+            row.childAlignment = TextAnchor.MiddleCenter;
+            SetControl(row, forceWidth: false, forceHeight: true);
+            Size(buttons, height: 72);
+            var buy = Button(buttons.transform, "Alimentar a chama", menu.Buy);
+            Button(buttons.transform, "Fechar", menu.Close);
+
+            var hubFields = new SerializedObject(hubPanel);
+            hubFields.FindProperty("root").objectReferenceValue = root;
+            hubFields.ApplyModifiedPropertiesWithoutUndo();
+
+            var fields = new SerializedObject(menu);
+            fields.FindProperty("panel").objectReferenceValue = hubPanel;
+            fields.FindProperty("levelLabel").objectReferenceValue = level.GetComponent<Text>();
+            fields.FindProperty("radiusLabel").objectReferenceValue = radius.GetComponent<Text>();
+            fields.FindProperty("costLabel").objectReferenceValue = cost.GetComponent<Text>();
+            fields.FindProperty("buyButton").objectReferenceValue = buy;
+            fields.FindProperty("costColor").colorValue = Cream;
+            fields.FindProperty("missingOilColor").colorValue = Warning; // cor de aviso, como o padre (LIGHT-17)
+            fields.ApplyModifiedPropertiesWithoutUndo();
+
+            root.SetActive(false);
+            return menu;
         }
 
         // Menu do padre: nível, custo do próximo ponto e uma linha por atributo, criadas em runtime pelo PriestMenu
