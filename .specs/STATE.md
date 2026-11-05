@@ -99,7 +99,7 @@
 **Phase/Task**: próxima etapa (AD-015): fechamento do save-system, depois balanceamento, mesa de tarot e ferreiro
 **Completed**: campfire-light T1-T9 sem os orbes de óleo (AD-016): `LightConfig`, `LightRules`, luz da run pelo nível da fogueira, `CampfireShop`, menu "A Fogueira" nas velas do hub. O Claude fez as tasks a pedido. Walk de 11 checks (Esc testado pelo usuário), Verifier com 2 findings fechados em `c2f327a` (nível de luz preso em 0..máximo). Pixel Perfect Camera 320x180 na run e no hub (AD-017), sem alinhamento de pixels nos sprites e com a câmera arredondada (tremor corrigido em `00e5434`).
 **In progress**: nada
-**Next step**: spec do card-effects escrita, aguardando aprovação. Depois, fechar o save-system: rodar o walk das checks que já dá para provar (as de cartas e armas ficam pendentes até a mesa de tarot e o ferreiro), check_proofs e Verifier. Depois, o balanceamento.
+**Next step**: spec do card-effects aprovada (design e tasks quando entrar, junto da mesa de tarot). Depois, fechar o save-system: rodar o walk das checks que já dá para provar (as de cartas e armas ficam pendentes até a mesa de tarot e o ferreiro), check_proofs e Verifier. Depois, o balanceamento.
 **Blockers**: nenhum
 **Uncommitted**: nada (as pastas de ferramentas estão no `.git/info/exclude` local)
 **Branch**: main, sem push desde `9adb184`

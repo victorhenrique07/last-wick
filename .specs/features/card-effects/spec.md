@@ -1,5 +1,7 @@
 # Cartas com mecânica própria Specification
 
+**Approved**: 2026-11-05 - user: "Aprovo a spec"
+
 ## Problem Statement
 
 Hoje toda carta é uma soma de números fixos em `CardData` (vida, dano, cadência, luz...), aplicada pelo `PlayerRunStats`. Uma carta com comportamento próprio, como "a cada 5 abates, uma explosão", não tem onde morar: cada mecânica nova exigiria mexer no `CardData` e no `PlayerRunStats`. O sistema dá a cada carta um lugar opcional para a sua mecânica, sem tocar nas cartas de números que já existem.
@@ -29,7 +31,7 @@ Hoje toda carta é uma soma de números fixos em `CardData` (vida, dano, cadênc
 | Quem implementa | O usuário escreve o código; o Claude cria assets e prefabs quando pedido | AD-001; usuário escolheu "Eu escrevo o código (AD-001)" | y |
 | Quando entra no MVP | Junto da mesa de tarot, depois do fechamento do save e do balanceamento | Usuário escolheu "Junto da mesa de tarot"; AD-015 | y |
 | Carta pega de novo | O sistema avisa o efeito do novo número de cópias; a mecânica da carta decide o que fazer (mais uma instância ou mais força) | Usuário: "depende da carta. isso será uma mecânica dela. Terão cartas que terão esse exemplo de duas explosoes, outras cartas vao ter um efeito unico e os niveis serão apenas incrementos de status do efeito que ela gera." | y |
-| Carta com números e efeito | Uma carta pode ter bônus de números e efeito ao mesmo tempo; os dois valem | Os bônus continuam no `CardData` e o efeito é um campo a mais; não há razão para escolher um só | n |
+| Carta com números e efeito | Uma carta pode ter bônus de números e efeito ao mesmo tempo; os dois valem | Os bônus continuam no `CardData` e o efeito é um campo a mais; aceito com a aprovação da spec ("Aprovo a spec") | y |
 | Como provar | Walk em Play Mode com a primeira carta de efeito real; a spec fecha quando ela existir | Usuário escolheu "Provar com a 1ª carta real" | y |
 
 **Open questions:** none - all resolved or logged above (required before the spec is confirmed).
