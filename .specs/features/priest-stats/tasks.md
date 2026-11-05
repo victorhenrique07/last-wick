@@ -172,9 +172,9 @@ T6 → T7 → T8 → T9 → T10 → T11
 
 **Done when**:
 
-- [ ] Com 20 de ouro, `TryBuy` em dois atributos deixa 6 de ouro, nível 2 e `NextCost` 16
-- [ ] Sem ouro, `TryBuy` devolve falso e não muda o save
-- [ ] Console sem erros de compilação
+- [x] Com 20 de ouro, `TryBuy` em dois atributos deixa 6 de ouro, nível 2 e `NextCost` 16
+- [x] Sem ouro, `TryBuy` devolve falso e não muda o save
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
