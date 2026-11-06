@@ -1,4 +1,4 @@
-﻿using Assets._Project.Code.Runtime.Cards;
+using Assets._Project.Code.Runtime.Cards;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,7 +24,7 @@ namespace Assets._Project.Code.Runtime.UI
 
             if (pendingChoices > 1) return;
 
-            ShowOptions();
+            if (!ShowOptions()) return;
 
             levelUpPanel.SetActive(true);
 
@@ -48,7 +48,8 @@ namespace Assets._Project.Code.Runtime.UI
             Time.timeScale = 1f;
         }
 
-        private void ShowOptions()
+        // Devolve falso quando não há carta nenhuma para oferecer; aí o level up não abre
+        private bool ShowOptions()
         {
             // As opções saem do deck montado na mesa de tarot (TAROT-16)
             var options = CardLibrary.DeckCards();
@@ -60,17 +61,31 @@ namespace Assets._Project.Code.Runtime.UI
                 foreach (CardData card in SaveSystem.Database.StartingDeck.Cards)
                 {
                     if (options.Count >= cards.Length) break;
-                    if (card != null && !options.Contains(card)) options.Add(card);
+                    if (card != null && !string.IsNullOrWhiteSpace(card.Id) && !options.Contains(card)) options.Add(card);
                 }
             }
 
+            if (options.Count == 0)
+            {
+                Debug.LogError("LevelUpPanel: nem o deck salvo nem o deck inicial têm cartas; o level up foi pulado.");
+                pendingChoices = 0;
+                return false;
+            }
+
+            // Se nem o deck inicial completar, mostra só as opções que houver e esconde as outras
             for (int i = 0; i < cards.Length; i++)
             {
+                bool hasOption = options.Count > 0;
+                cards[i].gameObject.SetActive(hasOption);
+                if (!hasOption) continue;
+
                 int index = UnityEngine.Random.Range(0, options.Count);
 
                 cards[i].Show(options[index], Confirm);
                 options.RemoveAt(index);
             }
+
+            return true;
         }
     }
 }
