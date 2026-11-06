@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LastWick.Combat.WeaponData
   id: centelha
   displayName: Centelha
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 64e6220ae568063479adf4603cf4c982, type: 3}
   projectilePrefab: {fileID: 4015100975836646687, guid: 195172bcc91190d49b7ff7f00722fb28, type: 3}
   baseDamage: 10
   baseFireRate: 4

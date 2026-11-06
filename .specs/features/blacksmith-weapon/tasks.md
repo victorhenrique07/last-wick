@@ -260,8 +260,8 @@ T10 → T11 → T12 → T13 → T14
 
 **Done when**:
 
-- [ ] Ícone ligado ao `StartingWeapon.asset`
-- [ ] Console sem erros de compilação
+- [x] Ícone ligado ao `StartingWeapon.asset`
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
