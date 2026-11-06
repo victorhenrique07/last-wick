@@ -88,6 +88,9 @@ namespace Assets._Project.Code.Runtime.Save
             int maxLight = Database.Light != null ? Database.Light.MaxLevel : int.MaxValue;
             saveData.LightLevel = Math.Clamp(saveData.LightLevel, 0, maxLight);
 
+            // Id vazio nunca é uma carta, e cada carta aparece uma vez só (TAROT-20)
+            saveData.UnlockedCards = saveData.UnlockedCards.Where(id => !string.IsNullOrWhiteSpace(id)).Distinct().ToList();
+
             var nonexistentCards = saveData.UnlockedCards.Except(saveData.UnlockedCards.Where(id => Database.FindCard(id) != null)).ToList();
             if (nonexistentCards.Any())
             {
@@ -100,7 +103,7 @@ namespace Assets._Project.Code.Runtime.Save
                 saveData.UnlockedCards = saveData.UnlockedCards.Except(nonexistentCards).ToList();
             }
 
-            saveData.Deck = saveData.Deck.Where(card => saveData.UnlockedCards.Contains(card)).ToList();
+            saveData.Deck = saveData.Deck.Where(card => saveData.UnlockedCards.Contains(card)).Distinct().ToList();
         }
 
         private static SaveData MoveToCorruptAndStartOver(string reason)
