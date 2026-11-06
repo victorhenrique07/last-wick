@@ -1,6 +1,7 @@
 # Ferreiro: melhoria da arma Specification
 
 **Approved**: 2026-11-03 - user: "tudo ok. Podemos seguir com o design das specs."
+**Revisão**: 2026-11-06 - ajustes da revisão contra o código atual (usuário: "Aplica os 7 ajustes"); aguardando nova aprovação.
 
 ## Problem Statement
 
@@ -29,7 +30,7 @@ A arma do player tem dano e cadência fixos no componente `Weapon` da cena, e na
 
 | Assumption / decision | Chosen default | Rationale | Confirmed? |
 | --------------------- | -------------- | --------- | ---------- |
-| Quem implementa | O usuário escreve o código; o Claude monta o menu | AD-001 | y |
+| Quem implementa | O Claude escreve o código e monta o menu | Usuário, em 2026-11-06: "Claude escreve tudo" (substitui a AD-001 nesta feature) | y |
 | Escopo do ferreiro | Só melhora a arma equipada; dados prontos para várias armas | AD-003 | y |
 | Chave da arma no save | O `Id` do asset da arma | AD-007 | y |
 | O que cada nível melhora | Cada nível define seus próprios bônus de dano, cadência, velocidade do projétil, alcance e perfuração | Cada arma pode ter um caminho de melhoria diferente | y |
@@ -37,6 +38,9 @@ A arma do player tem dano e cadência fixos no componente `Weapon` da cena, e na
 | Custo por nível (provisório) | Cada nível tem seu custo em osso, ferro e cera; começa em 10 materiais e sobe 10 por nível | Materiais são do ferreiro no One-Pager | y |
 | Teto | O número de níveis definido no asset da arma | O One-Pager deixa o teto do ferreiro "por definir" | y |
 | Como provar | Conferência manual em Play Mode | Escolha do usuário na feature anterior | y |
+| Dano e cadência na run | Dano = dano do padre (Força) + dano da arma no nível + dano fixo das cartas, tudo vezes o bônus de dano das cartas; cadência = cadência da arma no nível x multiplicador do padre x cartas | É a fórmula que o `PlayerRunStats` já usa desde o priest-stats; a arma só troca o número fixo pelo do asset | y |
+| Cor do material que falta | Cor de aviso da paleta (terracota #C96D45), igual ao padre, à fogueira e à mesa | Revisão de 2026-11-06; o "vermelho" do SMITH-16 é essa cor | y |
+| Ids de arma no save | Ids vazios e repetidos em `WeaponLevels` saem ao carregar, como nas cartas | Lição da mesa de tarot (Verifier, achado 1) | y |
 
 **Open questions:** none - all resolved or logged above.
 
@@ -74,7 +78,7 @@ A arma do player tem dano e cadência fixos no componente `Weapon` da cena, e na
 
 1. WHEN uma run começar THEN o player SHALL usar a arma equipada do save com os status base do asset dela. [SMITH-08]
 2. WHEN uma run começar THEN a arma SHALL somar os bônus de todos os níveis comprados, do nível 1 até o nível atual. [SMITH-09]
-3. The bônus das cartas SHALL ser aplicado sobre os status da arma já melhorada. [SMITH-10]
+3. The bônus das cartas SHALL ser aplicado sobre os status da arma já melhorada, somados ao dano e à cadência do padre. [SMITH-10]
 
 **Independent Test**: Melhorar a arma até o nível 2 (+2 de dano e +10% de cadência) e ver o dano e a cadência maiores na run.
 
@@ -100,7 +104,7 @@ A arma do player tem dano e cadência fixos no componente `Weapon` da cena, e na
 ## Edge Cases
 
 - WHILE a arma estiver no último nível the menu SHALL mostrar "Arma no nível máximo" e desativar a melhoria. [SMITH-15]
-- IF o jogador não tiver os materiais do próximo nível THEN o menu SHALL desativar a melhoria e mostrar em vermelho o material que falta. [SMITH-16]
+- IF o jogador não tiver os materiais do próximo nível THEN o menu SHALL desativar a melhoria e mostrar na cor de aviso (#C96D45) o material que falta. [SMITH-16]
 - IF o nível salvo for maior que o número de níveis da arma THEN a arma SHALL usar o último nível. [SMITH-17]
 - WHEN o jogador clicar várias vezes seguidas em melhorar THEN o ferreiro SHALL cobrar e subir um nível por clique, sem deixar material negativo. [SMITH-18]
 

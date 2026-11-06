@@ -6,13 +6,14 @@ Implement these tasks with the `tlc-spec-driven` skill: **activate it by name an
 
 **If the skill cannot be activated, STOP and tell the user - do not proceed without it.**
 
-Pela AD-001, o usuário escreve o código de gameplay e o Claude monta telas, arte, assets e cenas. Cada task diz quem a faz.
+O usuário pediu que o Claude faça todas as tasks desta feature, código incluído ("Claude escreve tudo", 2026-11-06), no lugar da AD-001.
 
 ---
 
 **Design**: `.specs/features/blacksmith-weapon/design.md`
 **Status**: Approved
 **Approved**: 2026-11-03 - user: "Aprovo todas"
+**Revisão**: 2026-11-06 - ajustes da revisão contra o código atual (usuário: "Aplica os 7 ajustes"); aguardando nova aprovação.
 **Build**: none - o projeto não tem comando de build; a compilação é conferida no Console do Unity Editor
 
 ---
@@ -68,7 +69,7 @@ T10 → T11 → T12 → T13 → T14
 
 ## Task Breakdown
 
-### T1: Criar `WeaponLevel` e `WeaponData` (usuário)
+### T1: Criar `WeaponLevel` e `WeaponData` (Claude)
 
 **What**: Criar o asset de arma com ID, nome, ícone, projétil, base e níveis.
 **Where**: `Assets/_Project/Code/Runtime/Combat/WeaponData.cs`
@@ -88,9 +89,9 @@ T10 → T11 → T12 → T13 → T14
 
 ---
 
-### T2: Criar `WeaponCatalog` (usuário)
+### T2: Criar `WeaponCatalog` (Claude)
 
-**What**: Criar a lista de armas com `StartingWeapon` e `Find`.
+**What**: Criar a lista de armas com `StartingWeapon` e `Find`, que ignora entradas nulas e sem Id, e o `OnValidate` que avisa Id vazio ou repetido.
 **Where**: `Assets/_Project/Code/Runtime/Combat/WeaponCatalog.cs`
 **Depends on**: T1
 **Reuses**: `CardCollection`
@@ -98,7 +99,7 @@ T10 → T11 → T12 → T13 → T14
 
 **Done when**:
 
-- [ ] `Find` devolve `null` para ID desconhecido
+- [ ] `Find` devolve `null` para ID desconhecido e para ID vazio
 - [ ] Console sem erros de compilação
 
 **Tests**: none
@@ -108,7 +109,7 @@ T10 → T11 → T12 → T13 → T14
 
 ---
 
-### T3: Criar `WeaponStats` (usuário)
+### T3: Criar `WeaponStats` (Claude)
 
 **What**: Somar a base e os níveis 1 até o nível, preso em `0..MaxLevel`.
 **Where**: `Assets/_Project/Code/Runtime/Combat/WeaponStats.cs`
@@ -128,7 +129,7 @@ T10 → T11 → T12 → T13 → T14
 
 ---
 
-### T4: `GameDatabase` com `Weapons` (usuário)
+### T4: `GameDatabase` com `Weapons` (Claude)
 
 **What**: Adicionar `Weapons`, `FindWeapon` e o erro de arma inicial vazia.
 **Where**: `Assets/_Project/Code/Runtime/Save/GameDatabase.cs`
@@ -148,9 +149,9 @@ T10 → T11 → T12 → T13 → T14
 
 ---
 
-### T5: Save com armas (usuário)
+### T5: Save com armas (Claude)
 
-**What**: Equipar a arma inicial no save novo, tirar IDs de arma desconhecidos e trocar arma equipada desconhecida pela inicial.
+**What**: Equipar a arma inicial no save novo, tirar de `WeaponLevels` os IDs vazios, repetidos e desconhecidos, e trocar arma equipada desconhecida pela inicial.
 **Where**: `Assets/_Project/Code/Runtime/Save/SaveSystem.cs`
 **Depends on**: T4
 **Reuses**: limpeza de IDs de carta
@@ -159,6 +160,7 @@ T10 → T11 → T12 → T13 → T14
 **Done when**:
 
 - [ ] `EquippedWeapon` desconhecido carrega como a arma inicial
+- [ ] `WeaponLevels` com o mesmo ID duas vezes carrega com uma entrada só
 - [ ] Console sem erros de compilação
 
 **Tests**: none
@@ -208,7 +210,7 @@ T10 → T11 → T12 → T13 → T14
 
 ---
 
-### T8: `Weapon.Equip` e `TryFire` com dados (usuário)
+### T8: `Weapon.Equip` e `TryFire` com dados (Claude)
 
 **What**: Tirar os números serializados, criar `Equip` e usar `WeaponStats` no disparo, multiplicando pelos bônus das cartas.
 **Where**: `Assets/_Project/Code/Runtime/Combat/Weapon.cs`
@@ -228,7 +230,7 @@ T10 → T11 → T12 → T13 → T14
 
 ---
 
-### T9: `PlayerAttack` equipa a arma do save (usuário)
+### T9: `PlayerAttack` equipa a arma do save (Claude)
 
 **What**: No `Start`, achar a arma equipada e o nível e chamar `Equip`.
 **Where**: `Assets/_Project/Code/Runtime/Player/PlayerAttack.cs`
@@ -268,7 +270,7 @@ T10 → T11 → T12 → T13 → T14
 
 ---
 
-### T11: Criar `SmithShop` (usuário)
+### T11: Criar `SmithShop` (Claude)
 
 **What**: Criar `Equipped`, `Level`, `IsMaxed`, `NextCost` e `TryUpgrade`.
 **Where**: `Assets/_Project/Code/Runtime/Combat/SmithShop.cs`
@@ -308,7 +310,7 @@ T10 → T11 → T12 → T13 → T14
 
 ---
 
-### T13: Criar `SmithMenu` (usuário)
+### T13: Criar `SmithMenu` (Claude)
 
 **What**: Mostrar arma, nível, status que mudam, custo e "Forjar", e melhorar pelo `SmithShop`.
 **Where**: `Assets/_Project/Code/Runtime/Hub/SmithMenu.cs`
@@ -331,7 +333,7 @@ T10 → T11 → T12 → T13 → T14
 ### T14: Painel do ferreiro no builder (Claude)
 
 **What**: Montar o painel e ligar o `onClick` da bigorna ao `SmithMenu.Open`.
-**Where**: `Assets/_Project/Code/Editor/HubSceneBuilder.cs`
+**Where**: `Assets/_Project/Code/Editor/HubCanvasBuilder.cs` (`BuildSmithMenu`, `Build` com `out SmithMenu`) e `Assets/_Project/Code/Editor/HubSceneBuilder.cs` (clique da bigorna); a cena `Hub` regerada
 **Depends on**: T13
 **Reuses**: painel do padre
 **Requirement**: SMITH-01, SMITH-07
@@ -378,7 +380,7 @@ Proof: walk - Num save novo, o dano por tiro é 10.
 Proof: walk - Com nível 2, ler dano 12 e cadência 4,4 no Inspector do `Weapon` em modo Debug.
 
 **C10** - As cartas se aplicam sobre a arma melhorada (SMITH-10, AC 3)
-Proof: walk - Com nível 2 e "+20% dano", o tiro dá 14,4.
+Proof: walk - Num save com a Força do padre em 0, nível 2 e "+20% dano", o tiro dá 14,4; com a Força em 1, o tiro soma o dano do padre antes dos 20%.
 
 **C11** - A arma é um asset com ID, nome, ícone, projétil, base e níveis (SMITH-11, AC 1)
 Proof: walk - Abrir o `StartingWeapon.asset` no Inspector.
@@ -393,16 +395,25 @@ Proof: walk - Abrir o `WeaponCatalog.asset`.
 Proof: walk - Duplicar a arma com outro projétil e ID, pôr no catálogo, mudar `EquippedWeapon` no save e jogar.
 
 **C15** - No último nível, aparece "Arma no nível máximo" e a melhoria desliga (SMITH-15, edge case)
-Proof: walk - Pôr nível 5 no `save.json` e abrir o menu.
+Proof: walk - Com nível 4 e os materiais do nível 5, forjar e ver "Arma no nível máximo" com o botão desligado; e pôr nível 5 no `save.json` e abrir o menu.
 
-**C16** - Sem materiais, a melhoria desliga e o que falta fica vermelho (SMITH-16, edge case)
-Proof: walk - Com 0 materiais, abrir o menu.
+**C16** - Sem materiais, a melhoria desliga e o que falta fica na cor de aviso (SMITH-16, edge case)
+Proof: walk - Com 0 materiais, abrir o menu e ver os três custos em #C96D45 e o botão desligado; com só um material faltando, ver só ele em #C96D45.
 
 **C17** - Nível salvo acima do máximo usa o último (SMITH-17, edge case)
 Proof: walk - Pôr nível 9 no `save.json` e ler o dano do nível 5 na run.
 
 **C18** - Cliques rápidos sobem um nível por clique, sem material negativo (SMITH-18, edge case)
 Proof: walk - Com custo de 2 níveis, clicar 5 vezes rápido: sobe 2 e nada fica negativo.
+
+**C19** - Arma equipada desconhecida no save vira a arma inicial (design, Error Handling; SAVE-22)
+Proof: walk - Pôr `EquippedWeapon` "nao-existe" no `save.json`, carregar e ver a arma inicial no ferreiro e na run.
+
+**C20** - Catálogo sem arma inicial dá erro no Editor (design, Error Handling)
+Proof: walk - Esvaziar o `StartingWeapon` do `WeaponCatalog` em memória, chamar o `OnValidate` do `GameDatabase`, ver o erro no Console e restaurar.
+
+**C21** - `WeaponLevels` com Id vazio, repetido ou desconhecido é limpo ao carregar (design, Error Handling)
+Proof: walk - Pôr no `save.json` a arma inicial duas vezes (níveis 1 e 3), um Id vazio e um desconhecido, carregar e ver uma entrada só da arma inicial, com nível 1.
 
 ---
 

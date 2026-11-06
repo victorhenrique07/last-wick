@@ -3,6 +3,7 @@
 **Spec**: `.specs/features/blacksmith-weapon/spec.md`
 **Status**: Approved
 **Approved**: 2026-11-03 - user: "Aprovo todos"
+**Revisão**: 2026-11-06 - ajustes da revisão contra o código atual (usuário: "Aplica os 7 ajustes"); aguardando nova aprovação.
 
 ---
 
@@ -17,6 +18,12 @@ A arma deixa de ter os números presos no componente `Weapon` do prefab do playe
 O `WeaponCatalog` lista todas as armas e marca a arma inicial. Os dois ficam no `GameDatabase`.
 
 Na run, o `PlayerAttack` pede ao save a arma equipada e o nível dela e chama `weapon.Equip(data, level)`. O `Weapon` monta um `WeaponStats` com a base mais a soma dos níveis 1 até o nível atual (SMITH-09). Depois disso, `TryFire` usa esses valores, e as cartas continuam multiplicando por cima (SMITH-10).
+
+Na run, os números se juntam assim (SMITH-10), na fórmula que o `PlayerRunStats` já usa desde o padre:
+
+- **Dano por tiro** = (dano do padre, pela Força + dano da arma no nível + dano fixo das cartas) x (1 + bônus de dano das cartas).
+- **Cadência** = cadência da arma no nível x multiplicador de cadência do padre x (1 + bônus de cadência das cartas).
+- **Projétil**: os bônus da arma no nível multiplicam os das cartas; a perfuração soma.
 
 No hub, a bigorna abre o `SmithMenu`. A compra passa por `SmithShop`.
 
@@ -48,8 +55,11 @@ flowchart TD
 | `Weapon.TryFire` | `Assets/_Project/Code/Runtime/Combat/Weapon.cs:19` | Mantém a assinatura; passa a usar o projétil, o dano e a cadência do `WeaponStats` e a multiplicar os bônus de projétil da arma pelos das cartas. |
 | `Projectile.Launch` | `Assets/_Project/Code/Runtime/Combat/Projectile.cs:26` | Já aceita multiplicadores de velocidade e de vida, e perfuração extra. Os níveis usam essas entradas, sem mudança no projétil. |
 | `PlayerAttack` | `Assets/_Project/Code/Runtime/Player/PlayerAttack.cs` | Equipa a arma no `Start`. |
-| `PlayerRunStats.CalculateDamage` | `Assets/_Project/Code/Runtime/Player/PlayerRunStats.cs:42` | Recebe `weapon.BaseDamage`, que agora já inclui os níveis. |
-| `HubInteractable` da bigorna | Cena `Hub` | `onClick` → `SmithMenu.Open()` (SMITH-01). |
+| `PlayerRunStats.CalculateDamage` | `Assets/_Project/Code/Runtime/Player/PlayerRunStats.cs:51` | Recebe `weapon.BaseDamage`, que agora já inclui os níveis, e soma o dano do padre (`StatBlock.Damage`) e o fixo das cartas antes do multiplicador. |
+| `PermanentStats` / `StatBlock.FireRate` | `Assets/_Project/Code/Runtime/Player/PermanentStats.cs` | O multiplicador de cadência do padre continua entrando pelo `PlayerRunStats.FireRateMultiplier`; a arma não muda isso. |
+| `CardCollection.OnValidate` | `Assets/_Project/Code/Runtime/Cards/CardCollection.cs` | Mesmo aviso de Id vazio ou repetido no `WeaponCatalog`. |
+| `HubInteractable` da bigorna | Cena `Hub`, `Editor/HubSceneBuilder.cs` | `onClick` → `SmithMenu.Open()` (SMITH-01). |
+| `HubCanvasBuilder` | `Assets/_Project/Code/Editor/HubCanvasBuilder.cs` | `BuildSmithMenu`, no mesmo estilo do padre, da fogueira e da mesa; `Build` ganha `out SmithMenu`. |
 | `HubPanel` | feature `hub-flow` | Abrir, fechar e Esc (SMITH-07). |
 | `SaveData.WeaponLevels`, `EquippedWeapon` | feature `save-system` | Nível por `WeaponData.Id`. |
 
@@ -57,7 +67,7 @@ flowchart TD
 
 | System | Integration Method |
 | ------ | ------------------ |
-| `save-system` | `GetLevel(WeaponLevels, id)`; `Save()` após a melhoria (SAVE-13); arma inicial quando `EquippedWeapon` falta (SAVE-22). |
+| `save-system` | `GetLevel(WeaponLevels, id)`; `Save()` após a melhoria (SAVE-13); arma inicial quando `EquippedWeapon` falta (SAVE-22); `Sanitize` tira de `WeaponLevels` os Ids vazios, repetidos e desconhecidos. |
 | `Player.prefab` | O `Weapon` perde `projectilePrefab`, `damage` e `fireRate` serializados; fica com `muzzle` e `team`. |
 | `GameDatabase` | Campo `Weapons` (`WeaponCatalog`). |
 
@@ -67,8 +77,7 @@ flowchart TD
 
 | Component | Quem escreve |
 | --------- | ------------ |
-| `WeaponData`, `WeaponLevel`, `WeaponCatalog`, `WeaponStats`, `SmithShop`, `SmithMenu`, mudanças em `Weapon` e `PlayerAttack` | Usuário |
-| Painel do ferreiro no builder do hub, `WeaponStatRowView`, `StartingWeapon.asset` e `WeaponCatalog.asset` com os números de hoje, ícone da arma | Claude |
+| Tudo: código, assets, ícone e painel | Claude (usuário, em 2026-11-06: "Claude escreve tudo") |
 
 ### WeaponData e WeaponLevel
 
@@ -85,7 +94,8 @@ flowchart TD
 
 - **Purpose**: A lista das armas do jogo e a arma inicial (SMITH-13).
 - **Location**: `Assets/_Project/Code/Runtime/Combat/WeaponCatalog.cs`; asset em `Assets/_Project/Data/Weapons/WeaponCatalog.asset`
-- **Interfaces**: `IReadOnlyList<WeaponData> Weapons`, `WeaponData StartingWeapon`, `WeaponData Find(string id)`.
+- **Interfaces**: `IReadOnlyList<WeaponData> Weapons`, `WeaponData StartingWeapon`, `WeaponData Find(string id)` (ignora entradas nulas e sem Id; Id vazio devolve `null`).
+- **OnValidate**: avisa arma sem Id e Id repetido, como o `CardCollection`.
 
 ### WeaponStats
 
@@ -117,7 +127,7 @@ flowchart TD
   - `SmithShop.Equipped`, `SmithShop.Level`, `SmithShop.IsMaxed`
   - `SmithShop.NextCost` - `Levels[level].Cost`
   - `SmithShop.TryUpgrade()` - `TrySpend`, nível + 1, `NotifyChanged`, `Save`
-  - `SmithMenu.Open()` mostra ícone, nome, "Nível N/M", linhas "atual → próximo" só dos status que mudam, custo por material (vermelho no que falta) e o botão "Forjar"; no máximo mostra "Arma no nível máximo"
+  - `SmithMenu.Open()` mostra ícone, nome, "Nível N/M", linhas "atual → próximo" só dos status que mudam, custo por material (cor de aviso #C96D45 no que falta) e o botão "Forjar"; no máximo mostra "Arma no nível máximo"
 
 ---
 
@@ -144,11 +154,13 @@ Arma inicial: 5 níveis, alternando `DamageBonus` 2 e `FireRateBonus` 0,10. Os c
 
 | Error Scenario | Handling | User Impact |
 | -------------- | -------- | ----------- |
-| Materiais insuficientes | Botão desligado, material em vermelho; `TryUpgrade` devolve falso (SMITH-16) | Nada é cobrado. |
+| Materiais insuficientes | Botão desligado, material na cor de aviso; `TryUpgrade` devolve falso (SMITH-16) | Nada é cobrado. |
 | Arma no último nível | "Arma no nível máximo", botão desligado (SMITH-15) | Nenhum. |
 | Nível salvo acima de `MaxLevel` | `WeaponStats.Build` prende no último (SMITH-17) | Usa o último nível. |
 | Arma equipada desconhecida | O save já troca pela inicial (SAVE-22) | Nenhum. |
 | `WeaponCatalog` sem `StartingWeapon` | `Debug.LogError` no `GameDatabase.OnValidate` | Aparece no Editor antes de jogar. |
+| `WeaponLevels` com Id vazio, repetido ou desconhecido | O `Sanitize` tira; o repetido fica com a primeira entrada | O nível da arma não é contado duas vezes. |
+| Arma no catálogo sem Id | `Find` a ignora e o `OnValidate` avisa | Ela nunca é equipada por engano. |
 
 ---
 
