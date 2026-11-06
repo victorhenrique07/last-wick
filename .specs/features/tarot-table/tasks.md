@@ -258,8 +258,8 @@ T9 → T10 → T11 → T12 → T13 → T14
 
 **Done when**:
 
-- [ ] Desbloquear tira a carta da lista
-- [ ] Console sem erros de compilação
+- [x] Desbloquear tira a carta da lista
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
