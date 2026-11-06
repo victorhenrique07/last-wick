@@ -99,13 +99,12 @@
 
 ## Handoff
 
-**Updated**: 2026-11-05
-**Feature**: campfire-light concluída (`validate_verification.py` com 0 erros); priest-stats, hub-flow, run-rewards e menu principal concluídos antes
-**Phase/Task**: próxima etapa (AD-019): mesa de tarot com card-effects, depois ferreiro, fechamento do save e balanceamento
-**Completed**: campfire-light T1-T9 sem os orbes de óleo (AD-016): `LightConfig`, `LightRules`, luz da run pelo nível da fogueira, `CampfireShop`, menu "A Fogueira" nas velas do hub. O Claude fez as tasks a pedido. Walk de 11 checks (Esc testado pelo usuário), Verifier com 2 findings fechados em `c2f327a` (nível de luz preso em 0..máximo). Pixel Perfect Camera 320x180 na run e no hub (AD-017), sem alinhamento de pixels nos sprites e com a câmera arredondada (tremor corrigido em `00e5434`).
+**Updated**: 2026-11-06
+**Feature**: tarot-table concluída (`validate_verification.py` com 0 erros); card-effects com spec aprovada; campfire-light, priest-stats, hub-flow, run-rewards e menu principal concluídos antes
+**Phase/Task**: próxima etapa (AD-019): card-effects (design e tasks) junto da mesa, depois o ferreiro, o fechamento do save-system e o balanceamento
+**Completed**: tarot-table T1-T14. O usuário fez a T1 e a primeira versão da `CardLibrary` (T3), que o Claude corrigiu; o Claude fez o resto a pedido, em dois lotes de sub-agentes. Walk de 24 checks (Esc testado pelo usuário), Verifier com 5 findings fechados em `6846585` (save sem Ids vazios e repetidos), `d24f688` (carta sem Id) e `a87e788` (level up com menos de 3 opções). Mesa clicável no hub com as abas Desbloquear, Coleção e Deck; o level up sorteia do deck salvo.
 **In progress**: nada
-**Next step**: mesa de tarot (AD-019), com o card-effects junto: revisar o design da spec, depois tasks. Depois o ferreiro, o fechamento do save-system completo e o balanceamento numa passada só.
+**Next step**: design e tasks do card-effects (spec aprovada em 2026-11-05); depois o ferreiro (revisar o design da spec antes das tasks).
 **Blockers**: nenhum
 **Uncommitted**: nada (as pastas de ferramentas estão no `.git/info/exclude` local)
 **Branch**: main, sem push desde `9adb184`
-**Como trabalhamos**: AD-001 - o usuário escreve o código das tasks marcadas "usuário", a menos que peça ao Claude (pediu na hub-flow, no fim do priest-stats e na fogueira); o agente explica, revisa, compila, marca a task e commita uma por task, em português, no estilo do repo. Com a Unity aberta, o agente confere e monta cenas pelo Editor via `unity command` (script eval, console status, editor.playmode); sem foco, o Play Mode só avança com `editor.playmode set_run_in_background --enable true` (desligar no fim), e tecla simulada não chega ao Input System (testes de teclado ficam com o usuário). Walks que gravam no save fazem backup e restauram o `save.json`. Com a Unity fechada, compila em batch mode (sem `-nographics` quando precisa renderizar prévias).

@@ -9,10 +9,10 @@
 Corroborated across multiple features. Safe to apply as guidance.
 
 ### L-002 - A walk for a rule that lists several cases must exercise every listed case, the last one included, not only the first.
-- signal: `weak_test` · recurrence: 3 feature(s) · scope: `walk` · harmful: 0
-- features: run-rewards, hub-flow, priest-stats
-- evidence: C3, C4 (finding 2) (walk) (+2 more)
-- last seen: 2026-11-05T01:30:29Z
+- signal: `weak_test` · recurrence: 4 feature(s) · scope: `walk` · harmful: 0
+- features: run-rewards, hub-flow, priest-stats, tarot-table
+- evidence: C3, C4 (finding 2) (walk) (+3 more)
+- last seen: 2026-11-06T22:17:44Z
 
 ## Candidates (under observation - do NOT load as guidance yet)
 
@@ -53,6 +53,30 @@ Seen once or not yet corroborated. Tracked, not trusted.
 - features: campfire-light
 - evidence: SaveSystem.Sanitize / CampfireShop.Level (findings 1 and 2) (save)
 - last seen: 2026-11-05T04:35:40Z
+
+### L-008 - Sanitize every saved list of Ids for blanks and duplicates on load, not only for unknown Ids.
+- signal: `ac_gap` · recurrence: 1 feature(s) · scope: `save` · harmful: 0
+- features: tarot-table
+- evidence: Assets/_Project/Code/Runtime/Save/SaveSystem.cs:103 (save)
+- last seen: 2026-11-06T22:17:44Z
+
+### L-009 - A walk for a numeric limit must read the value at the limit itself, on both sides.
+- signal: `weak_test` · recurrence: 1 feature(s) · scope: `walk` · harmful: 0
+- features: tarot-table
+- evidence: C19 (walk)
+- last seen: 2026-11-06T22:17:44Z
+
+### L-010 - Every row of the design's Error Handling table needs a check, and its fallback must handle the case it still cannot fill.
+- signal: `ac_gap` · recurrence: 1 feature(s) · scope: `design` · harmful: 0
+- features: tarot-table
+- evidence: Assets/_Project/Code/Runtime/UI/LevelUpPanel.cs:69 (design)
+- last seen: 2026-11-06T22:17:44Z
+
+### L-011 - Filters over data assets must skip entries with a blank Id, not only null entries.
+- signal: `ac_gap` · recurrence: 1 feature(s) · scope: `data` · harmful: 0
+- features: tarot-table
+- evidence: Assets/_Project/Code/Runtime/Cards/CardLibrary.cs:24 (data)
+- last seen: 2026-11-06T22:17:44Z
 
 ## Quarantined (failed when applied - ignore)
 
