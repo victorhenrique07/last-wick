@@ -298,8 +298,8 @@ T9 → T10 → T11 → T12 → T13 → T14
 
 **Done when**:
 
-- [ ] Clicar move a carta e grava o save
-- [ ] Console sem erros de compilação
+- [x] Clicar move a carta e grava o save
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
