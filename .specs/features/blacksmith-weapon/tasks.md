@@ -220,8 +220,8 @@ T10 → T11 → T12 → T13 → T14
 
 **Done when**:
 
-- [ ] Sem arma equipada, `TryFire` devolve falso com um erro
-- [ ] Console sem erros de compilação
+- [x] Sem arma equipada, `TryFire` devolve falso com um erro
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build

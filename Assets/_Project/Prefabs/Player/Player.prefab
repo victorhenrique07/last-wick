@@ -344,11 +344,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1ec1339a44d77a44b2304a9a5f8a84d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LastWick.Combat.Weapon
-  projectilePrefab: {fileID: 4015100975836646687, guid: 195172bcc91190d49b7ff7f00722fb28, type: 3}
   muzzle: {fileID: 8114806680014934771}
   team: 0
-  damage: 10
-  fireRate: 4
 --- !u!1 &3083047355486814688
 GameObject:
   m_ObjectHideFlags: 0
