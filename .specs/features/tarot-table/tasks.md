@@ -118,8 +118,8 @@ T9 → T10 → T11 → T12 → T13 → T14
 
 **Done when**:
 
-- [ ] `TryAddToDeck` recusa carta repetida, bloqueada ou deck cheio
-- [ ] Console sem erros de compilação
+- [x] `TryAddToDeck` recusa carta repetida, bloqueada ou deck cheio
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
