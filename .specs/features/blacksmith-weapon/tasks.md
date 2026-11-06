@@ -99,8 +99,8 @@ T10 → T11 → T12 → T13 → T14
 
 **Done when**:
 
-- [ ] `Find` devolve `null` para ID desconhecido e para ID vazio
-- [ ] Console sem erros de compilação
+- [x] `Find` devolve `null` para ID desconhecido e para ID vazio
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
