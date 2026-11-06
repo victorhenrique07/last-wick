@@ -158,8 +158,8 @@ T9 → T10 → T11 → T12 → T13 → T14
 
 **Done when**:
 
-- [ ] Só cartas do deck salvo aparecem
-- [ ] Console sem erros de compilação
+- [x] Só cartas do deck salvo aparecem
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build

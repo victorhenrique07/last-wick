@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using Assets._Project.Code.Runtime.Core;
+using Assets._Project.Code.Runtime.Save;
 
 namespace Assets._Project.Code.Runtime.UI
 {
     public class LevelUpPanel : MonoBehaviour
     {
         [SerializeField] private GameObject levelUpPanel;
-        [SerializeField] private DeckData deck;
         [SerializeField] private CardView[] cards;
 
         private int pendingChoices;
@@ -50,7 +50,19 @@ namespace Assets._Project.Code.Runtime.UI
 
         private void ShowOptions()
         {
-            var options = new List<CardData>(deck.Cards);
+            // As opções saem do deck montado na mesa de tarot (TAROT-16)
+            var options = CardLibrary.DeckCards();
+
+            // Save com deck pequeno (Play direto na cena): completa com o deck inicial para a run não travar
+            if (options.Count < cards.Length)
+            {
+                Debug.LogWarning($"LevelUpPanel: o deck salvo tem {options.Count} cartas; completando com o deck inicial.");
+                foreach (CardData card in SaveSystem.Database.StartingDeck.Cards)
+                {
+                    if (options.Count >= cards.Length) break;
+                    if (card != null && !options.Contains(card)) options.Add(card);
+                }
+            }
 
             for (int i = 0; i < cards.Length; i++)
             {
