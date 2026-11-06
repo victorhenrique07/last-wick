@@ -133,8 +133,8 @@ T5 → T6
 
 **Done when**:
 
-- [ ] Um script de teste que herda de `CardEffect` compila sem implementar nada
-- [ ] Console sem erros de compilação
+- [x] Um script de teste que herda de `CardEffect` compila sem implementar nada
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
