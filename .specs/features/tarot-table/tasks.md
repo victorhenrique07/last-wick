@@ -338,8 +338,8 @@ T9 → T10 → T11 → T12 → T13 → T14
 
 **Done when**:
 
-- [ ] Clicar na mesa abre o painel
-- [ ] Console sem erros de compilação
+- [x] Clicar na mesa abre o painel
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
