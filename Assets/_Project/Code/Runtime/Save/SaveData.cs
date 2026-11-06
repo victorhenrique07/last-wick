@@ -27,10 +27,17 @@ namespace Assets._Project.Code.Runtime.Save
                 UnlockedCards = db.StartingDeck.Cards.Select(c => c.Id).ToList(),
                 Deck = db.StartingDeck.Cards.Select(c => c.Id).ToList(),
                 WeaponLevels = new List<IdLevel>(),
-                EquippedWeapon = null
+                EquippedWeapon = StartingWeaponId(db)
             };
 
             return saveData;
+        }
+
+        // Save novo já começa com a arma inicial equipada (SAVE-22)
+        private static string StartingWeaponId(GameDatabase db)
+        {
+            if (db.Weapons == null || db.Weapons.StartingWeapon == null) return null;
+            return db.Weapons.StartingWeapon.Id;
         }
 
         public static int GetLevel(List<IdLevel> list, string id)

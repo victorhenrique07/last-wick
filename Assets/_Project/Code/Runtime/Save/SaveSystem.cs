@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using LastWick.Combat;
 using UnityEngine;
 
 namespace Assets._Project.Code.Runtime.Save
@@ -104,6 +105,38 @@ namespace Assets._Project.Code.Runtime.Save
             }
 
             saveData.Deck = saveData.Deck.Where(card => saveData.UnlockedCards.Contains(card)).Distinct().ToList();
+
+            SanitizeWeapons(saveData);
+        }
+
+        // Armas: Id vazio, repetido ou desconhecido sai de WeaponLevels; o repetido fica com a primeira entrada.
+        // Arma equipada vazia ou desconhecida vira a arma inicial (SAVE-22).
+        private static void SanitizeWeapons(SaveData saveData)
+        {
+            WeaponCatalog catalog = Database.Weapons;
+            if (catalog == null) return;
+
+            var seen = new HashSet<string>();
+            var kept = new List<IdLevel>();
+
+            foreach (IdLevel entry in saveData.WeaponLevels)
+            {
+                if (string.IsNullOrWhiteSpace(entry.Id)) continue;
+
+                if (catalog.Find(entry.Id) == null)
+                {
+                    Debug.LogWarning($"Weapon with ID '{entry.Id}' does not exist in the database and will be removed from the save data.");
+                    continue;
+                }
+
+                if (seen.Add(entry.Id))
+                    kept.Add(entry);
+            }
+
+            saveData.WeaponLevels = kept;
+
+            if (catalog.Find(saveData.EquippedWeapon) == null && catalog.StartingWeapon != null)
+                saveData.EquippedWeapon = catalog.StartingWeapon.Id;
         }
 
         private static SaveData MoveToCorruptAndStartOver(string reason)

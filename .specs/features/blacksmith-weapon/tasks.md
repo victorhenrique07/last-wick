@@ -159,9 +159,9 @@ T10 → T11 → T12 → T13 → T14
 
 **Done when**:
 
-- [ ] `EquippedWeapon` desconhecido carrega como a arma inicial
-- [ ] `WeaponLevels` com o mesmo ID duas vezes carrega com uma entrada só
-- [ ] Console sem erros de compilação
+- [x] `EquippedWeapon` desconhecido carrega como a arma inicial
+- [x] `WeaponLevels` com o mesmo ID duas vezes carrega com uma entrada só
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
