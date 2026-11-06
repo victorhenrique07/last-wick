@@ -1,4 +1,4 @@
-﻿using Assets._Project.Code.Runtime.Save;
+using Assets._Project.Code.Runtime.Save;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,25 +12,28 @@ namespace Assets._Project.Code.Runtime.Cards
         // Todas as cartas do jogo, na ordem da coleção (TAROT-07)
         public static IReadOnlyList<CardData> AllCards => SaveSystem.Database.CardCollection.Cards;
 
+        // Carta sem Id não pode ir para o save: nunca é liberada nem entra no deck
+        private static bool HasId(CardData card) => card != null && !string.IsNullOrWhiteSpace(card.Id);
+
         // Liberada = o Id está nas cartas liberadas do save
         public static bool IsUnlocked(CardData card) =>
-            card != null && SaveSystem.Data.UnlockedCards.Contains(card.Id);
+            HasId(card) && SaveSystem.Data.UnlockedCards.Contains(card.Id);
 
         // No deck = o Id está no deck do save
         public static bool IsInDeck(CardData card) =>
-            card != null && SaveSystem.Data.Deck.Contains(card.Id);
+            HasId(card) && SaveSystem.Data.Deck.Contains(card.Id);
 
         // As bloqueadas, na ordem da coleção (TAROT-02, TAROT-21)
         public static List<CardData> GetLockedCards() =>
-            AllCards.Where(c => c != null && !IsUnlocked(c)).ToList();
+            AllCards.Where(c => HasId(c) && !IsUnlocked(c)).ToList();
 
         // Para "Liberadas: N/M" (TAROT-10)
-        public static int UnlockedCardCount() => AllCards.Count(c => c != null && IsUnlocked(c));
+        public static int UnlockedCardCount() => AllCards.Count(IsUnlocked);
 
         // Cobra o custo, libera a carta e grava; já liberada ou sem materiais, não muda nada (TAROT-03, TAROT-04)
         public static bool TryUnlock(CardData card)
         {
-            if (card == null || IsUnlocked(card)) return false;
+            if (!HasId(card) || IsUnlocked(card)) return false;
             if (!SaveSystem.TrySpend(card.UnlockCost)) return false;
 
             SaveSystem.Data.UnlockedCards.Add(card.Id);
