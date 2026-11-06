@@ -300,8 +300,8 @@ T10 → T11 → T12 → T13 → T14
 
 **Done when**:
 
-- [ ] Mostra os dois valores
-- [ ] Console sem erros de compilação
+- [x] Mostra os dois valores
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
