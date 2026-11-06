@@ -119,8 +119,8 @@ T10 → T11 → T12 → T13 → T14
 
 **Done when**:
 
-- [ ] Nível 2 da arma inicial dá 12 de dano e 4,4 de cadência
-- [ ] Console sem erros de compilação
+- [x] Nível 2 da arma inicial dá 12 de dano e 4,4 de cadência
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
