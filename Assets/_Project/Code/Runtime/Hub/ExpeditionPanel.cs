@@ -1,4 +1,4 @@
-using Assets._Project.Code.Runtime.Save;
+using Assets._Project.Code.Runtime.Cards;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -24,9 +24,8 @@ namespace Assets._Project.Code.Runtime.Hub
         // Ligado ao onClick do portão
         public void Open()
         {
-            int count = SaveSystem.Data.Deck.Count;
-            var deck = SaveSystem.Database.StartingDeck;
-            bool valid = count >= deck.MinCards && count <= deck.MaxCards;
+            int count = CardLibrary.DeckCardCount();
+            bool valid = CardLibrary.IsDeckValid(); // a mesma regra da mesa de tarot
 
             mapLabel.text = mapName;
             deckLabel.text = $"Deck: {count} cartas";

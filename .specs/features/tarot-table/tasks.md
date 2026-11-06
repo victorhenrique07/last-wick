@@ -178,8 +178,8 @@ T9 → T10 → T11 → T12 → T13 → T14
 
 **Done when**:
 
-- [ ] Portão e mesa concordam sobre o deck válido
-- [ ] Console sem erros de compilação
+- [x] Portão e mesa concordam sobre o deck válido
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
