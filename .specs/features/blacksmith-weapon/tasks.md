@@ -422,7 +422,7 @@ Proof: walk - Pôr no `save.json` a arma inicial duas vezes (níveis 1 e 3), um 
 The feature's live state, written as it happens - a compaction gives no warning.
 
 **Settled mid-build:** 2026-11-06 - o Claude faz todas as tasks, código incluído (usuário: "Claude escreve tudo"); execução em sub-agentes por lote (usuário: "Aprovo, sub-agentes").
-**Dispatched:** lote 1 (Fase 1: T1 a T7) a partir de `e352ec8`, em 2026-11-06
+**Dispatched:** lote 1 (Fase 1: T1 a T7) a partir de `e352ec8`, em 2026-11-06 - returned (`e4b6121`..`d540eb5`); lote 2 (Fases 2 e 3: T8 a T14) a partir de `d540eb5`, em 2026-11-06
 **Walked:** none
 
 ---
