@@ -198,8 +198,8 @@ T9 → T10 → T11 → T12 → T13 → T14
 
 **Done when**:
 
-- [ ] A tela de resultado continua igual
-- [ ] Console sem erros de compilação
+- [x] A tela de resultado continua igual
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
