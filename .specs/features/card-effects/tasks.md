@@ -11,7 +11,8 @@ Pela AD-001, o usuário escreve o código de gameplay e o Claude monta prefabs, 
 ---
 
 **Design**: `.specs/features/card-effects/design.md`
-**Status**: Draft
+**Status**: Approved
+**Approved**: 2026-11-06 - user: "Aprovo as tasks"
 **Build**: none - o projeto não tem comando de build; a compilação é conferida no Console do Unity Editor
 
 ---
