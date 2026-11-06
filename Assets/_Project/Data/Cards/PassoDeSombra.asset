@@ -16,6 +16,12 @@ MonoBehaviour:
   Name: Passo de Sombra
   Description: "+15% de dist\xE2ncia e +15% de invencibilidade da esquiva."
   Icon: {fileID: 0}
+  unlockCost:
+    Gold: 0
+    Oil: 0
+    Bones: 7
+    Iron: 5
+    Wax: 3
   maxHealthBonus: 0
   moveSpeedBonus: 0
   dodgeDistanceBonus: 0.15

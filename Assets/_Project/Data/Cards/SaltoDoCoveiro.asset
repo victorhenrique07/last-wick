@@ -16,6 +16,12 @@ MonoBehaviour:
   Name: Salto do Coveiro
   Description: "+20% de dist\xE2ncia da esquiva."
   Icon: {fileID: 0}
+  unlockCost:
+    Gold: 0
+    Oil: 0
+    Bones: 8
+    Iron: 3
+    Wax: 4
   maxHealthBonus: 0
   moveSpeedBonus: 0
   dodgeDistanceBonus: 0.2

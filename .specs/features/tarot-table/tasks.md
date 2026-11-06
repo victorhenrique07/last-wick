@@ -98,8 +98,8 @@ T9 → T10 → T11 → T12 → T13 → T14
 
 **Done when**:
 
-- [ ] Todas as cartas somam 15 materiais
-- [ ] Console sem erros de compilação
+- [x] Todas as cartas somam 15 materiais
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build

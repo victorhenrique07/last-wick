@@ -16,6 +16,12 @@ MonoBehaviour:
   Name: Estaca de Ferro
   Description: "Proj\xE9teis atravessam +1 inimigo."
   Icon: {fileID: 0}
+  unlockCost:
+    Gold: 0
+    Oil: 0
+    Bones: 3
+    Iron: 9
+    Wax: 3
   maxHealthBonus: 0
   moveSpeedBonus: 0
   dodgeDistanceBonus: 0

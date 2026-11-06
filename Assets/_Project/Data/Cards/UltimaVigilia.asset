@@ -16,6 +16,12 @@ MonoBehaviour:
   Name: "\xDAltima Vig\xEDlia"
   Description: "+10% de raio de luz e +10% de vida m\xE1xima."
   Icon: {fileID: 0}
+  unlockCost:
+    Gold: 0
+    Oil: 0
+    Bones: 6
+    Iron: 4
+    Wax: 5
   maxHealthBonus: 0.1
   moveSpeedBonus: 0
   dodgeDistanceBonus: 0

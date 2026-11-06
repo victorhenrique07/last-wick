@@ -16,6 +16,12 @@ MonoBehaviour:
   Name: Farol dos Mortos
   Description: +10% de raio de luz e +20% de raio de coleta de XP.
   Icon: {fileID: 0}
+  unlockCost:
+    Gold: 0
+    Oil: 0
+    Bones: 5
+    Iron: 3
+    Wax: 7
   maxHealthBonus: 0
   moveSpeedBonus: 0
   dodgeDistanceBonus: 0

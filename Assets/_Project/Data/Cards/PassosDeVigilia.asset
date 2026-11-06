@@ -16,6 +16,12 @@ MonoBehaviour:
   Name: "Passos de Vig\xEDlia"
   Description: +10% de velocidade de movimento.
   Icon: {fileID: 0}
+  unlockCost:
+    Gold: 0
+    Oil: 0
+    Bones: 4
+    Iron: 7
+    Wax: 4
   maxHealthBonus: 0
   moveSpeedBonus: 0.1
   dodgeDistanceBonus: 0

@@ -16,6 +16,12 @@ MonoBehaviour:
   Name: "V\xE9u de Fuma\xE7a"
   Description: +25% de invencibilidade da esquiva.
   Icon: {fileID: 0}
+  unlockCost:
+    Gold: 0
+    Oil: 0
+    Bones: 4
+    Iron: 5
+    Wax: 6
   maxHealthBonus: 0
   moveSpeedBonus: 0
   dodgeDistanceBonus: 0

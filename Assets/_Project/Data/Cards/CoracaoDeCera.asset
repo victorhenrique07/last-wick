@@ -16,6 +16,12 @@ MonoBehaviour:
   Name: "Cora\xE7\xE3o de Cera"
   Description: "+20% de vida m\xE1xima."
   Icon: {fileID: 0}
+  unlockCost:
+    Gold: 0
+    Oil: 0
+    Bones: 4
+    Iron: 2
+    Wax: 9
   maxHealthBonus: 0.2
   moveSpeedBonus: 0
   dodgeDistanceBonus: 0

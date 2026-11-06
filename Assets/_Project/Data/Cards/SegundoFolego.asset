@@ -16,6 +16,12 @@ MonoBehaviour:
   Name: "Segundo F\xF4lego"
   Description: -15% no cooldown da esquiva.
   Icon: {fileID: 0}
+  unlockCost:
+    Gold: 0
+    Oil: 0
+    Bones: 6
+    Iron: 6
+    Wax: 3
   maxHealthBonus: 0
   moveSpeedBonus: 0
   dodgeDistanceBonus: 0

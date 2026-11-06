@@ -16,6 +16,12 @@ MonoBehaviour:
   Name: Brasa Persistente
   Description: "+25% de alcance do proj\xE9til."
   Icon: {fileID: 0}
+  unlockCost:
+    Gold: 0
+    Oil: 0
+    Bones: 5
+    Iron: 5
+    Wax: 5
   maxHealthBonus: 0
   moveSpeedBonus: 0
   dodgeDistanceBonus: 0

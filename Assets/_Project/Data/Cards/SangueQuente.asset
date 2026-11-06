@@ -16,6 +16,12 @@ MonoBehaviour:
   Name: Sangue Quente
   Description: "+10% de vida m\xE1xima e +10% de dano."
   Icon: {fileID: 0}
+  unlockCost:
+    Gold: 0
+    Oil: 0
+    Bones: 7
+    Iron: 3
+    Wax: 5
   maxHealthBonus: 0.1
   moveSpeedBonus: 0
   dodgeDistanceBonus: 0

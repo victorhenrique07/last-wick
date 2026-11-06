@@ -16,6 +16,12 @@ MonoBehaviour:
   Name: Pavio Longo
   Description: +15% de raio de luz.
   Icon: {fileID: 0}
+  unlockCost:
+    Gold: 0
+    Oil: 0
+    Bones: 3
+    Iron: 5
+    Wax: 7
   maxHealthBonus: 0
   moveSpeedBonus: 0
   dodgeDistanceBonus: 0

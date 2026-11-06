@@ -16,6 +16,12 @@ MonoBehaviour:
   Name: "Lan\xE7a de Osso"
   Description: "Proj\xE9teis atravessam +1 inimigo e t\xEAm +15% de alcance."
   Icon: {fileID: 0}
+  unlockCost:
+    Gold: 0
+    Oil: 0
+    Bones: 10
+    Iron: 3
+    Wax: 2
   maxHealthBonus: 0
   moveSpeedBonus: 0
   dodgeDistanceBonus: 0
