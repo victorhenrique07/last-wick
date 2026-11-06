@@ -1,9 +1,9 @@
 # tarot-table proofs
 
-**HEAD**: e90c16b
+**HEAD**: 51a2d3c
 **Tree**: clean
 **Shell**: C:/Program Files/Git\bin\bash.exe
-**Result**: 22 pass, 0 fail
+**Result**: 24 pass, 0 fail
 
 | Check | Proof | Result |
 | --- | --- | --- |
@@ -29,3 +29,5 @@
 | C20 | `walk - Clicar duas vezes rápido numa disponível e ver o ID uma vez no save.json.` | pass (Walked) |
 | C21 | `walk - Desbloquear as 5 e ler "Todas as cartas foram liberadas."` | pass (Walked) |
 | C22 | `walk - Selecionar uma carta de esquiva e ler "-20% recarga da esquiva".` | pass (Walked) |
+| C23 | `walk - Play no FirstOne com o deck salvo de 1 e de 0 cartas, subir de nível e ver 3 opções e o aviso no Consol` | pass (Walked) |
+| C24 | `walk - Desbloquear uma carta de custo zero e ver os materiais iguais e a carta liberada.` | pass (Walked) |
