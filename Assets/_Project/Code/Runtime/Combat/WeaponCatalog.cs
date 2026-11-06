@@ -18,9 +18,13 @@ namespace LastWick.Combat
         // Arma sem Id nunca é encontrada, para não ser equipada por engano
         public WeaponData Find(string id)
         {
-            if (string.IsNullOrWhiteSpace(id) || weapons == null) return null;
+            if (string.IsNullOrWhiteSpace(id)) return null;
 
-            return weapons.FirstOrDefault(w => w != null && !string.IsNullOrWhiteSpace(w.Id) && w.Id == id);
+            WeaponData found = weapons?.FirstOrDefault(w => w != null && !string.IsNullOrWhiteSpace(w.Id) && w.Id == id);
+            if (found != null) return found;
+
+            // A arma inicial vale mesmo que alguém esqueça de pô-la na lista
+            return startingWeapon != null && startingWeapon.Id == id ? startingWeapon : null;
         }
 
         private void OnValidate()
@@ -38,6 +42,9 @@ namespace LastWick.Combat
                 else if (!ids.Add(weapon.Id))
                     Debug.LogWarning($"WeaponCatalog: o Id \"{weapon.Id}\" se repete em {weapon.name}.", this);
             }
+
+            if (startingWeapon != null && !weapons.Contains(startingWeapon))
+                Debug.LogWarning($"WeaponCatalog: a arma inicial {startingWeapon.name} não está na lista de armas; ponha-a na lista.", this);
         }
     }
 }
