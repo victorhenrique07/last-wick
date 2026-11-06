@@ -278,8 +278,8 @@ T9 → T10 → T11 → T12 → T13 → T14
 
 **Done when**:
 
-- [ ] Selecionar uma carta muda o detalhe
-- [ ] Console sem erros de compilação
+- [x] Selecionar uma carta muda o detalhe
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
