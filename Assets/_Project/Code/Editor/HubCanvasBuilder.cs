@@ -20,6 +20,7 @@ namespace Assets._Project.Code.Editor
         private const string AttributeRowPath = "Assets/_Project/Prefabs/UI/Priest/AttributeRow.prefab";
         private const string UnlockRowPath = "Assets/_Project/Prefabs/UI/Tarot/UnlockRow.prefab";
         private const string TarotCardSlotPath = "Assets/_Project/Prefabs/UI/Tarot/TarotCardSlot.prefab";
+        private const string WeaponStatRowPath = "Assets/_Project/Prefabs/UI/Smith/WeaponStatRow.prefab";
         private const string PlayerStatsPath = "Assets/_Project/Data/Progression/PlayerStats.asset";
 
         private static readonly Color Dim = new Color(0.02f, 0.02f, 0.02f, 0.78f);
@@ -30,8 +31,9 @@ namespace Assets._Project.Code.Editor
 
         private static Font font;
 
-        // Devolve o painel de expedição e os menus do padre, da fogueira e da mesa de tarot, para o builder ligar os cliques do mundo
-        public static ExpeditionPanel Build(out PriestMenu priestMenu, out CampfireMenu campfireMenu, out TarotMenu tarotMenu)
+        // Devolve o painel de expedição e os menus do padre, da fogueira, da mesa de tarot e do ferreiro, para o builder ligar os cliques do mundo
+        public static ExpeditionPanel Build(out PriestMenu priestMenu, out CampfireMenu campfireMenu, out TarotMenu tarotMenu,
+            out SmithMenu smithMenu)
         {
             font = AssetDatabase.LoadAssetAtPath<Font>(FontPath);
 
@@ -51,6 +53,7 @@ namespace Assets._Project.Code.Editor
             priestMenu = BuildPriestMenu(canvasGo.transform, BuildAttributeRowPrefab());
             campfireMenu = BuildCampfireMenu(canvasGo.transform);
             tarotMenu = BuildTarotMenu(canvasGo.transform, BuildUnlockRowPrefab(), BuildTarotCardSlotPrefab());
+            smithMenu = BuildSmithMenu(canvasGo.transform, BuildWeaponStatRowPrefab());
             return BuildExpeditionPanel(canvasGo.transform);
         }
 
@@ -209,6 +212,146 @@ namespace Assets._Project.Code.Editor
 
             root.SetActive(false);
             return menu;
+        }
+
+        // Menu do ferreiro: ícone, nome e nível da arma, linhas "atual → próximo" criadas em runtime pelo SmithMenu,
+        // custo em osso, ferro e cera (ou "Arma no nível máximo") e "Forjar"
+        private static SmithMenu BuildSmithMenu(Transform canvas, WeaponStatRowView rowPrefab)
+        {
+            var host = Node("PainelFerreiro", canvas);
+            Stretch(host);
+            var hubPanel = host.AddComponent<HubPanel>();
+            var menu = host.AddComponent<SmithMenu>();
+
+            var root = Node("Conteudo", host.transform);
+            Stretch(root);
+            Img(root, null, Dim); // fundo em tela cheia: escurece o hub e segura os cliques
+
+            var panel = Node("Painel", root.transform);
+            Img(panel, Art("PanelFrame"), Color.white, tiled: true);
+            var panelRect = panel.GetComponent<RectTransform>();
+            panelRect.sizeDelta = new Vector2(1134, 693); // múltiplos do ornamento de 63 unidades
+            panelRect.anchoredPosition = new Vector2(0, -50); // abaixo da barra de recursos
+            var column = panel.AddComponent<VerticalLayoutGroup>();
+            column.padding = new RectOffset(80, 80, 76, 64);
+            column.spacing = 10;
+            column.childAlignment = TextAnchor.UpperCenter;
+            SetControl(column, forceWidth: true, forceHeight: false);
+
+            Size(Label("Titulo", panel.transform, "O Ferreiro", 48, Cream, TextAnchor.MiddleCenter), height: 60);
+            Ornament(panel.transform, "Arabesco", Art("TitleFlourish"));
+
+            // Ícone ao lado do nome e do nível
+            var weapon = Node("Arma", panel.transform);
+            var weaponRow = weapon.AddComponent<HorizontalLayoutGroup>();
+            weaponRow.spacing = 24;
+            weaponRow.childAlignment = TextAnchor.MiddleCenter;
+            SetControl(weaponRow, forceWidth: false, forceHeight: false);
+            Size(weapon, height: 96);
+            var icon = Node("Icone", weapon.transform);
+            var iconImage = Img(icon, null, Color.white);
+            iconImage.raycastTarget = false;
+            iconImage.preserveAspect = true;
+            Size(icon, 80, 80); // 16 px x 5
+            var title = Node("Nome", weapon.transform);
+            var titleColumn = title.AddComponent<VerticalLayoutGroup>();
+            titleColumn.childAlignment = TextAnchor.MiddleLeft;
+            SetControl(titleColumn, forceWidth: true, forceHeight: false);
+            Size(title, width: 320);
+            title.GetComponent<LayoutElement>().flexibleWidth = 0; // a linha fica do tamanho do ícone + nome, centrada
+            var name = Label("Arma", title.transform, "Centelha", 36, Cream, TextAnchor.MiddleLeft);
+            Size(name, height: 46);
+            var level = Label("Nivel", title.transform, "Nível 0/5", 28, Muted, TextAnchor.MiddleLeft);
+            Size(level, height: 36);
+
+            var stats = Node("Status", panel.transform);
+            var statsLayout = stats.AddComponent<VerticalLayoutGroup>();
+            statsLayout.spacing = 4;
+            statsLayout.childAlignment = TextAnchor.UpperCenter;
+            SetControl(statsLayout, forceWidth: true, forceHeight: false);
+            stats.AddComponent<LayoutElement>().flexibleHeight = 1;
+
+            var cost = Node("Custo", panel.transform);
+            var costLayout = cost.AddComponent<HorizontalLayoutGroup>();
+            costLayout.spacing = 32;
+            costLayout.childAlignment = TextAnchor.MiddleCenter;
+            SetControl(costLayout, forceWidth: false, forceHeight: false);
+            Size(cost, height: 52);
+            var costTitle = Label("Titulo", cost.transform, "Custo:", 28, Cream, TextAnchor.MiddleCenter);
+            costTitle.GetComponent<Text>().horizontalOverflow = HorizontalWrapMode.Overflow;
+            Size(costTitle, height: 44);
+            var bones = Cost(cost.transform, "Osso", "IconBone"); // o SmithMenu esconde o material que o nível não pede
+            var iron = Cost(cost.transform, "Ferro", "IconIron");
+            var wax = Cost(cost.transform, "Cera", "IconWax");
+
+            var maxed = Label("Maximo", panel.transform, "Arma no nível máximo", 28, Muted, TextAnchor.MiddleCenter);
+            Size(maxed, height: 52);
+
+            var buttons = Node("Botoes", panel.transform);
+            var row = buttons.AddComponent<HorizontalLayoutGroup>();
+            row.spacing = 24;
+            row.childAlignment = TextAnchor.MiddleCenter;
+            SetControl(row, forceWidth: false, forceHeight: true);
+            Size(buttons, height: 72);
+            var forge = Button(buttons.transform, "Forjar", menu.Forge);
+            Button(buttons.transform, "Fechar", menu.Close);
+
+            var hubFields = new SerializedObject(hubPanel);
+            hubFields.FindProperty("root").objectReferenceValue = root;
+            hubFields.ApplyModifiedPropertiesWithoutUndo();
+
+            var fields = new SerializedObject(menu);
+            fields.FindProperty("panel").objectReferenceValue = hubPanel;
+            fields.FindProperty("icon").objectReferenceValue = iconImage;
+            fields.FindProperty("nameLabel").objectReferenceValue = name.GetComponent<Text>();
+            fields.FindProperty("levelLabel").objectReferenceValue = level.GetComponent<Text>();
+            fields.FindProperty("statsContainer").objectReferenceValue = stats.transform;
+            fields.FindProperty("statRowPrefab").objectReferenceValue = rowPrefab;
+            fields.FindProperty("costRow").objectReferenceValue = cost;
+            fields.FindProperty("bonesLabel").objectReferenceValue = bones;
+            fields.FindProperty("ironLabel").objectReferenceValue = iron;
+            fields.FindProperty("waxLabel").objectReferenceValue = wax;
+            fields.FindProperty("costColor").colorValue = Cream;
+            fields.FindProperty("missingColor").colorValue = Warning; // SMITH-16
+            fields.FindProperty("maxedLabel").objectReferenceValue = maxed;
+            fields.FindProperty("forgeButton").objectReferenceValue = forge;
+            fields.ApplyModifiedPropertiesWithoutUndo();
+
+            root.SetActive(false);
+            return menu;
+        }
+
+        // Prefab de uma linha de status do ferreiro: o nome à esquerda do centro e "atual → próximo" à direita
+        private static WeaponStatRowView BuildWeaponStatRowPrefab()
+        {
+            var row = new GameObject("WeaponStatRow", typeof(RectTransform));
+            row.layer = LayerMask.NameToLayer("UI");
+            try
+            {
+                var layout = row.AddComponent<HorizontalLayoutGroup>();
+                layout.spacing = 24;
+                layout.childAlignment = TextAnchor.MiddleCenter;
+                SetControl(layout, forceWidth: false, forceHeight: false);
+                row.AddComponent<LayoutElement>().minHeight = 40;
+
+                var name = Label("Status", row.transform, "Dano", 28, Muted, TextAnchor.MiddleRight);
+                Size(name, 400, 40);
+                var value = Label("Valor", row.transform, "10 → 12", 28, Cream, TextAnchor.MiddleLeft);
+                Size(value, 400, 40);
+
+                var view = row.AddComponent<WeaponStatRowView>();
+                var fields = new SerializedObject(view);
+                fields.FindProperty("nameLabel").objectReferenceValue = name.GetComponent<Text>();
+                fields.FindProperty("valueLabel").objectReferenceValue = value.GetComponent<Text>();
+                fields.ApplyModifiedPropertiesWithoutUndo();
+
+                Directory.CreateDirectory(Path.GetDirectoryName(WeaponStatRowPath));
+                return PrefabUtility.SaveAsPrefabAsset(row, WeaponStatRowPath).GetComponent<WeaponStatRowView>();
+            }
+            finally
+            {
+                Object.DestroyImmediate(row);
+            }
         }
 
         // Menu do padre: nível, custo do próximo ponto e uma linha por atributo, criadas em runtime pelo PriestMenu

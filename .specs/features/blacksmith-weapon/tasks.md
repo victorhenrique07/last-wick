@@ -340,8 +340,8 @@ T10 → T11 → T12 → T13 → T14
 
 **Done when**:
 
-- [ ] Clicar na bigorna abre o painel
-- [ ] Console sem erros de compilação
+- [x] Clicar na bigorna abre o painel
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build

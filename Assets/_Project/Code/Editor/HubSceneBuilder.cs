@@ -98,15 +98,16 @@ namespace Assets._Project.Code.Editor
 
             // NPCs: clicáveis, com contorno quando o mouse passa por cima
             var church = PlaceInteractable("Igreja (Padre)", "Hub/Church.png", new Vector2(0.5f, 1.4f), world, outlineMaterial);
-            PlaceInteractable("Bigorna (Ferreiro)", "Hub/Anvil.png", new Vector2(-4.5f, -1.6f), world, outlineMaterial);
+            var anvil = PlaceInteractable("Bigorna (Ferreiro)", "Hub/Anvil.png", new Vector2(-4.5f, -1.6f), world, outlineMaterial);
             var tarotTable = PlaceInteractable("Mesa de Tarot (Mago)", "Hub/TarotTable.png", new Vector2(5.5f, -2f), world, outlineMaterial);
 
             // Portão no fim da trilha de baixo: a saída para a run (HUB-01), com o painel de expedição no Canvas
             var gate = PlaceInteractable("Portao (Expedicao)", "Hub/Gate.png", GatePosition, world, outlineMaterial);
-            var expedition = HubCanvasBuilder.Build(out var priestMenu, out var campfireMenu, out var tarotMenu);
+            var expedition = HubCanvasBuilder.Build(out var priestMenu, out var campfireMenu, out var tarotMenu, out var smithMenu);
             LinkClick(gate, expedition.Open);
             LinkClick(tarotTable, tarotMenu.Open); // TAROT-01
             LinkClick(church, priestMenu.Open); // PRST-01
+            LinkClick(anvil, smithMenu.Open); // SMITH-01
             CreateEventSystem();
 
             // A fogueira (o grupo de velas) abre o menu de luz (LIGHT-01, LIGHT-02)
