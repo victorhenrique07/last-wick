@@ -238,8 +238,8 @@ T9 → T10 → T11 → T12 → T13 → T14
 
 **Done when**:
 
-- [ ] Carta bloqueada mostra "Bloqueada" e o custo
-- [ ] Console sem erros de compilação
+- [x] Carta bloqueada mostra "Bloqueada" e o custo
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
