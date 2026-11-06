@@ -318,8 +318,8 @@ T9 → T10 → T11 → T12 → T13 → T14
 
 **Done when**:
 
-- [ ] Abrir sempre começa em Desbloquear
-- [ ] Console sem erros de compilação
+- [x] Abrir sempre começa em Desbloquear
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
