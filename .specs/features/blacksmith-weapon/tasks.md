@@ -12,8 +12,8 @@ O usuário pediu que o Claude faça todas as tasks desta feature, código inclu�
 
 **Design**: `.specs/features/blacksmith-weapon/design.md`
 **Status**: Approved
-**Approved**: 2026-11-03 - user: "Aprovo todas"
-**Revisão**: 2026-11-06 - ajustes da revisão contra o código atual (usuário: "Aplica os 7 ajustes"); aguardando nova aprovação.
+**Approved**: 2026-11-06 - user: "Aprovo, sub-agentes"
+**Revisão**: 2026-11-06 - ajustes da revisão contra o código atual (usuário: "Aplica os 7 ajustes"). Primeira aprovação: user: "Aprovo todas".
 **Build**: none - o projeto não tem comando de build; a compilação é conferida no Console do Unity Editor
 
 ---
@@ -421,8 +421,8 @@ Proof: walk - Pôr no `save.json` a arma inicial duas vezes (níveis 1 e 3), um 
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** none
-**Dispatched:** none
+**Settled mid-build:** 2026-11-06 - o Claude faz todas as tasks, código incluído (usuário: "Claude escreve tudo"); execução em sub-agentes por lote (usuário: "Aprovo, sub-agentes").
+**Dispatched:** lote 1 (Fase 1: T1 a T7) a partir de `e352ec8`, em 2026-11-06
 **Walked:** none
 
 ---

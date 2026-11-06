@@ -2,8 +2,8 @@
 
 **Spec**: `.specs/features/blacksmith-weapon/spec.md`
 **Status**: Approved
-**Approved**: 2026-11-03 - user: "Aprovo todos"
-**Revisão**: 2026-11-06 - ajustes da revisão contra o código atual (usuário: "Aplica os 7 ajustes"); aguardando nova aprovação.
+**Approved**: 2026-11-06 - user: "Aprovo, sub-agentes"
+**Revisão**: 2026-11-06 - ajustes da revisão contra o código atual (usuário: "Aplica os 7 ajustes"). Primeira aprovação: user: "Aprovo todos".
 
 ---
 
