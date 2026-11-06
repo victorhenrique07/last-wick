@@ -45,6 +45,10 @@ namespace Assets._Project.Code.Runtime.Cards
         [Header("Coleta")]
         [SerializeField, Range(0f, 1f)] private float xpPickupRadiusBonus;
 
+        [Header("Mecânica própria")]
+        [Tooltip("Prefab com um CardEffect: a mecânica própria da carta. Vazio = só números.")]
+        [SerializeField] private GameObject effectPrefab;
+
         public ResourceBag UnlockCost => unlockCost;
         public float MaxHealthBonus => maxHealthBonus;
         public float MoveSpeedBonus => moveSpeedBonus;
@@ -59,5 +63,6 @@ namespace Assets._Project.Code.Runtime.Cards
         public int PierceBonus => pierceBonus;
         public float LightRadiusBonus => lightRadiusBonus;
         public float XpPickupRadiusBonus => xpPickupRadiusBonus;
+        public GameObject EffectPrefab => effectPrefab; // CEFX-01
     }
 }

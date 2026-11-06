@@ -76,8 +76,8 @@ T5 → T6
 
 **Done when**:
 
-- [ ] O Inspector de uma carta mostra o campo vazio
-- [ ] Console sem erros de compilação
+- [x] O Inspector de uma carta mostra o campo vazio
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
@@ -264,7 +264,7 @@ Proof: walk - Matar o player com a carta da T6 ativa e ver o `CardEffect` deslig
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** none
+**Settled mid-build:** 2026-11-06 - o Claude faz T1 a T5 (usuário: "faça para mim."); execução inline, um lote só.
 **Dispatched:** none
 **Walked:** none
 
