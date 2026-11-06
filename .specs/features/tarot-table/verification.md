@@ -1,0 +1,42 @@
+# Tarot table verification
+
+**Verdict**: FAIL
+**Proofs**: `proofs.md` at e90c16b
+**Verifier**: independent sub-agent (author != verifier)
+
+## Checks
+
+| Check | Test | Holds |
+| --- | --- | --- |
+| C1 | walk - clique na mesa pelo raycast do `EventSystem` acerta "Mesa de Tarot (Mago)" e abre na aba Desbloquear; fechar na Coleção e reabrir volta em Desbloquear | yes - a reabertura a partir de outra aba é o caso que falharia se o `OnOpened` não chamasse `ShowTab(UnlockTabIndex)` (`TarotMenu.cs:65`) |
+| C2 | walk - save novo mostra 5 linhas, cada uma com ícone, nome e custo em osso, ferro e cera | yes - 5 = 20 da `CardCollection` menos as 15 do `Deck.asset`; a contagem lê `GetLockedCards`, não um número fixo |
+| C3 | walk - com 10/3/2 (custo exato da Lança de Osso) o desbloqueio deixa 0/0/0 | yes - materiais exatos zeram só se o custo inteiro foi cobrado; um caminho que não cobrasse ou cobrasse outro valor daria outro resto |
+| C4 | walk - "lanca-de-osso" lido em `UnlockedCards` no `save.json` | yes - lê o arquivo, então prova o `Add` e o `Save()` do `TryUnlock` |
+| C5 | walk - a aba fica com 4 linhas depois do desbloqueio | yes - depende do redesenho por `SaveSystem.Changed`; sem a inscrição a aba ficaria com 5 |
+| C6 | walk - "Fechar" fechou pelo botão; Esc apertado pelo usuário no Game view ("Esc fechou") | yes - o Esc passou pelo Input System real do `HubPanel.Update` |
+| C7 | walk - 20 células na Coleção | yes - 20 = tamanho da `CardCollection`, incluindo as bloqueadas |
+| C8 | walk - Chama Certeira (dano 0,1 e projétil 0,15) mostra só "+10% dano" e "+15% velocidade do projétil" | no - prova a regra "uma linha por bônus diferente de zero" em 2 dos 13 campos de `CardData`; uma linha faltando para perfuração, coleta de XP, vida etc. passaria (ver achado 2). O código está certo: conferi as 20 cartas no Editor (`CardDescriber.Lines` tem tantas linhas quanto campos diferentes de zero em todas) |
+| C9 | walk - Passo de Sombra mostra "Bloqueada" e "Custo: 7 osso  5 ferro  3 cera" | yes - os três números batem com o asset (7/5/3); a Chama Certeira de C8, liberada, serve de contraste |
+| C10 | walk - save novo "Liberadas: 15/20" e, depois de um desbloqueio, "Liberadas: 16/20" | yes - dois valores mostram que N vem do save e M da coleção |
+| C11 | walk - depois de um desbloqueio, 15 em "No deck" e Lança de Osso em "Disponíveis" | yes - a carta nova não entra sozinha no deck e aparece na grade certa |
+| C12 | walk - tirar Pavio Longo e clicar na Lança deu "Deck: 15/15" | yes - o clique só funciona abaixo de 15; o lado cheio é C18 |
+| C13 | walk - clicar em Pavio Longo no deck deu "Deck: 14/15" | yes |
+| C14 | walk - "Deck: 14/15" lido depois de tirar uma | yes - texto exato, com o 15 vindo de `MaxCards` |
+| C15 | walk - lista `Deck` do `save.json` conferida depois de cada clique (tirar e pôr) | yes - lê o arquivo nos dois sentidos |
+| C16 | walk - run pelo portão com deck de 11 cartas, 5 level ups por `GameEvents.RaiseLevelUp`, 15 opções todas do deck salvo | yes - se as opções ainda viessem do `Deck.asset`, a chance de 5 sorteios não mostrarem nenhuma das 4 cartas tiradas é (165/455)^5 ≈ 0,6% |
+| C17 | walk - com 0 materiais, os 5 custos em #C96D45 e os 5 botões desligados; com 10/3/1 só a cera em aviso e o botão desligado | yes - o caso parcial mostra que a cor é por material e que o botão segue `Covers`; #C96D45 é a cor de aviso usada pelo padre e pela fogueira |
+| C18 | walk - com 15 no deck, a Lança disponível sem clique e o deck igual depois de clicar | yes - `CanAddToDeck` falso deixa o `Button` não interativo |
+| C19 | walk - com 9 cartas, "Deck: 9/15" e "O deck precisa de pelo menos 10 cartas." | no - só o lado de dentro da regra; o aviso some em 15/15 (`Logs/tarot_deck_full.png`), mas ninguém leu o limite 10, onde um `<=` no lugar de `<` (`TarotDeckTab.cs:42`) passaria (ver achado 3). O código usa `<` e está certo |
+| C20 | walk - dois cliques no mesmo frame numa disponível não repetiram o Id no `save.json` | no - prova só o caminho do clique; um `save.json` com o Id repetido carrega com a repetição (ver achado 1) |
+| C21 | walk - desbloquear as 4 restantes mostrou "Todas as cartas foram liberadas." | yes - texto exato, depois da última linha sumir |
+| C22 | walk - Fuga pela Névoa (redução 0,1) mostra "-10% recarga da esquiva" | yes - nenhuma carta tem 0,2, então a prova lê -10% em vez do "-20%" do exemplo; o formato "-N% recarga da esquiva" é o do critério. Segundo Fôlego (0,15) dá "-15% recarga da esquiva" no meu exemplo |
+
+## Findings
+
+| Finding | Evidence | Fix | Closed |
+| --- | --- | --- | --- |
+| 1. Um deck salvo com a mesma carta duas vezes carrega com a repetição, contra TAROT-20 | `SaveSystem.cs:103` só filtra o `Deck` pelas liberadas, sem tirar repetidos. Exemplo no Editor: `Sanitize` em `Deck = [pavio-longo, pavio-longo, chama-certeira, nao-existe]` devolve `pavio-longo, pavio-longo, chama-certeira`. Com isso `CardLibrary.DeckCards` (`CardLibrary.cs:73`) devolve a carta duas vezes: a aba Deck mostra duas células, `RemoveFromDeck` (`CardLibrary.cs:61`, `List.Remove`) tira uma só e a carta continua "no deck", `IsDeckValid` conta 2, e o `LevelUpPanel` pode oferecer a mesma carta em duas das 3 opções. C20 só testou o clique duplo | tirar os repetidos do `Deck` no `Sanitize` (por exemplo `Distinct()`) e conferir com um `save.json` editado | |
+| 2. C8 prova "uma linha por bônus diferente de zero" em 2 dos 13 campos | o walk leu só a Chama Certeira (dano e velocidade do projétil); `CardDescriber.Lines` tem 13 ramos, um por campo, e a falta de qualquer um dos outros 11 (perfuração e dano base são quantidades, com formato próprio) passaria. L-002 | no walk, comparar as linhas de todas as 20 cartas com os campos diferentes de zero (uma conferência no Editor resolve) e registrar o resultado | |
+| 3. C19 não lê o limite 10 da regra "WHILE menos de 10 cartas" | o walk leu 9 com aviso; a captura `tarot_deck_full.png` mostra 15 sem aviso; 10 cartas (onde `<` e `<=` divergem) não foi lido | no walk, ler 10/15 sem o aviso, além de 9/15 com ele | |
+| 4. A linha do design "deck salvo com menos de 3 cartas na run" não tem check, e o complemento não protege o caso que diz proteger | Error Handling Strategy, linha 4 (L-003): `LevelUpPanel.cs:57-65` completa com o `Deck.asset` e registra um aviso, mas nenhum walk passou por ele. Se o `Deck.asset` também não chegar a 3 cartas não nulas, `Random.Range(0, 0)` dá 0 e `options[0]` lança o mesmo `ArgumentOutOfRange` que o design diz evitar (`LevelUpPanel.cs:69-71`). A linha 5 ("carta com `UnlockCost` zerado: desbloqueio grátis") também não tem check | uma check (walk) para a linha 4: Play direto no `FirstOne` com deck salvo de 0 a 2 cartas, ver o aviso no Console e 3 opções; tratar o caso de menos de 3 opções depois do complemento (mostrar só as que houver ou esconder as sobras); uma check para a linha 5 ou tirá-la do design | |
+| 5. As listas da coleção não pulam cartas sem Id | L-005: `CardLibrary.GetLockedCards`/`UnlockedCardCount` (`CardLibrary.cs:24-28`), `TarotCollectionTab.Refresh` e o complemento do `LevelUpPanel` pulam só `null`. Uma carta com Id vazio na `CardCollection` aparece na aba Desbloquear; desbloqueá-la grava `""` em `UnlockedCards`, que o `Sanitize` mantém (`FindCard("")` acha a carta), e toda outra carta sem Id passa a contar como liberada | pular `string.IsNullOrWhiteSpace(c.Id)` junto com `null` em `CardLibrary.AllCards` (ou nos filtros que a usam) | |
