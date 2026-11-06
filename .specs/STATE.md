@@ -104,7 +104,7 @@
 **Phase/Task**: próxima etapa (AD-019): card-effects (design e tasks) junto da mesa, depois o ferreiro, o fechamento do save-system e o balanceamento
 **Completed**: tarot-table T1-T14. O usuário fez a T1 e a primeira versão da `CardLibrary` (T3), que o Claude corrigiu; o Claude fez o resto a pedido, em dois lotes de sub-agentes. Walk de 24 checks (Esc testado pelo usuário), Verifier com 5 findings fechados em `6846585` (save sem Ids vazios e repetidos), `d24f688` (carta sem Id) e `a87e788` (level up com menos de 3 opções). Mesa clicável no hub com as abas Desbloquear, Coleção e Deck; o level up sorteia do deck salvo.
 **In progress**: nada
-**Next step**: card-effects aprovado (spec, design e tasks); T1-T4 são do usuário, T5 do Claude, T6 bloqueada até a mecânica da primeira carta ser definida. Depois, o ferreiro (revisar o design da spec antes das tasks).
+**Next step**: card-effects T1-T5 feitas pelo Claude a pedido (`f1c50fe`); conferido em Play Mode: `CardAdded` conta 1 e 2, carta só de números não cria filho, prefab sem `CardEffect` dá o aviso com o Id e a carta vale pelos números. T6 (primeira carta de efeito) bloqueada até o usuário definir a mecânica; o walk C1-C12, o check_proofs e o Verifier vêm com ela. Enquanto isso, o ferreiro (revisar o design da spec antes das tasks).
 **Blockers**: nenhum
 **Uncommitted**: nada (as pastas de ferramentas estão no `.git/info/exclude` local)
 **Branch**: main, sem push desde `9adb184`
