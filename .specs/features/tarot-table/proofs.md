@@ -1,6 +1,6 @@
 # tarot-table proofs
 
-**HEAD**: b267caa
+**HEAD**: 88ec27c
 **Tree**: clean
 **Shell**: C:/Program Files/Git\bin\bash.exe
 **Result**: 24 pass, 0 fail
