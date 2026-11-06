@@ -1,7 +1,8 @@
 # Cartas com mecânica própria Design
 
 **Spec**: `.specs/features/card-effects/spec.md`
-**Status**: Draft
+**Status**: Approved
+**Approved**: 2026-11-06 - user: "Aprovo o design"
 
 ---
 
