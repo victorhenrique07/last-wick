@@ -50,5 +50,21 @@ namespace LastWick.Combat
         public float BaseFireRate => baseFireRate;
         public IReadOnlyList<WeaponLevel> Levels => levels;
         public int MaxLevel => levels != null ? levels.Count : 0;
+
+        // O ferreiro só cobra osso, ferro e cera (SMITH-12): ouro e óleo num nível são zerados com aviso
+        private void OnValidate()
+        {
+            if (levels == null) return;
+
+            for (int i = 0; i < levels.Count; i++)
+            {
+                WeaponLevel level = levels[i];
+                if (level == null || (level.Cost.Gold == 0 && level.Cost.Oil == 0)) continue;
+
+                Debug.LogWarning($"WeaponData: o nível {i + 1} de {name} custava ouro ou óleo; o ferreiro só usa osso, ferro e cera, e esses valores foram zerados.", this);
+                level.Cost.Gold = 0;
+                level.Cost.Oil = 0;
+            }
+        }
     }
 }
