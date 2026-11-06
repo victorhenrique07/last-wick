@@ -139,8 +139,8 @@ T10 → T11 → T12 → T13 → T14
 
 **Done when**:
 
-- [ ] Sem `StartingWeapon`, o `OnValidate` registra erro
-- [ ] Console sem erros de compilação
+- [x] Sem `StartingWeapon`, o `OnValidate` registra erro
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
