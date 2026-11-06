@@ -218,8 +218,8 @@ T9 → T10 → T11 → T12 → T13 → T14
 
 **Done when**:
 
-- [ ] Material que falta fica vermelho
-- [ ] Console sem erros de compilação
+- [x] Material que falta fica vermelho
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
