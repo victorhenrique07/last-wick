@@ -180,8 +180,8 @@ T10 → T11 → T12 → T13 → T14
 
 **Done when**:
 
-- [ ] 5 níveis alternando +2 de dano e +10% de cadência
-- [ ] Console sem erros de compilação
+- [x] 5 níveis alternando +2 de dano e +10% de cadência
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build

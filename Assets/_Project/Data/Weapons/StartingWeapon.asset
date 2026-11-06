@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 243762d9c7983984e8157bf211c871c5, type: 3}
+  m_Name: StartingWeapon
+  m_EditorClassIdentifier: Assembly-CSharp::LastWick.Combat.WeaponData
+  id: centelha
+  displayName: Centelha
+  icon: {fileID: 0}
+  projectilePrefab: {fileID: 4015100975836646687, guid: 195172bcc91190d49b7ff7f00722fb28, type: 3}
+  baseDamage: 10
+  baseFireRate: 4
+  levels:
+  - DamageBonus: 2
+    FireRateBonus: 0
+    ProjectileSpeedBonus: 0
+    LifetimeBonus: 0
+    PierceBonus: 0
+    Cost:
+      Gold: 0
+      Oil: 0
+      Bones: 4
+      Iron: 3
+      Wax: 3
+  - DamageBonus: 0
+    FireRateBonus: 0.1
+    ProjectileSpeedBonus: 0
+    LifetimeBonus: 0
+    PierceBonus: 0
+    Cost:
+      Gold: 0
+      Oil: 0
+      Bones: 6
+      Iron: 8
+      Wax: 6
+  - DamageBonus: 2
+    FireRateBonus: 0
+    ProjectileSpeedBonus: 0
+    LifetimeBonus: 0
+    PierceBonus: 0
+    Cost:
+      Gold: 0
+      Oil: 0
+      Bones: 10
+      Iron: 12
+      Wax: 8
+  - DamageBonus: 0
+    FireRateBonus: 0.1
+    ProjectileSpeedBonus: 0
+    LifetimeBonus: 0
+    PierceBonus: 0
+    Cost:
+      Gold: 0
+      Oil: 0
+      Bones: 12
+      Iron: 14
+      Wax: 14
+  - DamageBonus: 2
+    FireRateBonus: 0
+    ProjectileSpeedBonus: 0
+    LifetimeBonus: 0
+    PierceBonus: 0
+    Cost:
+      Gold: 0
+      Oil: 0
+      Bones: 15
+      Iron: 20
+      Wax: 15
