@@ -359,7 +359,7 @@ Proof: walk - Clicar na bigorna no hub.
 Proof: walk - Num save novo, ler "Nível 0/5".
 
 **C3** - O menu mostra os status atuais e o que muda (SMITH-03, AC 3)
-Proof: walk - Ler "Dano 10 → 12".
+Proof: walk - Num save novo, ler "Dano 10 → 12" e "Cadência 4 → 4,4".
 
 **C4** - O menu mostra o custo do próximo nível em osso, ferro e cera (SMITH-04, AC 4)
 Proof: walk - Ler os três valores do nível 1.
@@ -377,10 +377,10 @@ Proof: walk - Fechar uma vez por botão e outra por Esc.
 Proof: walk - Num save novo, o dano por tiro é 10.
 
 **C9** - A run soma os bônus dos níveis 1 até o atual (SMITH-09, AC 2)
-Proof: walk - Com nível 2, ler dano 12 e cadência 4,4 no Inspector do `Weapon` em modo Debug.
+Proof: walk - Com nível 2, ler dano 14 e cadência 4,8 na arma da run; com uma arma de teste em memória cujos níveis têm velocidade, alcance e perfuração, ver os três somados no projétil disparado e as linhas no menu.
 
 **C10** - As cartas se aplicam sobre a arma melhorada (SMITH-10, AC 3)
-Proof: walk - Num save com a Força do padre em 0, nível 2 e "+20% dano", o tiro dá 14,4; com a Força em 1, o tiro soma o dano do padre antes dos 20%.
+Proof: walk - Num save com a Força do padre em 0, nível 2 e "+20% dano", o tiro dá 16,8; com a Força em 1, 18; e a cadência final é a da arma no nível x o multiplicador do padre x as cartas de cadência.
 
 **C11** - A arma é um asset com ID, nome, ícone, projétil, base e níveis (SMITH-11, AC 1)
 Proof: walk - Abrir o `StartingWeapon.asset` no Inspector.

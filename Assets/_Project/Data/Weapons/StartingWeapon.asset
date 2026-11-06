@@ -20,7 +20,7 @@ MonoBehaviour:
   baseFireRate: 4
   levels:
   - DamageBonus: 2
-    FireRateBonus: 0
+    FireRateBonus: 0.1
     ProjectileSpeedBonus: 0
     LifetimeBonus: 0
     PierceBonus: 0
@@ -30,7 +30,7 @@ MonoBehaviour:
       Bones: 4
       Iron: 3
       Wax: 3
-  - DamageBonus: 0
+  - DamageBonus: 2
     FireRateBonus: 0.1
     ProjectileSpeedBonus: 0
     LifetimeBonus: 0
@@ -42,7 +42,7 @@ MonoBehaviour:
       Iron: 8
       Wax: 6
   - DamageBonus: 2
-    FireRateBonus: 0
+    FireRateBonus: 0.1
     ProjectileSpeedBonus: 0
     LifetimeBonus: 0
     PierceBonus: 0
@@ -52,7 +52,7 @@ MonoBehaviour:
       Bones: 10
       Iron: 12
       Wax: 8
-  - DamageBonus: 0
+  - DamageBonus: 2
     FireRateBonus: 0.1
     ProjectileSpeedBonus: 0
     LifetimeBonus: 0
@@ -64,7 +64,7 @@ MonoBehaviour:
       Iron: 14
       Wax: 14
   - DamageBonus: 2
-    FireRateBonus: 0
+    FireRateBonus: 0.1
     ProjectileSpeedBonus: 0
     LifetimeBonus: 0
     PierceBonus: 0

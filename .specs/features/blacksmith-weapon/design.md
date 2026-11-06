@@ -146,7 +146,7 @@ public class WeaponLevel
 }
 ```
 
-Arma inicial: 5 níveis, alternando `DamageBonus` 2 e `FireRateBonus` 0,10. Os custos têm 10, 20, 30, 40 e 50 materiais no total.
+Arma inicial: 5 níveis; todo nível tem `DamageBonus` 2 e `FireRateBonus` 0,10 (cada nível melhora a arma inteira, decisão do usuário em 2026-11-06). Os custos têm 10, 20, 30, 40 e 50 materiais no total.
 
 ---
 

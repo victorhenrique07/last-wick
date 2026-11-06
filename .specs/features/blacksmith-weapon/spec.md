@@ -34,7 +34,7 @@ A arma do player tem dano e cadência fixos no componente `Weapon` da cena, e na
 | Escopo do ferreiro | Só melhora a arma equipada; dados prontos para várias armas | AD-003 | y |
 | Chave da arma no save | O `Id` do asset da arma | AD-007 | y |
 | O que cada nível melhora | Cada nível define seus próprios bônus de dano, cadência, velocidade do projétil, alcance e perfuração | Cada arma pode ter um caminho de melhoria diferente | y |
-| Níveis da arma inicial (provisório) | 5 níveis, alternando +2 de dano e +10% de cadência | Ganho perceptível sem quebrar a horda | y |
+| Níveis da arma inicial (provisório) | 5 níveis; cada nível melhora a arma inteira: +2 de dano e +10% de cadência em todo nível | Usuário, em 2026-11-06: "os ups não irão aumentar um status da arma por vez. Cada up irá melhorar a arma inteira." e escolheu "Dano e cadência" | y |
 | Custo por nível (provisório) | Cada nível tem seu custo em osso, ferro e cera; começa em 10 materiais e sobe 10 por nível | Materiais são do ferreiro no One-Pager | y |
 | Teto | O número de níveis definido no asset da arma | O One-Pager deixa o teto do ferreiro "por definir" | y |
 | Como provar | Conferência manual em Play Mode | Escolha do usuário na feature anterior | y |
@@ -80,7 +80,7 @@ A arma do player tem dano e cadência fixos no componente `Weapon` da cena, e na
 2. WHEN uma run começar THEN a arma SHALL somar os bônus de todos os níveis comprados, do nível 1 até o nível atual. [SMITH-09]
 3. The bônus das cartas SHALL ser aplicado sobre os status da arma já melhorada, somados ao dano e à cadência do padre. [SMITH-10]
 
-**Independent Test**: Melhorar a arma até o nível 2 (+2 de dano e +10% de cadência) e ver o dano e a cadência maiores na run.
+**Independent Test**: Melhorar a arma até o nível 2 (+4 de dano e +20% de cadência) e ver o dano e a cadência maiores na run.
 
 ---
 
