@@ -138,8 +138,8 @@ T9 → T10 → T11 → T12 → T13 → T14
 
 **Done when**:
 
-- [ ] Uma carta de esquiva mostra "-20% recarga da esquiva"
-- [ ] Console sem erros de compilação
+- [x] Uma carta de esquiva mostra "-20% recarga da esquiva"
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
