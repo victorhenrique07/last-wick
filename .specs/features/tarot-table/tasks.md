@@ -78,8 +78,8 @@ T9 → T10 → T11 → T12 → T13 → T14
 
 **Done when**:
 
-- [ ] O Inspector de uma carta mostra o custo
-- [ ] Console sem erros de compilação
+- [x] O Inspector de uma carta mostra o custo
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build

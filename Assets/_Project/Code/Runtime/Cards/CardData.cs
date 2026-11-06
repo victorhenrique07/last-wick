@@ -1,3 +1,4 @@
+using Assets._Project.Code.Runtime.Save;
 using UnityEngine;
 
 namespace Assets._Project.Code.Runtime.Cards
@@ -10,6 +11,8 @@ namespace Assets._Project.Code.Runtime.Cards
         public string Name;
         public string Description;
         public Sprite Icon; // desenho da carta nas telas; sem ícone, a tela usa um padrão
+
+        [SerializeField] private ResourceBag unlockCost;
 
         [Header("Sobrevivência")]
         [SerializeField, Range(0f, 1f)] private float maxHealthBonus;
@@ -42,6 +45,7 @@ namespace Assets._Project.Code.Runtime.Cards
         [Header("Coleta")]
         [SerializeField, Range(0f, 1f)] private float xpPickupRadiusBonus;
 
+        public ResourceBag UnlockCost => unlockCost;
         public float MaxHealthBonus => maxHealthBonus;
         public float MoveSpeedBonus => moveSpeedBonus;
         public float DodgeDistanceBonus => dodgeDistanceBonus;
