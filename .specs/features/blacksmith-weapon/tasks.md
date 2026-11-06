@@ -200,8 +200,8 @@ T10 → T11 → T12 → T13 → T14
 
 **Done when**:
 
-- [ ] Sem erro de arma inicial no Console
-- [ ] Console sem erros de compilação
+- [x] Sem erro de arma inicial no Console
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build

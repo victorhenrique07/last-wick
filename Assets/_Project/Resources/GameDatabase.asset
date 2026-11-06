@@ -22,3 +22,4 @@ MonoBehaviour:
   priestBaseCost: 5
   priestCostStep: 1.8
   light: {fileID: 11400000, guid: 52c1f6975b9f20a4ba6d9ec08e4d680c, type: 2}
+  weapons: {fileID: 11400000, guid: 377f2d4ee4c4a2f48aa454d948ca5e6d, type: 2}
