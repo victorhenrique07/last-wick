@@ -166,8 +166,8 @@ T5 → T6
 
 **Done when**:
 
-- [ ] O componente compila e não depende de nada além do `CardInventory`
-- [ ] Console sem erros de compilação
+- [x] O componente compila e não depende de nada além do `CardInventory`
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
