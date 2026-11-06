@@ -179,6 +179,7 @@ T5 → T6
 ### T5: `CardEffects` no `Player.prefab` (Claude)
 
 **What**: Pôr o componente no prefab do player e criar a pasta dos prefabs de efeito.
+**Nota**: a pasta `Assets/_Project/Prefabs/Cards/Effects/` fica para a T6, com o primeiro prefab: o git não guarda pasta vazia, e um `.meta` sem pasta vira aviso no Unity.
 **Where**: `Assets/_Project/Prefabs/Player/Player.prefab`, `Assets/_Project/Prefabs/Cards/Effects/`
 **Depends on**: T4
 **Reuses**: `Player.prefab`
@@ -186,9 +187,9 @@ T5 → T6
 
 **Done when**:
 
-- [ ] O player da cena `FirstOne` tem `CardInventory` e `CardEffects`
-- [ ] Uma run com as 20 cartas atuais dá os mesmos status de antes
-- [ ] Console sem erros de compilação
+- [x] O player da cena `FirstOne` tem `CardInventory` e `CardEffects`
+- [x] Uma run com as 20 cartas atuais dá os mesmos status de antes
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
