@@ -280,8 +280,8 @@ T10 → T11 → T12 → T13 → T14
 
 **Done when**:
 
-- [ ] `TryUpgrade` no último nível devolve falso
-- [ ] Console sem erros de compilação
+- [x] `TryUpgrade` no último nível devolve falso
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
