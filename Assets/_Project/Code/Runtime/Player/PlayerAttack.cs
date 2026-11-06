@@ -1,3 +1,4 @@
+using Assets._Project.Code.Runtime.Save;
 using LastWick.Combat;
 using UnityEngine;
 
@@ -20,6 +21,22 @@ namespace LastWick.Player
             input = GetComponent<PlayerInput>();
             aim = GetComponent<PlayerAim>();
             stats = GetComponent<PlayerRunStats>();
+        }
+
+        // Equipa a arma do save no nível comprado no ferreiro (SMITH-08, SMITH-14)
+        private void Start()
+        {
+            if (weapon == null) return;
+
+            string id = SaveSystem.Data.EquippedWeapon;
+            WeaponData data = SaveSystem.Database.FindWeapon(id);
+            if (data == null)
+            {
+                Debug.LogError($"PlayerAttack: a arma equipada '{id}' não está no catálogo de armas.", this);
+                return;
+            }
+
+            weapon.Equip(data, SaveData.GetLevel(SaveSystem.Data.WeaponLevels, data.Id));
         }
 
         private void Update()

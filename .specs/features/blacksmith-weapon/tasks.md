@@ -240,8 +240,8 @@ T10 → T11 → T12 → T13 → T14
 
 **Done when**:
 
-- [ ] A run atira como antes num save novo
-- [ ] Console sem erros de compilação
+- [x] A run atira como antes num save novo
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
