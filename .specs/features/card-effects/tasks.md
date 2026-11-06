@@ -102,8 +102,8 @@ T5 → T6
 
 **Done when**:
 
-- [ ] Escolher uma carta pela segunda vez dispara `CardAdded` com 2
-- [ ] Console sem erros de compilação
+- [x] Escolher uma carta pela segunda vez dispara `CardAdded` com 2
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build

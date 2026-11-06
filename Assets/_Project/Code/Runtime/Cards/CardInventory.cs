@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
@@ -14,6 +14,9 @@ namespace Assets._Project.Code.Runtime.Cards
 
         public event Action Changed;
 
+        // A carta que entrou e com quantas cópias ficou; dispara depois de contar (CEFX-02, CEFX-03)
+        public event Action<CardData, int> CardAdded;
+
         private void OnEnable() => GameEvents.CardChosen += Add;
         private void OnDisable() => GameEvents.CardChosen -= Add;
 
@@ -24,6 +27,7 @@ namespace Assets._Project.Code.Runtime.Cards
             else
                 cards[card] = 1;
 
+            CardAdded?.Invoke(card, cards[card]);
             Changed?.Invoke();
         }
 
