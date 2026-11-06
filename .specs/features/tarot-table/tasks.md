@@ -423,7 +423,7 @@ Proof: walk - Selecionar uma carta de esquiva e ler "-20% recarga da esquiva".
 The feature's live state, written as it happens - a compaction gives no warning.
 
 **Settled mid-build:** 2026-11-06 - o Claude faz as tasks de código a partir da T4, e corrige a `CardLibrary` da T3 (usuário: "Faça a T4 e T5 para mim. Pode fazer o resto também." e "Claude corrige"). Execução em sub-agentes por lote (usuário: "Em sub-agentes por lote").
-**Dispatched:** lote 1 (Fases 1 e 2: T2 a T9, com a correção da T3) a partir de `425fb3e`, em 2026-11-06
+**Dispatched:** lote 1 (Fases 1 e 2: T2 a T9, com a correção da T3) a partir de `425fb3e`, em 2026-11-06 - returned (`4d9d709`..`e8ed85a`); lote 2 (Fase 3: T10 a T14) a partir de `e8ed85a`, em 2026-11-06
 **Walked:** none
 
 ---
