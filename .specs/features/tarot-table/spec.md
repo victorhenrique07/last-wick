@@ -1,7 +1,7 @@
 # Mesa de tarot: cartas e deck Specification
 
-**Approved**: 2026-11-03 - user: "tudo ok. Podemos seguir com o design das specs."
-**Revisão**: 2026-11-06 - a aba Desbloquear sai; o desbloqueio passa para a Coleção, com nome e descrição em cada carta. Aguardando aprovação.
+**Approved**: 2026-11-06 - user: "Aprovo"
+**Revisão**: 2026-11-06 - a aba Desbloquear sai; o desbloqueio passa para a Coleção, com nome e descrição em cada carta. Primeira aprovação: 2026-11-03 - user: "tudo ok. Podemos seguir com o design das specs."
 
 ## Problem Statement
 
