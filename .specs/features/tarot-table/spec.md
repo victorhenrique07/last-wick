@@ -1,6 +1,7 @@
 # Mesa de tarot: cartas e deck Specification
 
 **Approved**: 2026-11-03 - user: "tudo ok. Podemos seguir com o design das specs."
+**Revisão**: 2026-11-06 - a aba Desbloquear sai; o desbloqueio passa para a Coleção, com nome e descrição em cada carta. Aguardando aprovação.
 
 ## Problem Statement
 
@@ -16,6 +17,9 @@ Hoje as opções do level up saem de um `Deck.asset` fixo, montado no Editor, e 
 
 | Feature | Reason |
 | ------- | ------ |
+| Descrição das cartas na aba Deck | Usuário, em 2026-11-06, escolheu "Não, só o nome": quem quiser ler vai à Coleção. |
+| Linhas de efeito geradas dos números | Usuário, em 2026-11-06, escolheu "Descrição do asset": a carta mostra o texto escrito no asset. |
+| Aba só de desbloqueio | Usuário, em 2026-11-06: "não devemos ter uma aba apenas para desbloqueio. Teremos a aba de coleção, onde cada carta terá sua descrição e nome. EMbaixo disso ficará o botão "Desbloquear" junto do custo dela." |
 | Cartas repetidas no deck | O One-Pager proíbe repetição no deck. |
 | Vários decks salvos | O MVP guarda um deck só. |
 | Raridades de carta | Fora do MVP no One-Pager. |
@@ -53,14 +57,14 @@ Hoje as opções do level up saem de um `Deck.asset` fixo, montado no Editor, e 
 
 **Acceptance Criteria**:
 
-1. WHEN o jogador clicar na mesa de tarot THEN o hub SHALL abrir o menu da mesa na aba Desbloquear. [TAROT-01]
-2. The aba Desbloquear SHALL listar as cartas ainda bloqueadas, cada uma com nome, ícone e custo em osso, ferro e cera. [TAROT-02]
-3. WHEN o jogador desbloquear uma carta com materiais suficientes THEN a mesa SHALL tirar o custo dos materiais do save. [TAROT-03]
-4. WHEN o jogador desbloquear uma carta com materiais suficientes THEN a mesa SHALL acrescentar o ID da carta às cartas liberadas do save. [TAROT-04]
-5. WHEN uma carta for desbloqueada THEN a aba Desbloquear SHALL tirá-la da lista. [TAROT-05]
+1. WHEN o jogador clicar na mesa de tarot THEN o hub SHALL abrir o menu da mesa na aba Coleção. [TAROT-01]
+2. WHILE uma carta estiver bloqueada the aba Coleção SHALL mostrar, embaixo da descrição dela, o botão "Desbloquear" e o custo em osso, ferro e cera. [TAROT-02]
+3. WHEN o jogador clicar em "Desbloquear" numa carta com materiais suficientes THEN a mesa SHALL tirar o custo dos materiais do save. [TAROT-03]
+4. WHEN o jogador clicar em "Desbloquear" numa carta com materiais suficientes THEN a mesa SHALL acrescentar o ID da carta às cartas liberadas do save. [TAROT-04]
+5. WHEN uma carta for desbloqueada THEN a carta SHALL deixar de mostrar o botão "Desbloquear" e o custo. [TAROT-05]
 6. WHEN o jogador clicar em "Fechar" ou apertar Esc THEN o hub SHALL fechar o menu da mesa. [TAROT-06]
 
-**Independent Test**: Com 15 materiais do tipo pedido, desbloquear uma carta, ver os materiais caírem e a carta sair da aba Desbloquear e entrar na aba Deck como disponível.
+**Independent Test**: Com os materiais de uma carta bloqueada, clicar em "Desbloquear" embaixo dela na Coleção, ver os materiais caírem, o botão e o custo sumirem, e a carta entrar na aba Deck como disponível.
 
 ---
 
@@ -73,11 +77,11 @@ Hoje as opções do level up saem de um `Deck.asset` fixo, montado no Editor, e 
 **Acceptance Criteria**:
 
 1. The aba Coleção SHALL listar todas as cartas do `CardCollection`. [TAROT-07]
-2. WHEN o jogador selecionar uma carta na Coleção THEN a mesa SHALL mostrar nome, ícone, descrição e uma linha para cada bônus diferente de zero da carta. [TAROT-08]
-3. The aba Coleção SHALL marcar as cartas bloqueadas com o texto "Bloqueada" e o custo de desbloqueio. [TAROT-09]
+2. The aba Coleção SHALL mostrar em cada carta o nome, o ícone e a descrição escrita no asset da carta. [TAROT-08]
+3. The menu da mesa SHALL ter só as abas Coleção e Deck. [TAROT-09]
 4. The aba Coleção SHALL mostrar quantas cartas estão liberadas do total, no formato "Liberadas: N/M". [TAROT-10]
 
-**Independent Test**: Abrir a Coleção, ver 20 cartas, selecionar uma bloqueada e ler seus efeitos e custo.
+**Independent Test**: Abrir a Coleção, ver as 20 cartas com nome e descrição, e as bloqueadas com "Desbloquear" e o custo embaixo.
 
 ---
 
@@ -102,14 +106,12 @@ Hoje as opções do level up saem de um `Deck.asset` fixo, montado no Editor, e 
 
 ## Edge Cases
 
-- IF o jogador não tiver os materiais de uma carta THEN a aba Desbloquear SHALL desativar o botão dela e mostrar o custo que falta em vermelho. [TAROT-17]
+- IF o jogador não tiver os materiais de uma carta THEN a aba Coleção SHALL desativar o botão "Desbloquear" dela e mostrar na cor de aviso (#C96D45) o material que falta. [TAROT-17]
 - IF o deck tiver 15 cartas THEN a aba Deck SHALL desativar a entrada de novas cartas. [TAROT-18]
 - WHILE o deck tiver menos de 10 cartas the aba Deck SHALL mostrar "O deck precisa de pelo menos 10 cartas." [TAROT-19]
 - The deck SHALL não conter a mesma carta duas vezes. [TAROT-20]
-- IF não houver mais cartas bloqueadas THEN a aba Desbloquear SHALL mostrar "Todas as cartas foram liberadas." [TAROT-21]
-- WHEN uma carta tiver bônus de redução de recarga THEN a Coleção SHALL mostrá-lo como redução, por exemplo "-20% recarga da esquiva". [TAROT-22]
 
-Dimensões implícitas: validação (TAROT-17, TAROT-18, TAROT-19, TAROT-20) e estado (TAROT-21) estão cobertas. Persistência via `save-system` (SAVE-04, SAVE-05, SAVE-13, SAVE-14). Concorrência, autenticação e dependências externas N/A.
+Dimensões implícitas: validação (TAROT-17, TAROT-18, TAROT-19, TAROT-20) estão cobertas. Persistência via `save-system` (SAVE-04, SAVE-05, SAVE-13, SAVE-14). Concorrência, autenticação e dependências externas N/A.
 
 ---
 
@@ -137,8 +139,8 @@ Dimensões implícitas: validação (TAROT-17, TAROT-18, TAROT-19, TAROT-20) e e
 | TAROT-18 | Edge Cases | - | Pending |
 | TAROT-19 | Edge Cases | - | Pending |
 | TAROT-20 | Edge Cases | - | Pending |
-| TAROT-21 | Edge Cases | - | Pending |
-| TAROT-22 | Edge Cases | - | Pending |
+| TAROT-21 | Removido na revisão de 2026-11-06 (sem aba Desbloquear) | - | Removed |
+| TAROT-22 | Removido na revisão de 2026-11-06 (a carta mostra a descrição do asset) | - | Removed |
 
 **Coverage:** 22 total, 0 mapped to tasks, 22 unmapped (antes do Design)
 
