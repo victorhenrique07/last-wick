@@ -12,7 +12,8 @@ Pela AD-001, o usuário escreve o código de gameplay e o Claude monta telas, ar
 
 **Design**: `.specs/features/tarot-table/design.md`
 **Status**: Approved
-**Approved**: 2026-11-03 - user: "Aprovo todas"
+**Approved**: 2026-11-06 - user: "Aprovo as tasks"
+**Revisão**: 2026-11-06 - Phase 4 (T15 a T19): desbloqueio na Coleção. Primeira aprovação: 2026-11-03 - user: "Aprovo todas".
 **Build**: none - o projeto não tem comando de build; a compilação é conferida no Console do Unity Editor
 
 ---
