@@ -447,8 +447,8 @@ T14 → T15 → T16 → T17 → T18 → T19
 
 **Done when**:
 
-- [ ] Nenhum arquivo do projeto cita os quatro tipos removidos
-- [ ] Console sem erros de compilação
+- [x] Nenhum arquivo do projeto cita os quatro tipos removidos
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
