@@ -9,10 +9,10 @@
 Corroborated across multiple features. Safe to apply as guidance.
 
 ### L-002 - A walk for a rule that lists several cases must exercise every listed case, the last one included, not only the first.
-- signal: `weak_test` · recurrence: 4 feature(s) · scope: `walk` · harmful: 0
-- features: run-rewards, hub-flow, priest-stats, tarot-table
-- evidence: C3, C4 (finding 2) (walk) (+3 more)
-- last seen: 2026-11-06T22:17:44Z
+- signal: `weak_test` · recurrence: 5 feature(s) · scope: `walk` · harmful: 0
+- features: run-rewards, hub-flow, priest-stats, tarot-table, blacksmith-weapon
+- evidence: C3, C4 (finding 2) (walk) (+4 more)
+- last seen: 2026-11-07T00:01:47Z
 
 ## Candidates (under observation - do NOT load as guidance yet)
 
@@ -77,6 +77,30 @@ Seen once or not yet corroborated. Tracked, not trusted.
 - features: tarot-table
 - evidence: Assets/_Project/Code/Runtime/Cards/CardLibrary.cs:24 (data)
 - last seen: 2026-11-06T22:17:44Z
+
+### L-012 - When a shipped asset leaves a field at zero, the walk must exercise that field with test data, or its code path is never proven.
+- signal: `weak_test` · recurrence: 1 feature(s) · scope: `walk` · harmful: 0
+- features: blacksmith-weapon
+- evidence: Assets/_Project/Code/Runtime/Combat/WeaponStats.cs:35 (walk)
+- last seen: 2026-11-07T00:01:47Z
+
+### L-013 - A catalog's default entry must resolve even when it is missing from the catalog's list.
+- signal: `ac_gap` · recurrence: 1 feature(s) · scope: `data` · harmful: 0
+- features: blacksmith-weapon
+- evidence: Assets/_Project/Code/Runtime/Combat/WeaponCatalog.cs:19 (data)
+- last seen: 2026-11-07T00:01:47Z
+
+### L-014 - Validate data fields the UI never shows, so a value the screen hides cannot silently block an action.
+- signal: `ac_gap` · recurrence: 1 feature(s) · scope: `data` · harmful: 0
+- features: blacksmith-weapon
+- evidence: Assets/_Project/Code/Runtime/Combat/WeaponData.cs:22 (data)
+- last seen: 2026-11-07T00:01:47Z
+
+### L-015 - A walk must record every part its proof names, not only the first part.
+- signal: `weak_test` · recurrence: 1 feature(s) · scope: `walk` · harmful: 0
+- features: blacksmith-weapon
+- evidence: C19 (walk)
+- last seen: 2026-11-07T00:01:47Z
 
 ## Quarantined (failed when applied - ignore)
 

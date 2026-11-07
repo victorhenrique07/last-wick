@@ -100,11 +100,11 @@
 ## Handoff
 
 **Updated**: 2026-11-06
-**Feature**: tarot-table concluída (`validate_verification.py` com 0 erros); card-effects com spec aprovada; campfire-light, priest-stats, hub-flow, run-rewards e menu principal concluídos antes
-**Phase/Task**: próxima etapa (AD-019): card-effects (design e tasks) junto da mesa, depois o ferreiro, o fechamento do save-system e o balanceamento
-**Completed**: tarot-table T1-T14. O usuário fez a T1 e a primeira versão da `CardLibrary` (T3), que o Claude corrigiu; o Claude fez o resto a pedido, em dois lotes de sub-agentes. Walk de 24 checks (Esc testado pelo usuário), Verifier com 5 findings fechados em `6846585` (save sem Ids vazios e repetidos), `d24f688` (carta sem Id) e `a87e788` (level up com menos de 3 opções). Mesa clicável no hub com as abas Desbloquear, Coleção e Deck; o level up sorteia do deck salvo.
+**Feature**: blacksmith-weapon concluída (`validate_verification.py` com 0 erros); tarot-table concluída antes; card-effects com T1-T5 feitas e a T6 bloqueada
+**Phase/Task**: próxima etapa (AD-019): fechamento do save-system, completo; depois o balanceamento numa passada só
+**Completed**: blacksmith-weapon T1-T14, revisada contra o código antes de começar (7 ajustes) e feita pelo Claude a pedido em dois lotes de sub-agentes. A arma inicial é a "Centelha" (Id `centelha`): dano 10, cadência 4, 5 níveis que sobem +2 de dano e +10% de cadência juntos (mudança do usuário durante a verificação). Walk de 21 checks (Esc testado pelo usuário), Verifier com 5 findings fechados em `7c96476` (arma inicial fora da lista), `546afde` (custo em ouro ou óleo num nível) e na rodada 2 do walk. card-effects: T1-T5 em `f1c50fe`; a T6, o walk e o Verifier esperam a mecânica da primeira carta.
 **In progress**: nada
-**Next step**: card-effects T1-T5 feitas pelo Claude a pedido (`f1c50fe`); conferido em Play Mode: `CardAdded` conta 1 e 2, carta só de números não cria filho, prefab sem `CardEffect` dá o aviso com o Id e a carta vale pelos números. T6 (primeira carta de efeito) bloqueada até o usuário definir a mecânica; o walk C1-C12, o check_proofs e o Verifier vêm com ela. Enquanto isso, o ferreiro (revisar o design da spec antes das tasks).
+**Next step**: fechar o save-system: walk de todas as checks (agora com cartas e armas), check_proofs e Verifier. Depois, o balanceamento (inclui o fechamento formal do spawn-waves).
 **Blockers**: nenhum
 **Uncommitted**: nada (as pastas de ferramentas estão no `.git/info/exclude` local)
-**Branch**: main, sem push desde `9adb184`
+**Branch**: main, sem push desde `7c92c18`

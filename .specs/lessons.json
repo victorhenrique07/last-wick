@@ -3,7 +3,7 @@
   "promote_threshold": 2,
   "window_days": 45,
   "quarantine_threshold": 2,
-  "next_id": 12,
+  "next_id": 16,
   "lessons": [
     {
       "id": "L-001",
@@ -34,18 +34,20 @@
         "run-rewards",
         "hub-flow",
         "priest-stats",
-        "tarot-table"
+        "tarot-table",
+        "blacksmith-weapon"
       ],
-      "recurrence": 4,
+      "recurrence": 5,
       "harmful": 0,
       "evidence": [
         "C3, C4 (finding 2) (walk)",
         "C11, C13 (findings 1 e 2) (walk)",
         "C6, C26 (findings 2 and 4) (walk)",
-        "C8 (walk)"
+        "C8 (walk)",
+        "C10 (walk)"
       ],
       "created": "2026-11-04T02:55:25Z",
-      "last_seen": "2026-11-06T22:17:44Z"
+      "last_seen": "2026-11-07T00:01:47Z"
     },
     {
       "id": "L-003",
@@ -208,6 +210,78 @@
       ],
       "created": "2026-11-06T22:17:44Z",
       "last_seen": "2026-11-06T22:17:44Z"
+    },
+    {
+      "id": "L-012",
+      "key": "weak_test::when a shipped asset leaves a field at zero the walk must exercise that field with test data or its code path is never proven",
+      "text": "When a shipped asset leaves a field at zero, the walk must exercise that field with test data, or its code path is never proven.",
+      "signal": "weak_test",
+      "scope": "walk",
+      "status": "candidate",
+      "features": [
+        "blacksmith-weapon"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "Assets/_Project/Code/Runtime/Combat/WeaponStats.cs:35 (walk)"
+      ],
+      "created": "2026-11-07T00:01:47Z",
+      "last_seen": "2026-11-07T00:01:47Z"
+    },
+    {
+      "id": "L-013",
+      "key": "ac_gap::a catalog s default entry must resolve even when it is missing from the catalog s list",
+      "text": "A catalog's default entry must resolve even when it is missing from the catalog's list.",
+      "signal": "ac_gap",
+      "scope": "data",
+      "status": "candidate",
+      "features": [
+        "blacksmith-weapon"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "Assets/_Project/Code/Runtime/Combat/WeaponCatalog.cs:19 (data)"
+      ],
+      "created": "2026-11-07T00:01:47Z",
+      "last_seen": "2026-11-07T00:01:47Z"
+    },
+    {
+      "id": "L-014",
+      "key": "ac_gap::validate data fields the ui never shows so a value the screen hides cannot silently block an action",
+      "text": "Validate data fields the UI never shows, so a value the screen hides cannot silently block an action.",
+      "signal": "ac_gap",
+      "scope": "data",
+      "status": "candidate",
+      "features": [
+        "blacksmith-weapon"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "Assets/_Project/Code/Runtime/Combat/WeaponData.cs:22 (data)"
+      ],
+      "created": "2026-11-07T00:01:47Z",
+      "last_seen": "2026-11-07T00:01:47Z"
+    },
+    {
+      "id": "L-015",
+      "key": "weak_test::a walk must record every part its proof names not only the first part",
+      "text": "A walk must record every part its proof names, not only the first part.",
+      "signal": "weak_test",
+      "scope": "walk",
+      "status": "candidate",
+      "features": [
+        "blacksmith-weapon"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "C19 (walk)"
+      ],
+      "created": "2026-11-07T00:01:47Z",
+      "last_seen": "2026-11-07T00:01:47Z"
     }
   ]
 }
