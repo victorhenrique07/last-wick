@@ -3,6 +3,7 @@
 **Spec**: `.specs/features/tarot-table/spec.md`
 **Status**: Approved
 **Approved**: 2026-11-03 - user: "Aprovo todos"
+**Revisão**: 2026-11-06 - ver "Revisão de 2026-11-06" no fim: a aba Desbloquear sai e o desbloqueio vai para a Coleção.
 
 ---
 
@@ -154,3 +155,28 @@ public class CardData : ScriptableObject
 | Onde ficam as regras de deck | `CardLibrary` estática sobre o save | A mesa, o portão e o level up usam a mesma resposta. |
 | Lista de cartas na run | Convertida dos IDs do save a cada level up | Sem cópia que possa ficar diferente do save. |
 | Custo de carta | `ResourceBag` no próprio `CardData` | Cada carta pode ter seu custo (AD-010). |
+
+
+---
+
+## Revisão de 2026-11-06: desbloqueio na Coleção
+
+A spec revisada (aprovada em 2026-11-06) tira a aba Desbloquear. O menu fica com Coleção e Deck e abre na Coleção. Cada carta da Coleção mostra nome, ícone e a descrição do asset; as bloqueadas mostram embaixo o botão "Desbloquear" e o custo. A aba Deck não muda.
+
+### O que muda
+
+| Componente | Mudança |
+| ---------- | ------- |
+| `CollectionCardView` (novo) | `Assets/_Project/Code/Runtime/UI/CollectionCardView.cs`. Uma carta da Coleção: ícone (padrão quando a carta não tem arte), nome, descrição e um grupo de desbloqueio com o botão "Desbloquear" e os custos em osso, ferro e cera. `Show(CardData card, bool locked, ResourceBag owned, Action unlock)`: o grupo só aparece com `locked`; o botão liga quando `owned.Covers(card.UnlockCost)`; o material que falta fica na cor de aviso #C96D45 (TAROT-02, TAROT-05, TAROT-08, TAROT-17). |
+| `TarotCollectionTab` | Desenha uma `CollectionCardView` por carta de `CardLibrary.AllCards`, em ordem, numa grade com rolagem, e o "Liberadas: N/M" no topo. O botão chama `CardLibrary.TryUnlock`; o redesenho vem do `SaveSystem.Changed`, como hoje. Sai a seleção e o `CardDetailView`. |
+| `TarotMenu` | Duas abas: Coleção (índice 0) e Deck (índice 1). `Open()` abre na Coleção (TAROT-01, TAROT-09). |
+| `HubCanvasBuilder.BuildTarotMenu` | Dois botões de aba; a Coleção vira uma grade de `CollectionCard.prefab` (novo, em `Assets/_Project/Prefabs/UI/Tarot/`); saem a aba Desbloquear, o `UnlockRow.prefab` e o painel de detalhe. A cena `Hub` é regerada. |
+| Removidos | `Hub/TarotUnlockTab.cs`, `UI/UnlockRowView.cs`, `UI/CardDetailView.cs`, `Cards/CardDescriber.cs` (sem uso depois da revisão) e `Prefabs/UI/Tarot/UnlockRow.prefab`. |
+
+### Sem mudança
+
+`CardLibrary` (as regras de desbloqueio e deck), a aba Deck, o `TarotCardSlot.prefab`, o portão e o level up.
+
+### Layout
+
+A carta da Coleção é mais alta que a célula do Deck: ícone e nome no topo, a descrição em até 3 linhas e o grupo de desbloqueio embaixo. A grade tem rolagem vertical, porque 20 cartas com descrição não cabem no painel. As capturas conferem a grade com cartas liberadas e bloqueadas, com e sem materiais.

@@ -64,6 +64,14 @@ As três abas e o painel no hub.
 T9 → T10 → T11 → T12 → T13 → T14
 ```
 
+### Phase 4: Revisão de 2026-11-06 (desbloqueio na Coleção)
+
+A aba Desbloquear sai e cada carta da Coleção mostra nome, descrição, "Desbloquear" e o custo.
+
+```
+T14 → T15 → T16 → T17 → T18 → T19
+```
+
 ---
 
 ## Task Breakdown
@@ -348,22 +356,122 @@ T9 → T10 → T11 → T12 → T13 → T14
 
 ---
 
+### T15: Criar `CollectionCardView` (Claude)
+
+**What**: Criar a carta da Coleção com ícone, nome, descrição, botão "Desbloquear" e custo.
+**Where**: `Assets/_Project/Code/Runtime/UI/CollectionCardView.cs`
+**Depends on**: T14
+**Reuses**: estilo de `UnlockRowView` (custo e cor de aviso) e de `CardSlotView` (ícone padrão)
+**Requirement**: TAROT-02, TAROT-05, TAROT-08, TAROT-17
+
+**Done when**:
+
+- [ ] Uma carta bloqueada sem materiais mostra o botão desligado e o custo na cor de aviso
+- [ ] Console sem erros de compilação
+
+**Tests**: none
+**Gate**: build
+
+**Commit**: `feat(ui): adiciona a carta da Coleção com desbloqueio`
+
+---
+
+### T16: `TarotCollectionTab` com as cartas da Coleção (Claude)
+
+**What**: Desenhar uma `CollectionCardView` por carta e desbloquear pelo botão de cada uma, sem o painel de detalhe.
+**Where**: `Assets/_Project/Code/Runtime/Hub/TarotCollectionTab.cs`
+**Depends on**: T15
+**Reuses**: `CardLibrary`
+**Requirement**: TAROT-02, TAROT-03, TAROT-04, TAROT-05, TAROT-07, TAROT-08, TAROT-10
+
+**Done when**:
+
+- [ ] Desbloquear uma carta pelo botão dela tira o botão e o custo
+- [ ] Console sem erros de compilação
+
+**Tests**: none
+**Gate**: build
+
+**Commit**: `feat(tarot): desbloqueio direto na Coleção`
+
+---
+
+### T17: `TarotMenu` com Coleção e Deck (Claude)
+
+**What**: Deixar só as abas Coleção e Deck e abrir na Coleção.
+**Where**: `Assets/_Project/Code/Runtime/Hub/TarotMenu.cs`
+**Depends on**: T16
+**Reuses**: `HubPanel`
+**Requirement**: TAROT-01, TAROT-09
+
+**Done when**:
+
+- [ ] Abrir sempre começa na Coleção
+- [ ] Console sem erros de compilação
+
+**Tests**: none
+**Gate**: build
+
+**Commit**: `feat(tarot): menu com Coleção e Deck`
+
+---
+
+### T18: Painel da mesa no builder com a nova Coleção (Claude)
+
+**What**: Montar a grade de cartas da Coleção com rolagem, tirar a aba Desbloquear e o painel de detalhe, regerar a cena `Hub` e conferir o layout por capturas.
+**Where**: `Assets/_Project/Code/Editor/HubCanvasBuilder.cs`
+**Depends on**: T17
+**Reuses**: `BuildTarotMenu`
+**Requirement**: TAROT-01, TAROT-02, TAROT-08, TAROT-09
+
+**Done when**:
+
+- [ ] Clicar na mesa abre a Coleção com nome e descrição em cada carta
+- [ ] Console sem erros de compilação
+
+**Tests**: none
+**Gate**: build
+
+**Commit**: `feat(hub): monta a Coleção com desbloqueio`
+
+---
+
+### T19: Remover o que ficou sem uso (Claude)
+
+**What**: Apagar `TarotUnlockTab`, `UnlockRowView`, `CardDetailView`, `CardDescriber` e o `UnlockRow.prefab`.
+**Where**: `Assets/_Project/Code/Runtime/Hub/TarotUnlockTab.cs`
+**Depends on**: T18
+**Reuses**: nada
+**Requirement**: TAROT-09
+
+**Done when**:
+
+- [ ] Nenhum arquivo do projeto cita os quatro tipos removidos
+- [ ] Console sem erros de compilação
+
+**Tests**: none
+**Gate**: build
+
+**Commit**: `refactor(tarot): remove a aba Desbloquear e o detalhe`
+
+---
+
 ## Checks
 
-**C1** - Clicar na mesa abre o menu na aba Desbloquear (TAROT-01, AC 1)
-Proof: walk - Clicar na mesa de tarot no hub.
+**C1** - Clicar na mesa abre o menu na aba Coleção (TAROT-01, AC 1)
+Proof: walk - Clicar na mesa de tarot no hub e ver a Coleção; fechar no Deck e reabrir na Coleção.
 
-**C2** - A aba lista as bloqueadas com nome, ícone e custo (TAROT-02, AC 2)
-Proof: walk - Num save novo, ver as 5 cartas bloqueadas com custo.
+**C2** - Cada carta bloqueada mostra, embaixo da descrição, "Desbloquear" e o custo (TAROT-02, AC 2)
+Proof: walk - Num save novo, ver as 5 cartas bloqueadas com o botão e o custo em osso, ferro e cera, e as 15 liberadas sem eles.
 
 **C3** - Desbloquear tira o custo dos materiais (TAROT-03, AC 3)
-Proof: walk - Com os materiais exatos, desbloquear e ver os materiais caírem pelo custo.
+Proof: walk - Com os materiais exatos, clicar em "Desbloquear" embaixo da carta na Coleção e ver os materiais caírem pelo custo.
 
 **C4** - Desbloquear grava o ID em `UnlockedCards` (TAROT-04, AC 4)
 Proof: walk - Ler o ID novo no `save.json`.
 
-**C5** - A carta desbloqueada sai da aba (TAROT-05, AC 5)
-Proof: walk - Ver 4 cartas na aba depois do desbloqueio.
+**C5** - A carta desbloqueada deixa de mostrar o botão e o custo (TAROT-05, AC 5)
+Proof: walk - Depois do desbloqueio, ver a carta sem o botão e sem o custo, e 4 cartas ainda com eles.
 
 **C6** - "Fechar" e Esc fecham o menu (TAROT-06, AC 6)
 Proof: walk - Fechar uma vez por botão e outra por Esc.
@@ -371,11 +479,11 @@ Proof: walk - Fechar uma vez por botão e outra por Esc.
 **C7** - A Coleção lista as 20 cartas (TAROT-07, AC 1)
 Proof: walk - Contar 20 cartas na aba Coleção.
 
-**C8** - Selecionar mostra nome, ícone, descrição e os efeitos diferentes de zero (TAROT-08, AC 2)
-Proof: walk - Selecionar uma carta de dano e ver só as linhas de dano.
+**C8** - Cada carta mostra nome, ícone e a descrição do asset (TAROT-08, AC 2)
+Proof: walk - Comparar o nome e a descrição de cada uma das 20 cartas da Coleção com o asset dela, e ver o ícone em todas.
 
-**C9** - As bloqueadas mostram "Bloqueada" e o custo (TAROT-09, AC 3)
-Proof: walk - Selecionar uma carta bloqueada.
+**C9** - O menu tem só as abas Coleção e Deck (TAROT-09, AC 3)
+Proof: walk - Ler os botões de aba do menu e ver só "Coleção" e "Deck".
 
 **C10** - A Coleção mostra "Liberadas: N/M" (TAROT-10, AC 4)
 Proof: walk - Num save novo, ler "Liberadas: 15/20".
@@ -398,8 +506,8 @@ Proof: walk - Ler a lista `Deck` do `save.json` depois de cada clique.
 **C16** - O level up só oferece cartas do deck salvo (TAROT-16, AC 6)
 Proof: walk - Tirar 3 cartas, jogar até 5 level ups e nunca ver as 3.
 
-**C17** - Sem materiais, o botão fica desligado e o custo vermelho (TAROT-17, edge case)
-Proof: walk - Com 0 materiais, abrir a aba Desbloquear.
+**C17** - Sem materiais, o botão fica desligado e o que falta fica na cor de aviso (TAROT-17, edge case)
+Proof: walk - Com 0 materiais, ver os botões desligados e os custos em #C96D45; com só um material faltando, ver só ele em #C96D45.
 
 **C18** - Com 15 no deck, as disponíveis não entram (TAROT-18, edge case)
 Proof: walk - Com o deck cheio, clicar numa disponível e ver o deck igual.
@@ -409,12 +517,6 @@ Proof: walk - Deixar 9 cartas e ler "O deck precisa de pelo menos 10 cartas."
 
 **C20** - O deck nunca tem a mesma carta duas vezes (TAROT-20, edge case)
 Proof: walk - Clicar duas vezes rápido numa disponível e ver o ID uma vez no `save.json`.
-
-**C21** - Sem bloqueadas, a aba avisa (TAROT-21, edge case)
-Proof: walk - Desbloquear as 5 e ler "Todas as cartas foram liberadas."
-
-**C22** - Redução de recarga aparece como "-N%" (TAROT-22, edge case)
-Proof: walk - Selecionar uma carta de esquiva e ler "-20% recarga da esquiva".
 
 **C23** - Deck salvo com menos de 3 cartas na run: o level up completa com o deck inicial e registra um aviso (design, Error Handling linha 4)
 Proof: walk - Play no `FirstOne` com o deck salvo de 1 e de 0 cartas, subir de nível e ver 3 opções e o aviso no Console.
@@ -437,11 +539,12 @@ The feature's live state, written as it happens - a compaction gives no warning.
 ## Phase Execution Map
 
 ```
-Phase 1 → Phase 2 → Phase 3
+Phase 1 → Phase 2 → Phase 3 → Phase 4
 
 Phase 1:  T1 ------→ T2 ------→ T3 ------→ T4 ------→ T5 ------→ T6
 Phase 2:  T7 ------→ T8 ------→ T9
 Phase 3:  T10 ------→ T11 ------→ T12 ------→ T13 ------→ T14
+Phase 4:  T15 ------→ T16 ------→ T17 ------→ T18 ------→ T19
 ```
 
 Execution is strictly sequential. A feature tem 14 tasks; no Execute, as fases viram lotes de cerca de 7 tasks.
