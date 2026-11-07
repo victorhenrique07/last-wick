@@ -407,8 +407,8 @@ T14 → T15 → T16 → T17 → T18 → T19
 
 **Done when**:
 
-- [ ] Abrir sempre começa na Coleção
-- [ ] Console sem erros de compilação
+- [x] Abrir sempre começa na Coleção
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
