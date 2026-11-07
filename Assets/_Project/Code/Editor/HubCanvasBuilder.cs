@@ -18,7 +18,7 @@ namespace Assets._Project.Code.Editor
         private const string ArtPath = "Assets/_Project/Art/Sprites/UI/Victory";
         private const string FontPath = "Assets/_Project/Art/Fonts/PixelifySans.ttf";
         private const string AttributeRowPath = "Assets/_Project/Prefabs/UI/Priest/AttributeRow.prefab";
-        private const string UnlockRowPath = "Assets/_Project/Prefabs/UI/Tarot/UnlockRow.prefab";
+        private const string CollectionCardPath = "Assets/_Project/Prefabs/UI/Tarot/CollectionCard.prefab";
         private const string TarotCardSlotPath = "Assets/_Project/Prefabs/UI/Tarot/TarotCardSlot.prefab";
         private const string WeaponStatRowPath = "Assets/_Project/Prefabs/UI/Smith/WeaponStatRow.prefab";
         private const string PlayerStatsPath = "Assets/_Project/Data/Progression/PlayerStats.asset";
@@ -52,7 +52,7 @@ namespace Assets._Project.Code.Editor
             BuildResourceBar(canvasGo.transform);
             priestMenu = BuildPriestMenu(canvasGo.transform, BuildAttributeRowPrefab());
             campfireMenu = BuildCampfireMenu(canvasGo.transform);
-            tarotMenu = BuildTarotMenu(canvasGo.transform, BuildUnlockRowPrefab(), BuildTarotCardSlotPrefab());
+            tarotMenu = BuildTarotMenu(canvasGo.transform, BuildCollectionCardPrefab(), BuildTarotCardSlotPrefab());
             smithMenu = BuildSmithMenu(canvasGo.transform, BuildWeaponStatRowPrefab());
             return BuildExpeditionPanel(canvasGo.transform);
         }
@@ -474,9 +474,9 @@ namespace Assets._Project.Code.Editor
             return prefab.GetComponent<AttributeRowView>();
         }
 
-        // "A Mesa de Tarot": botões das abas Desbloquear, Coleção e Deck, a aba aberta e "Fechar".
-        // As linhas e as células de carta são criadas em runtime pelas abas.
-        private static TarotMenu BuildTarotMenu(Transform canvas, UnlockRowView rowPrefab, CardSlotView slotPrefab)
+        // "A Mesa de Tarot": botões das abas Coleção e Deck (TAROT-09), a aba aberta e "Fechar".
+        // As cartas são criadas em runtime pelas abas.
+        private static TarotMenu BuildTarotMenu(Transform canvas, CollectionCardView cardPrefab, CardSlotView slotPrefab)
         {
             var host = Node("PainelMesaTarot", canvas);
             Stretch(host);
@@ -508,7 +508,7 @@ namespace Assets._Project.Code.Editor
             SetControl(tabsRow, forceWidth: false, forceHeight: true);
             Size(tabs, height: 72);
             tabs.GetComponent<LayoutElement>().flexibleHeight = 0; // a altura que sobra vai toda para a aba
-            string[] tabNames = { "Desbloquear", "Coleção", "Deck" };
+            string[] tabNames = { "Coleção", "Deck" };
             var tabLabels = new Text[tabNames.Length];
             for (int i = 0; i < tabNames.Length; i++)
             {
@@ -519,10 +519,8 @@ namespace Assets._Project.Code.Editor
 
             var content = Node("Aba", panel.transform);
             content.AddComponent<LayoutElement>().flexibleHeight = 1;
-            var unlockTab = BuildUnlockTab(content.transform, rowPrefab);
-            var collectionTab = BuildCollectionTab(content.transform, slotPrefab);
+            var collectionTab = BuildCollectionTab(content.transform, cardPrefab);
             var deckTab = BuildDeckTab(content.transform, slotPrefab);
-            collectionTab.gameObject.SetActive(false);
             deckTab.gameObject.SetActive(false);
 
             var footer = Node("Rodape", panel.transform);
@@ -539,7 +537,6 @@ namespace Assets._Project.Code.Editor
 
             var fields = new SerializedObject(menu);
             fields.FindProperty("panel").objectReferenceValue = hubPanel;
-            fields.FindProperty("unlockTab").objectReferenceValue = unlockTab;
             fields.FindProperty("collectionTab").objectReferenceValue = collectionTab;
             fields.FindProperty("deckTab").objectReferenceValue = deckTab;
             var labels = fields.FindProperty("tabLabels");
@@ -554,111 +551,26 @@ namespace Assets._Project.Code.Editor
             return menu;
         }
 
-        // Aba Desbloquear: lista das cartas bloqueadas, ou o aviso de que todas foram liberadas (TAROT-21)
-        private static TarotUnlockTab BuildUnlockTab(Transform parent, UnlockRowView rowPrefab)
-        {
-            var tab = Node("Desbloquear", parent);
-            Stretch(tab);
-            var view = tab.AddComponent<TarotUnlockTab>();
-
-            var scroll = Scroll(tab.transform, "Lista", out var rows);
-            Stretch(scroll);
-            var rowsLayout = rows.gameObject.AddComponent<VerticalLayoutGroup>();
-            rowsLayout.spacing = 6;
-            rowsLayout.childAlignment = TextAnchor.UpperCenter;
-            SetControl(rowsLayout, forceWidth: true, forceHeight: false);
-
-            var empty = Label("TodasLiberadas", tab.transform, "Todas as cartas foram liberadas.", 32, Muted, TextAnchor.MiddleCenter);
-            Stretch(empty);
-            empty.SetActive(false);
-
-            var fields = new SerializedObject(view);
-            fields.FindProperty("rowsContainer").objectReferenceValue = rows;
-            fields.FindProperty("rowPrefab").objectReferenceValue = rowPrefab;
-            fields.FindProperty("allUnlockedLabel").objectReferenceValue = empty;
-            fields.ApplyModifiedPropertiesWithoutUndo();
-            return view;
-        }
-
-        // Aba Coleção: "Liberadas: N/M" e a grade de todas as cartas à esquerda, o detalhe à direita
-        private static TarotCollectionTab BuildCollectionTab(Transform parent, CardSlotView slotPrefab)
+        // Aba Coleção: "Liberadas: N/M" e a grade de todas as cartas, cada uma com nome, descrição e,
+        // se bloqueada, "Desbloquear" e o custo embaixo (TAROT-02, TAROT-07, TAROT-08, TAROT-10)
+        private static TarotCollectionTab BuildCollectionTab(Transform parent, CollectionCardView cardPrefab)
         {
             var tab = Node("Colecao", parent);
             Stretch(tab);
             var view = tab.AddComponent<TarotCollectionTab>();
-            var row = tab.AddComponent<HorizontalLayoutGroup>();
-            row.spacing = 30;
-            SetControl(row, forceWidth: false, forceHeight: true);
+            var column = tab.AddComponent<VerticalLayoutGroup>();
+            column.spacing = 8;
+            SetControl(column, forceWidth: true, forceHeight: false);
 
-            var left = Node("Cartas", tab.transform);
-            var leftColumn = left.AddComponent<VerticalLayoutGroup>();
-            leftColumn.spacing = 8;
-            SetControl(leftColumn, forceWidth: true, forceHeight: false);
-            Size(left, width: 900);
-            left.GetComponent<LayoutElement>().minWidth = 900; // 7 células de 120 com o espaço entre elas
-            var unlocked = Label("Liberadas", left.transform, "Liberadas: 15/20", 28, Cream, TextAnchor.MiddleLeft);
+            var unlocked = Label("Liberadas", tab.transform, "Liberadas: 15/20", 28, Cream, TextAnchor.MiddleLeft);
             Size(unlocked, height: 40);
-            var grid = CardGrid(left.transform, columns: 7);
-
-            var detail = BuildCardDetail(tab.transform);
+            unlocked.GetComponent<LayoutElement>().flexibleHeight = 0;
+            var grid = CardGrid(tab.transform, columns: 5, cell: CollectionCardSize, spacing: new Vector2(14, 14));
 
             var fields = new SerializedObject(view);
             fields.FindProperty("gridContainer").objectReferenceValue = grid;
-            fields.FindProperty("slotPrefab").objectReferenceValue = slotPrefab;
-            fields.FindProperty("detail").objectReferenceValue = detail;
+            fields.FindProperty("cardPrefab").objectReferenceValue = cardPrefab;
             fields.FindProperty("unlockedLabel").objectReferenceValue = unlocked.GetComponent<Text>();
-            fields.ApplyModifiedPropertiesWithoutUndo();
-            return view;
-        }
-
-        // Detalhe da carta selecionada: desenho, nome, descrição, efeitos e, se bloqueada, "Bloqueada" e o custo
-        private static CardDetailView BuildCardDetail(Transform parent)
-        {
-            var detail = Node("Detalhe", parent);
-            Img(detail, Art("SubPanelFrame"), Color.white, tiled: true).raycastTarget = false;
-            // Largura fixa: sem ela, uma descrição longa empurra a grade de cartas
-            var detailSize = detail.AddComponent<LayoutElement>();
-            detailSize.minWidth = detailSize.preferredWidth = 540;
-            detailSize.flexibleWidth = 1;
-            var column = detail.AddComponent<VerticalLayoutGroup>();
-            column.padding = new RectOffset(48, 48, 36, 36);
-            column.spacing = 8;
-            column.childAlignment = TextAnchor.UpperCenter;
-            SetControl(column, forceWidth: true, forceHeight: false);
-
-            var frameHolder = Node("Carta", detail.transform);
-            Size(frameHolder, height: 80);
-            var frame = Node("Moldura", frameHolder.transform);
-            Img(frame, Art("CardFrame"), Color.white, sliced: true).raycastTarget = false;
-            frame.GetComponent<RectTransform>().sizeDelta = new Vector2(60, 80); // 12x16 px x 5
-            var icon = Node("Icone", frame.transform);
-            var iconImage = Img(icon, Art("CardIconDefault"), Color.white);
-            iconImage.raycastTarget = false;
-            icon.GetComponent<RectTransform>().sizeDelta = new Vector2(45, 30); // 9x6 px x 5
-
-            var name = Label("Nome", detail.transform, "Carta", 36, Cream, TextAnchor.MiddleCenter);
-            Size(name, height: 44);
-            var description = Label("Descricao", detail.transform, "Descrição da carta.", 22, Muted, TextAnchor.UpperCenter);
-            var effects = Label("Efeitos", detail.transform, "+20% dano", 24, Cream, TextAnchor.UpperCenter);
-            effects.GetComponent<Text>().lineSpacing = 1.1f;
-
-            var locked = Node("Bloqueada", detail.transform);
-            var lockedColumn = locked.AddComponent<VerticalLayoutGroup>();
-            lockedColumn.spacing = 4;
-            SetControl(lockedColumn, forceWidth: true, forceHeight: false);
-            Size(Label("Marca", locked.transform, "Bloqueada", 28, Warning, TextAnchor.MiddleCenter), height: 36);
-            var cost = Label("Custo", locked.transform, "Custo: 5 osso  5 ferro  5 cera", 22, Cream, TextAnchor.MiddleCenter);
-            Size(cost, height: 30);
-
-            var view = detail.AddComponent<CardDetailView>();
-            var fields = new SerializedObject(view);
-            fields.FindProperty("icon").objectReferenceValue = iconImage;
-            fields.FindProperty("defaultIcon").objectReferenceValue = Art("CardIconDefault");
-            fields.FindProperty("nameLabel").objectReferenceValue = name.GetComponent<Text>();
-            fields.FindProperty("descriptionLabel").objectReferenceValue = description.GetComponent<Text>();
-            fields.FindProperty("effectsLabel").objectReferenceValue = effects.GetComponent<Text>();
-            fields.FindProperty("lockedGroup").objectReferenceValue = locked;
-            fields.FindProperty("costLabel").objectReferenceValue = cost.GetComponent<Text>();
             fields.ApplyModifiedPropertiesWithoutUndo();
             return view;
         }
@@ -714,13 +626,13 @@ namespace Assets._Project.Code.Editor
         }
 
         // Grade de células de carta numa área com rolagem, para quando as cartas não couberem
-        private static Transform CardGrid(Transform parent, int columns)
+        private static Transform CardGrid(Transform parent, int columns, Vector2? cell = null, Vector2? spacing = null)
         {
             var scroll = Scroll(parent, "Grade", out var content);
             scroll.AddComponent<LayoutElement>().flexibleHeight = 1;
             var grid = content.gameObject.AddComponent<GridLayoutGroup>();
-            grid.cellSize = new Vector2(120, 124);
-            grid.spacing = new Vector2(10, 8);
+            grid.cellSize = cell ?? new Vector2(120, 124);
+            grid.spacing = spacing ?? new Vector2(10, 8);
             grid.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
             grid.constraintCount = columns;
             grid.childAlignment = TextAnchor.UpperCenter;
@@ -755,58 +667,84 @@ namespace Assets._Project.Code.Editor
             return scroll;
         }
 
-        // Prefab de uma linha da aba Desbloquear: carta, nome, custo em osso, ferro e cera e "Desbloquear"
-        private static UnlockRowView BuildUnlockRowPrefab()
+        // Tamanho de uma carta da Coleção: 5 por linha na largura do painel
+        private static readonly Vector2 CollectionCardSize = new Vector2(280, 256);
+
+        // Prefab de uma carta da Coleção: desenho e nome no topo, a descrição e, embaixo, o custo e "Desbloquear"
+        private static CollectionCardView BuildCollectionCardPrefab()
         {
-            var row = new GameObject("UnlockRow", typeof(RectTransform));
-            row.layer = LayerMask.NameToLayer("UI");
+            var card = new GameObject("CollectionCard", typeof(RectTransform));
+            card.layer = LayerMask.NameToLayer("UI");
             try
             {
-                var layout = row.AddComponent<HorizontalLayoutGroup>();
-                layout.padding = new RectOffset(16, 16, 6, 6);
-                layout.spacing = 24;
-                layout.childAlignment = TextAnchor.MiddleLeft;
-                SetControl(layout, forceWidth: false, forceHeight: false);
-                row.AddComponent<LayoutElement>().minHeight = 84;
+                Img(card, Art("SubPanelFrame"), Color.white, tiled: true).raycastTarget = false;
+                var column = card.AddComponent<VerticalLayoutGroup>();
+                column.padding = new RectOffset(34, 34, 22, 24);
+                column.spacing = 4;
+                column.childAlignment = TextAnchor.UpperCenter;
+                SetControl(column, forceWidth: true, forceHeight: false);
 
-                var frame = Node("Moldura", row.transform);
+                var top = Node("Topo", card.transform);
+                var topRow = top.AddComponent<HorizontalLayoutGroup>();
+                topRow.spacing = 12;
+                topRow.childAlignment = TextAnchor.MiddleLeft;
+                SetControl(topRow, forceWidth: false, forceHeight: false);
+                Size(top, height: 48);
+                var frame = Node("Moldura", top.transform);
                 Img(frame, Art("CardFrame"), Color.white, sliced: true).raycastTarget = false;
-                Size(frame, 48, 64); // 12x16 px x 4
+                Size(frame, 36, 48); // 12x16 px x 3
                 var icon = Node("Icone", frame.transform);
                 var iconImage = Img(icon, Art("CardIconDefault"), Color.white);
                 iconImage.raycastTarget = false;
                 icon.GetComponent<RectTransform>().sizeDelta = new Vector2(27, 18); // 9x6 px x 3
-
-                var name = Label("Nome", row.transform, "Carta", 32, Cream, TextAnchor.MiddleLeft);
-                Size(name, height: 44);
+                var name = Label("Nome", top.transform, "Carta", 22, Cream, TextAnchor.MiddleLeft);
+                Size(name, height: 48);
                 name.GetComponent<LayoutElement>().flexibleWidth = 1;
 
-                var bones = Cost(row.transform, "Osso", "IconBone");
-                var iron = Cost(row.transform, "Ferro", "IconIron");
-                var wax = Cost(row.transform, "Cera", "IconWax");
+                var description = Label("Descricao", card.transform, "Descrição da carta.", 16, Muted, TextAnchor.UpperLeft);
+                Size(description, height: 54);
+                description.GetComponent<LayoutElement>().flexibleHeight = 1;
 
-                var unlock = Button(row.transform, "Desbloquear", null); // a linha liga o clique em runtime
-                Size(unlock.gameObject, height: 72);
+                var unlock = Node("Desbloqueio", card.transform);
+                var unlockColumn = unlock.AddComponent<VerticalLayoutGroup>();
+                unlockColumn.spacing = 2;
+                unlockColumn.childAlignment = TextAnchor.UpperCenter;
+                SetControl(unlockColumn, forceWidth: false, forceHeight: false);
+                var costs = Node("Custo", unlock.transform);
+                var costsRow = costs.AddComponent<HorizontalLayoutGroup>();
+                costsRow.spacing = 18;
+                costsRow.childAlignment = TextAnchor.MiddleCenter;
+                SetControl(costsRow, forceWidth: false, forceHeight: false);
+                Size(costs, height: 26);
+                var bones = Cost(costs.transform, "Osso", "IconBone");
+                var iron = Cost(costs.transform, "Ferro", "IconIron");
+                var wax = Cost(costs.transform, "Cera", "IconWax");
+                foreach (var cost in new[] { bones, iron, wax })
+                    cost.horizontalOverflow = HorizontalWrapMode.Overflow; // custo de dois dígitos não quebra a linha
+                var button = Button(unlock.transform, "Desbloquear", null); // a carta liga o clique em runtime
+                Size(button.gameObject, 220, 48);
 
-                var view = row.AddComponent<UnlockRowView>();
+                var view = card.AddComponent<CollectionCardView>();
                 var fields = new SerializedObject(view);
                 fields.FindProperty("icon").objectReferenceValue = iconImage;
                 fields.FindProperty("defaultIcon").objectReferenceValue = Art("CardIconDefault");
                 fields.FindProperty("nameLabel").objectReferenceValue = name.GetComponent<Text>();
+                fields.FindProperty("descriptionLabel").objectReferenceValue = description.GetComponent<Text>();
+                fields.FindProperty("unlockGroup").objectReferenceValue = unlock;
+                fields.FindProperty("unlockButton").objectReferenceValue = button;
                 fields.FindProperty("bonesLabel").objectReferenceValue = bones;
                 fields.FindProperty("ironLabel").objectReferenceValue = iron;
                 fields.FindProperty("waxLabel").objectReferenceValue = wax;
                 fields.FindProperty("costColor").colorValue = Cream;
                 fields.FindProperty("missingColor").colorValue = Warning; // TAROT-17
-                fields.FindProperty("unlockButton").objectReferenceValue = unlock;
                 fields.ApplyModifiedPropertiesWithoutUndo();
 
-                Directory.CreateDirectory(Path.GetDirectoryName(UnlockRowPath));
-                return PrefabUtility.SaveAsPrefabAsset(row, UnlockRowPath).GetComponent<UnlockRowView>();
+                Directory.CreateDirectory(Path.GetDirectoryName(CollectionCardPath));
+                return PrefabUtility.SaveAsPrefabAsset(card, CollectionCardPath).GetComponent<CollectionCardView>();
             }
             finally
             {
-                Object.DestroyImmediate(row);
+                Object.DestroyImmediate(card);
             }
         }
 

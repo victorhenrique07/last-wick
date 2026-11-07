@@ -427,8 +427,8 @@ T14 → T15 → T16 → T17 → T18 → T19
 
 **Done when**:
 
-- [ ] Clicar na mesa abre a Coleção com nome e descrição em cada carta
-- [ ] Console sem erros de compilação
+- [x] Clicar na mesa abre a Coleção com nome e descrição em cada carta
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
