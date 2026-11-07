@@ -367,8 +367,8 @@ T14 → T15 → T16 → T17 → T18 → T19
 
 **Done when**:
 
-- [ ] Uma carta bloqueada sem materiais mostra o botão desligado e o custo na cor de aviso
-- [ ] Console sem erros de compilação
+- [x] Uma carta bloqueada sem materiais mostra o botão desligado e o custo na cor de aviso
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build
