@@ -104,7 +104,7 @@
 **Phase/Task**: próxima etapa (AD-019): fechamento do save-system, completo; depois o balanceamento numa passada só
 **Completed**: blacksmith-weapon T1-T14, revisada contra o código antes de começar (7 ajustes) e feita pelo Claude a pedido em dois lotes de sub-agentes. A arma inicial é a "Centelha" (Id `centelha`): dano 10, cadência 4, 5 níveis que sobem +2 de dano e +10% de cadência juntos (mudança do usuário durante a verificação). Walk de 21 checks (Esc testado pelo usuário), Verifier com 5 findings fechados em `7c96476` (arma inicial fora da lista), `546afde` (custo em ouro ou óleo num nível) e na rodada 2 do walk. card-effects: T1-T5 em `f1c50fe`; a T6, o walk e o Verifier esperam a mecânica da primeira carta.
 **In progress**: nada
-**Next step**: fechar o save-system: walk de todas as checks (agora com cartas e armas), check_proofs e Verifier. Depois, o balanceamento (inclui o fechamento formal do spawn-waves).
+**Next step**: revisão da mesa de tarot (desbloqueio na Coleção, T15-T19 em `3e73bca`..`cbbeb3f`) com o walk da rodada 3 feito; faltam o check_proofs e um Verifier da revisão (diff `99ba0aa..HEAD`). Depois, o fechamento do save-system e o balanceamento. Investigar o erro "Save: não foi possível gravar (Não foi possível remover o arquivo a ser substituído)" visto no Console durante o walk.
 **Blockers**: nenhum
 **Uncommitted**: nada (as pastas de ferramentas estão no `.git/info/exclude` local)
 **Branch**: main, sem push desde `7c92c18`
