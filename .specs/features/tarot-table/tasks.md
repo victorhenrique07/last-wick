@@ -387,8 +387,8 @@ T14 → T15 → T16 → T17 → T18 → T19
 
 **Done when**:
 
-- [ ] Desbloquear uma carta pelo botão dela tira o botão e o custo
-- [ ] Console sem erros de compilação
+- [x] Desbloquear uma carta pelo botão dela tira o botão e o custo
+- [x] Console sem erros de compilação
 
 **Tests**: none
 **Gate**: build

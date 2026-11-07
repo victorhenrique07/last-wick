@@ -1,55 +1,43 @@
 using System.Collections.Generic;
 using Assets._Project.Code.Runtime.Cards;
+using Assets._Project.Code.Runtime.Save;
 using Assets._Project.Code.Runtime.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Assets._Project.Code.Runtime.Hub
 {
-    // Aba Coleção da mesa de tarot: todas as cartas do jogo, as bloqueadas escurecidas com "Bloqueada",
-    // o detalhe da carta selecionada e "Liberadas: N/M" (TAROT-07 a TAROT-10).
+    // Aba Coleção da mesa de tarot: todas as cartas do jogo, cada uma com nome, ícone e descrição; as bloqueadas
+    // trazem embaixo o botão "Desbloquear" e o custo. No topo, "Liberadas: N/M" (TAROT-02 a TAROT-05, TAROT-07,
+    // TAROT-08, TAROT-10). O redesenho depois de um desbloqueio vem do SaveSystem.Changed, pelo TarotMenu.
     public class TarotCollectionTab : MonoBehaviour
     {
         [SerializeField] private Transform gridContainer;
-        [SerializeField] private CardSlotView slotPrefab;
-        [SerializeField] private CardDetailView detail;
+        [SerializeField] private CollectionCardView cardPrefab;
         [SerializeField] private Text unlockedLabel; // "Liberadas: N/M"
 
-        private readonly List<CardSlotView> slots = new();
-        private CardData selected;
-
-        // Abrir a aba volta para a primeira carta
-        void OnEnable() => selected = null;
+        private readonly List<CollectionCardView> views = new();
 
         public void Refresh()
         {
             IReadOnlyList<CardData> cards = CardLibrary.AllCards;
+            ResourceBag owned = SaveSystem.Data.Resources;
+
+            while (views.Count < cards.Count)
+                views.Add(Instantiate(cardPrefab, gridContainer));
 
             int total = 0;
-            while (slots.Count < cards.Count)
-                slots.Add(Instantiate(slotPrefab, gridContainer));
-
-            for (int i = 0; i < slots.Count; i++)
+            for (int i = 0; i < views.Count; i++)
             {
                 CardData card = i < cards.Count ? cards[i] : null;
-                slots[i].gameObject.SetActive(card != null);
+                views[i].gameObject.SetActive(card != null);
                 if (card == null) continue;
 
                 total++;
-                slots[i].Show(card);
-                slots[i].SetLocked(!CardLibrary.IsUnlocked(card));
-                slots[i].SetOnClick(() => Select(card));
-                if (selected == null) selected = card;
+                views[i].Show(card, !CardLibrary.IsUnlocked(card), owned, () => CardLibrary.TryUnlock(card));
             }
 
             unlockedLabel.text = $"Liberadas: {CardLibrary.UnlockedCardCount()}/{total}";
-            if (selected != null) detail.Show(selected, !CardLibrary.IsUnlocked(selected));
-        }
-
-        private void Select(CardData card)
-        {
-            selected = card;
-            detail.Show(card, !CardLibrary.IsUnlocked(card));
         }
     }
 }
