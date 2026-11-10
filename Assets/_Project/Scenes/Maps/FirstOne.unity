@@ -1305,9 +1305,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b705e7131d241e9b3d88692d10b926b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets._Project.Code.Runtime.Core.CameraShake
-  traumaPerFullHealth: 3
+  minTraumaPerHit: 0.45
+  traumaPerFullHealth: 4
   traumaDecay: 1.5
-  maxOffset: 0.3
+  maxOffset: 0.5
   frequency: 25
   intensity: 1
 --- !u!114 &2100153238

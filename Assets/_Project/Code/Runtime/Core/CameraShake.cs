@@ -9,12 +9,14 @@ namespace Assets._Project.Code.Runtime.Core
     // Não move a câmera: só calcula o Offset, que o CameraFollow soma antes de arredondar para o pixel.
     public class CameraShake : MonoBehaviour
     {
-        [Tooltip("Trauma somado por um golpe que tiraria 100% da vida. 3 = um hit de 1/3 da vida já chega no máximo.")]
-        [SerializeField, Min(0f)] private float traumaPerFullHealth = 3f;
+        [Tooltip("Trauma que todo hit soma, mesmo o menor. Sem isso, hits pequenos ficam abaixo de 1 pixel e somem no arredondamento.")]
+        [SerializeField, Range(0f, 1f)] private float minTraumaPerHit = 0.45f;
+        [Tooltip("Trauma extra somado por um golpe que tiraria 100% da vida, em cima do mínimo.")]
+        [SerializeField, Min(0f)] private float traumaPerFullHealth = 4f;
         [Tooltip("Quanto trauma some por segundo.")]
         [SerializeField, Min(0f)] private float traumaDecay = 1.5f;
         [Tooltip("Deslocamento máximo em unidades de mundo (com PPU 16, 0.0625 = 1 pixel).")]
-        [SerializeField, Min(0f)] private float maxOffset = 0.3f;
+        [SerializeField, Min(0f)] private float maxOffset = 0.5f;
         [Tooltip("Velocidade do ruído. Mais alto = tremor mais nervoso.")]
         [SerializeField, Min(0f)] private float frequency = 25f;
         [Tooltip("Multiplicador global, para uma futura opção de acessibilidade. 0 desliga.")]
@@ -58,7 +60,8 @@ namespace Assets._Project.Code.Runtime.Core
         public void AddTrauma(float amount) => trauma = Mathf.Clamp01(trauma + amount);
 
         // Proporcional à vida máxima: com mais vida, o mesmo golpe "dói" menos e treme menos.
-        private void OnDamaged(DamageInfo info) => AddTrauma(info.Amount / health.Max * traumaPerFullHealth);
+        private void OnDamaged(DamageInfo info) =>
+            AddTrauma(minTraumaPerHit + info.Amount / health.Max * traumaPerFullHealth);
 
         // Unscaled: se o jogo pausar logo após um hit (level up, fim de run), a câmera não congela deslocada.
         private void Update()
