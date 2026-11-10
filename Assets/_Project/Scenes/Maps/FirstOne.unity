@@ -1154,6 +1154,7 @@ GameObject:
   - component: {fileID: 2100153236}
   - component: {fileID: 2100153237}
   - component: {fileID: 2100153238}
+  - component: {fileID: 2100153239}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1292,6 +1293,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets._Project.Code.Runtime.Core.CameraFollow
   smoothTime: 0.15
+--- !u!114 &2100153239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2100153232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b705e7131d241e9b3d88692d10b926b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Assets._Project.Code.Runtime.Core.CameraShake
+  traumaPerFullHealth: 3
+  traumaDecay: 1.5
+  maxOffset: 0.3
+  frequency: 25
+  intensity: 1
 --- !u!114 &2100153238
 MonoBehaviour:
   m_ObjectHideFlags: 0

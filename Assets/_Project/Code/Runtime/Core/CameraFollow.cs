@@ -8,6 +8,7 @@ namespace Assets._Project.Code.Runtime.Core
         [SerializeField] private float smoothTime = 0.15f;
         private Transform player;
         private PixelPerfectCamera pixelPerfect;
+        private CameraShake shake;
 
         private Vector3 velocity;
         private Vector3 followPosition; // posição suave, fora da grade; a câmera usa ela arredondada
@@ -16,6 +17,7 @@ namespace Assets._Project.Code.Runtime.Core
         {
             player = GameObject.FindGameObjectWithTag("Player").transform;
             pixelPerfect = GetComponent<PixelPerfectCamera>();
+            shake = GetComponent<CameraShake>();
             followPosition = transform.position;
         }
 
@@ -26,8 +28,11 @@ namespace Assets._Project.Code.Runtime.Core
             Vector3 goal = new Vector3(player.position.x, player.position.y, transform.position.z);
             followPosition = Vector3.SmoothDamp(followPosition, goal, ref velocity, smoothTime);
 
+            // O tremor entra antes do arredondamento, então também anda de pixel em pixel.
+            Vector3 final = shake != null ? followPosition + shake.Offset : followPosition;
+
             // Câmera sempre num pixel da arte: o cenário parado não vibra enquanto ela anda (AD-017)
-            transform.position = pixelPerfect != null ? pixelPerfect.RoundToPixel(followPosition) : followPosition;
+            transform.position = pixelPerfect != null ? pixelPerfect.RoundToPixel(final) : final;
         }
     }
 }
