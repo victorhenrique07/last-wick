@@ -8,7 +8,7 @@ namespace LastWick.Player
     {
         [Header("Knockback ao tomar dano")]
         [Tooltip("Velocidade do empurrão no instante do hit.")]
-        [SerializeField, Min(0f)] private float knockbackForce = 4f;
+        [SerializeField, Min(0f)] private float knockbackForce = 2.8f;
         [Tooltip("Quanto da velocidade do empurrão some por segundo. Mais alto = empurrão mais curto e seco.")]
         [SerializeField, Min(0f)] private float knockbackDecay = 40f;
         [Tooltip("Segundos logo após o hit em que o input não move o player, para ele não anular o empurrão.")]
