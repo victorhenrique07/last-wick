@@ -10,13 +10,13 @@ namespace Assets._Project.Code.Runtime.Core
     public class CameraShake : MonoBehaviour
     {
         [Tooltip("Trauma que todo hit soma, mesmo o menor. Sem isso, hits pequenos ficam abaixo de 1 pixel e somem no arredondamento.")]
-        [SerializeField, Range(0f, 1f)] private float minTraumaPerHit = 0.45f;
+        [SerializeField, Range(0f, 1f)] private float minTraumaPerHit = 0.5f;
         [Tooltip("Trauma extra somado por um golpe que tiraria 100% da vida, em cima do mínimo.")]
-        [SerializeField, Min(0f)] private float traumaPerFullHealth = 4f;
+        [SerializeField, Min(0f)] private float traumaPerFullHealth = 2f;
         [Tooltip("Quanto trauma some por segundo.")]
         [SerializeField, Min(0f)] private float traumaDecay = 1.5f;
         [Tooltip("Deslocamento máximo em unidades de mundo (com PPU 16, 0.0625 = 1 pixel).")]
-        [SerializeField, Min(0f)] private float maxOffset = 0.5f;
+        [SerializeField, Min(0f)] private float maxOffset = 0.4f;
         [Tooltip("Velocidade do ruído. Mais alto = tremor mais nervoso.")]
         [SerializeField, Min(0f)] private float frequency = 25f;
         [Tooltip("Multiplicador global, para uma futura opção de acessibilidade. 0 desliga.")]
@@ -29,6 +29,7 @@ namespace Assets._Project.Code.Runtime.Core
         private float seedY;
 
         public Vector3 Offset { get; private set; }
+        public bool IsShaking => trauma > 0f;
 
         public float Intensity
         {
@@ -60,8 +61,13 @@ namespace Assets._Project.Code.Runtime.Core
         public void AddTrauma(float amount) => trauma = Mathf.Clamp01(trauma + amount);
 
         // Proporcional à vida máxima: com mais vida, o mesmo golpe "dói" menos e treme menos.
-        private void OnDamaged(DamageInfo info) =>
+        // Um tremor por vez: hits que chegam enquanto a tela ainda treme não disparam outro,
+        // senão uma horda encostando deixa a tela tremendo sem parar.
+        private void OnDamaged(DamageInfo info)
+        {
+            if (IsShaking) return;
             AddTrauma(minTraumaPerHit + info.Amount / health.Max * traumaPerFullHealth);
+        }
 
         // Unscaled: se o jogo pausar logo após um hit (level up, fim de run), a câmera não congela deslocada.
         private void Update()
